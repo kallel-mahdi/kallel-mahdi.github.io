@@ -1,0 +1,44 @@
+{% comment %}
+  Numbered question cards. include.questions = { title, intro, items: [{ title, thumb, figures: [{ src, caption, wide }], findings: [...] }] }.
+  Each card's body is rendered hidden; paper.js opens it in a full-width panel below the card's row.
+{% endcomment %}
+{% assign questions = include.questions %}
+<section class="paper-section">
+  <h2>{{ questions.title | default: 'Questions' }}</h2>
+  {% if questions.intro %}<div class="paper-text">{{ questions.intro | markdownify }}</div>{% endif %}
+
+  <div class="qa-grid" data-qa-grid>
+    {% for q in questions.items %}
+      {% assign num = forloop.index | prepend: '0' | slice: -2, 2 %}
+      <div class="qa-card">
+        <button class="qa-head" type="button" aria-expanded="false">
+          {% if q.thumb %}
+            <img class="qa-thumb" src="{{ q.thumb | prepend: '/assets/img/' | relative_url }}" alt="" loading="lazy">
+          {% endif %}
+          <span class="qa-num">{{ num }}</span>
+          <span class="qa-title">{{ q.title | markdownify | remove: '<p>' | remove: '</p>' }}</span>
+          <span class="qa-chevron" aria-hidden="true">▾</span>
+        </button>
+        <div class="qa-body" hidden>
+          {% if q.figures %}
+            <div class="qa-figures">
+              {% for fig in q.figures %}
+                <figure class="paper-figure{% if fig.wide %} is-wide{% endif %}">
+                  <img src="{{ fig.src | prepend: '/assets/img/' | relative_url }}" alt="{{ fig.caption | strip_html | default: q.title }}" loading="lazy">
+                  {% if fig.caption %}<figcaption>{{ fig.caption | markdownify | remove: '<p>' | remove: '</p>' }}</figcaption>{% endif %}
+                </figure>
+              {% endfor %}
+            </div>
+          {% endif %}
+          {% if q.findings %}
+            <ul class="qa-findings">
+              {% for finding in q.findings %}
+                <li>{{ finding | markdownify | remove: '<p>' | remove: '</p>' }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</section>

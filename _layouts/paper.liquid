@@ -1,0 +1,80 @@
+---
+layout: default
+---
+{% comment %}
+  Interactive paper page. All content comes from front matter; see
+  _templates/paper.md for the schema and AUTHORING.md for usage.
+  Sections render only when their front matter key is present, in this order:
+  header, hook, tldr, body content, method, questions, remarks, bibtex.
+{% endcomment %}
+<div class="paper-page">
+  <header class="paper-header">
+    {% if page.venue %}<div class="paper-venue">{{ page.venue }}</div>{% endif %}
+    <h1 class="paper-title">{{ page.title }}</h1>
+    {% if page.subtitle %}<p class="paper-subtitle">{{ page.subtitle }}</p>{% endif %}
+
+    {% if page.authors %}
+      <p class="paper-authors">
+        {% for author in page.authors %}
+          {% if author.url %}<a href="{{ author.url }}" {% if author.me %}class="is-me"{% endif %}>{{ author.name }}</a>{% else %}<span {% if author.me %}class="is-me"{% endif %}>{{ author.name }}</span>{% endif %}{% if author.affil %}<sup>{{ author.affil | join: ',' }}</sup>{% endif %}{% unless forloop.last %}, {% endunless %}
+        {% endfor %}
+      </p>
+    {% endif %}
+    {% if page.affiliations %}
+      <p class="paper-affiliations">
+        {% for affiliation in page.affiliations %}
+          <span><sup>{{ forloop.index }}</sup>{{ affiliation }}</span>
+        {% endfor %}
+      </p>
+    {% endif %}
+
+    {% if page.links %}
+      <div class="paper-links">
+        {% for link in page.links %}
+          <a class="paper-link" href="{{ link.url }}">
+            {% if link.icon %}<i class="{{ link.icon }}"></i>{% endif %}
+            {{ link.label }}
+          </a>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </header>
+
+  {% if page.hook %}
+    <blockquote class="paper-hook">{{ page.hook | markdownify | remove: '<p>' | remove: '</p>' }}</blockquote>
+  {% endif %}
+
+  {% if page.tldr %}
+    <section class="paper-section paper-text">
+      <h2>TL;DR</h2>
+      {{ page.tldr | markdownify }}
+    </section>
+  {% endif %}
+
+  {% if content != '' %}
+    <section class="paper-section paper-text">{{ content }}</section>
+  {% endif %}
+
+  {% if page.method %}
+    {% include paper/stepper.liquid method=page.method %}
+  {% endif %}
+
+  {% if page.questions %}
+    {% include paper/question_cards.liquid questions=page.questions %}
+  {% endif %}
+
+  {% if page.remarks %}
+    <section class="paper-section paper-text">
+      <h2>{{ page.remarks.title | default: 'Final remarks' }}</h2>
+      <ul>
+        {% for item in page.remarks.items %}
+          <li>{{ item | markdownify | remove: '<p>' | remove: '</p>' }}</li>
+        {% endfor %}
+      </ul>
+    </section>
+  {% endif %}
+
+  {% if page.bibtex %}
+    {% include paper/bibtex.liquid bibtex=page.bibtex %}
+  {% endif %}
+</div>

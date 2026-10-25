@@ -1,0 +1,35 @@
+{% comment %}
+  Series banner for a post with `series` and `part` in its front matter.
+  Usage: {% include series_nav.liquid position="top" %} or position="bottom".
+{% endcomment %}
+{% assign series = site.data.series[page.series] %}
+{% if series %}
+  {% assign series_posts = site.posts | where: 'series', page.series | sort: 'part' %}
+  {% assign prev_post = nil %}
+  {% assign next_post = nil %}
+  {% for p in series_posts %}
+    {% if p.part == page.part %}
+      {% assign i_prev = forloop.index0 | minus: 1 %}
+      {% if i_prev >= 0 %}{% assign prev_post = series_posts[i_prev] %}{% endif %}
+      {% assign next_post = series_posts[forloop.index] %}
+    {% endif %}
+  {% endfor %}
+
+  {% if include.position == 'top' %}
+    <div class="series-banner">
+      <a class="series-name" href="{{ series.url | relative_url }}">{{ series.title }}</a>
+      <span class="series-part">Part {{ page.part }} of {{ series.outline.size }}</span>
+    </div>
+  {% elsif prev_post or next_post %}
+    <nav class="series-nav" aria-label="{{ series.title }}">
+      {% if prev_post %}
+        <a class="series-prev" href="{{ prev_post.url | relative_url }}"><span>Previous</span>{{ prev_post.title }}</a>
+      {% else %}
+        <span></span>
+      {% endif %}
+      {% if next_post %}
+        <a class="series-next" href="{{ next_post.url | relative_url }}"><span>Next</span>{{ next_post.title }}</a>
+      {% endif %}
+    </nav>
+  {% endif %}
+{% endif %}

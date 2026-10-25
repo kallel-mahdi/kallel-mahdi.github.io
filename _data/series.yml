@@ -1,0 +1,37 @@
+# Blog series. A post joins a series with front matter `series: <key>` and `part: <n>`.
+# `outline` lists every planned part; parts without a published post show as "soon".
+# Published posts are matched by `part`, so the outline title is only used until then.
+
+rl-by-doing:
+  title: Reinforcement Learning by Doing
+  url: /series/#rl-by-doing
+  blurb: >-
+    The classical ideas of reinforcement learning, rebuilt one question at a time.
+    Each part starts from the problem its authors faced, then asks you to derive
+    the key step yourself, with a hint and an answer one click away.
+  # PROPOSED outline, following the course sheets; to be approved and edited.
+  outline:
+    - part: 1
+      title: Policy iteration
+      goal: Evaluate a policy exactly, improve it greedily, and see why the loop terminates.
+    - part: 2
+      title: The policy gradient theorem
+      goal: Differentiate expected return without differentiating the environment.
+    - part: 3
+      title: Temporal-difference learning
+      goal: Evaluate a policy from samples by bootstrapping on your own estimates.
+    - part: 4
+      title: Why TD converges
+      goal: Stochastic approximation, the ODE method, and a Lyapunov argument for tabular TD.
+    - part: 5
+      title: TD with linear function approximation
+      goal: Where the tabular argument breaks, and the positive-definiteness that rescues it on-policy.
+    - part: 6
+      title: Actor-critic
+      goal: Replace returns with a learned critic and track what that costs.
+    - part: 7
+      title: Trust regions, TRPO and PPO
+      goal: Bound how far one update can move the policy, then make it cheap.
+    - part: 8
+      title: Natural policy gradient
+      goal: Measure step size in policy space rather than parameter space.

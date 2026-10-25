@@ -168,6 +168,11 @@
   <script defer src="{{ '/assets/js/bootstrap-toc.min.js' | relative_url | bust_file_cache }}"></script>
 {% endif %}
 
+{% if page.layout == 'paper' %}
+  <!-- Paper page components -->
+  <script defer src="{{ '/assets/js/paper.js' | relative_url | bust_file_cache }}" type="text/javascript"></script>
+{% endif %}
+
 {% if page.pretty_table %}
   <!-- Bootstrap Table -->
   <!-- Bootstrap Table doesn't go well with diff2html -->

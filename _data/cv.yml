@@ -3,96 +3,80 @@
   contents:
     - name: Full Name
       value: Mahdi Kallel
-    # - name: Date of Birth
-    #   value: 14th March 1879
+    - name: Position
+      value: PhD researcher in reinforcement learning, University of Würzburg
     - name: Languages
-      value: Arabic, English, French
+      value: Arabic (native), English (fluent), French (fluent), German (basic)
 
 - title: Education
   type: time_table
   contents:
-    - title: PhD
-      institution: University of Wurzburg, Germany
-      year: 2023
+    - title: PhD in Reinforcement Learning
+      institution: University of Würzburg, Germany
+      year: 2023 - 2027
       description:
-        - PhD in Computer Science
-        - Description 2.
-        - title: Description 3.
-          contents:
-            - Sub-description 1.
-            - Sub-description 2.
-    - title: Masters
-      institution: Télécom Paris, Paris, France
-      year: 2018
+        - Expected April 2027. Supervisor, Prof. Carlo D'Eramo.
+        - Teaching, Introduction to Machine Learning; Introduction to Reinforcement Learning.
+    - title: MSc, Optimization
+      institution: Université Paris-Saclay, France
+      year: 2021 - 2022
       description:
-        - Master in Computer Science
-  
+        - Convex analysis, compressed sensing, dynamic programming, tropical algebra, game theory, stochastic optimization and approximation.
+    - title: MSc, Mathematics, Vision, Learning (MVA)
+      institution: ENS Paris-Saclay, France
+      year: 2020 - 2021
+      description:
+        - Convex optimization, reinforcement learning, kernel methods, computer vision, advanced deep learning, machine learning for text and graphs.
+    - title: BSc, Data Science
+      institution: Télécom Paris / EURECOM, France
+      year: 2018 - 2020
+      description:
+        - Advanced statistical inference, statistical signal processing, machine learning, database systems, cloud computing and security.
 
 - title: Experience
   type: time_table
   contents:
-    - title: Professor of Theoretical Physics
-      institution: Institute for Advanced Study, Princeton University
-      year: 1933 - 1955
+    - title: Research Intern
+      institution: INRIA Lille, SCOOL Research Group, France
+      year: 2022
       description:
-        - Description 1.
-        - Description 2.
-        - title: Description 3.
-          contents:
-            - Sub-description 1.
-            - Sub-description 2.
-    - title: Visiting Professor
-      institution: California Institute of Technology, Pasadena, California, US
-      year: 1933
+        - Bayesian optimization for exploration with deterministic policies in continuous action spaces.
+    - title: Machine Learning Engineer
+      institution: Mcovision (independent), Paris, France
+      year: 2021
       description:
-        - Description 1.
-        - Description 2.
-
-    - title: Director
-      institution: Kaiser Wilhelm Institute for Physics, Berlin, Germany.
-      year: 1917-1933
-
-    - title: Professor of Theoretical Physics
-      institution: Karl-Ferdinand University, Prague, Czechoslovakia
-      year: 1911 - 1917
+        - Explainable video classifier for rare heart disease, with the full pipeline for data processing, training, monitoring and deployment.
+    - title: Research Intern
+      institution: SustainEcho, Paris, France
+      year: 2021
       description:
+        - Meta-learning and few-shot personalization in low-data regimes, with adaptation based on prototypical networks.
+    - title: Research Intern
+      institution: EURECOM, Biot, France
+      year: 2020
+      description:
+        - Loss balancing in multi-task networks for mobile-network resource allocation; attention mechanisms for temporal prediction.
 
-    - title: Associate Professor of Theoretical Physics
-      institution: University of Zurich, Zurich, Switzerland
-      year: 1909 - 1911
-
-- title: Open Source Projects
+- title: Supervision, Talks and Service
   type: time_table
   contents:
-    - title: <a href="https://github.com/alshedivat/al-folio">al-folio</a>
-      year: 2015-now
-      description: A beautiful, simple, clean, and responsive Jekyll theme for academics.
+    - title: MSc thesis supervision, Johannes Tölle
+      institution: University of Würzburg
+      year: 2026
+      description:
+        - Recipient of the VDE Bayern Award 2026.
+    - title: Invited talk, On Better Priors for Policy Search
+      institution: Improbable AI Lab (Pulkit Agrawal), MIT
+      year: 2024
+    - title: Reviewer
+      institution: NeurIPS, ICLR, ICML, RLC
 
-# - title: Honors and Awards
-#   type: time_table
-#   contents:
-#     - year: 1921
-#       items:
-#         - Nobel Prize in Physics
-#         - Matteucci Medal
-#     - year: 2029
-#       items:
-#         - Max Planck Medal
-
-- title: Academic Interests
-  type: nested_list
+- title: Technical Skills
+  type: map
   contents:
-    - title: Reinforcement Learning
-      items:
-        - Off-policy learning
-        - Memory augmented agents
-    - title: Mathematics
-      items:
-        - Optimization
-        - Optimal transport
-        - Random matrix theory
-
-- title: Other Interests
-  type: list
-  contents:
-    - <u>Hobbies:</u> Bouldering, Running, Piano.
+    - name: Computing
+      value: Python, JAX, PyTorch, NumPy, Julia, C
+    - name: Methods
+      value: Policy optimization, Bayesian optimization, Gaussian processes, random matrix theory, spectral analysis
+    - name: Tools
+      value: Ray, Weights & Biases, Git

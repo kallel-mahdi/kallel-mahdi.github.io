@@ -15,6 +15,7 @@ layout: default
 
 <div class="post">
   <header class="post-header">
+    {% include series_nav.liquid position='top' %}
     <h1 class="post-title">{{ page.title }}</h1>
     <p class="post-meta">
       Created on {{ page.date | date: '%B %d, %Y' }}
@@ -68,6 +69,7 @@ layout: default
     <div id="markdown-content">
       {{ content }}
     </div>
+    {% include series_nav.liquid position='bottom' %}
   </article>
 
   {% if page.citation %}

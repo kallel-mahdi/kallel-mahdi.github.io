@@ -1,0 +1,27 @@
+# Featured work on the home page, in display order (3 cards fit one row).
+# `url` points to the paper page under /papers/ when one exists, otherwise to the best external link.
+# `image` is relative to assets/img/.
+
+- title: Do Not Imitate, Reinforce
+  venue: TMLR 2026
+  image: papers/ric/ric-card.png
+  url: /papers/ric/
+  takeaway: >-
+    Classification as sequential belief refinement, trained with RL. A value function decides when to stop,
+    and predictions stay calibrated under label noise.
+
+- title: "PPO+: Enhancing Proximal Policy Optimization"
+  venue: RLC 2026
+  image: papers/ppoplus/card.png
+  url: https://rlj.cs.umass.edu/2026/papers/Paper8.html
+  takeaway: >-
+    Train the critic off-policy, keep the actor on-policy. Better critics substantially improve PPO
+    and narrow the gap to off-policy methods.
+
+- title: The Spectral Anatomy of Plasticity Loss
+  venue: AXIOM @ NeurIPS 2026
+  image: papers/spectral/card.png
+  url: https://www.eurecom.fr/en/publication/8988
+  takeaway: >-
+    Random matrix theory separates learned edges from the random bulk. Making old edge directions read-only
+    keeps the network trainable.

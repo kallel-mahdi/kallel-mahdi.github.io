@@ -4,22 +4,37 @@
 
 @use "sass:color";
 
+// Design tokens shared by both themes. Colors are defined per theme below;
+// components should only reference these variables, never raw values.
+:root {
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-mono: "JetBrains Mono", SFMono-Regular, Menlo, Consolas, monospace;
+  --radius-sm: 8px;
+  --radius-lg: 14px;
+  --text-width: 740px;
+  --transition-fast: 0.2s ease;
+}
+
 :root {
   color-scheme: light;
   --global-bg-color: #{$white-color};
-  --global-code-bg-color: #{$code-bg-color-light};
-  --global-text-color: #{$black-color};
-  --global-text-color-light: #{$grey-color};
-  --global-theme-color: #{$purple-color};
-  --global-hover-color: #{$purple-color};
+  --global-code-bg-color: #f4f5f7;
+  --global-text-color: #1f2328;
+  --global-text-color-light: #6a737d;
+  --global-theme-color: #2f5fc4;
+  --global-hover-color: #2f5fc4;
   --global-hover-text-color: #{$white-color};
-  --global-footer-bg-color: #{$grey-color-dark};
-  --global-footer-text-color: #{$grey-color-light};
-  --global-footer-link-color: #{$white-color};
+  --global-footer-bg-color: transparent;
+  --global-footer-text-color: #6a737d;
+  --global-footer-link-color: #2f5fc4;
   --global-distill-app-color: #{$grey-color};
   --global-divider-color: rgba(0, 0, 0, 0.1);
   --global-card-bg-color: #{$white-color};
-  --global-highlight-color: #{$red-color-dark};
+  --global-highlight-color: #2f5fc4;
+  --global-accent-soft: rgba(47, 95, 196, 0.1);
+  --global-mark-color: rgba(47, 95, 196, 0.18);
+  --global-card-shadow: 0 4px 22px rgba(15, 23, 42, 0.07);
+  --global-figure-bg: #ffffff;
   --global-back-to-top-bg-color: rgba(
     #{color.channel($black-color, "red", $space: rgb)},
     #{color.channel($black-color, "green", $space: rgb)},
@@ -78,19 +93,24 @@
 
 html[data-theme="dark"] {
   color-scheme: dark;
-  --global-bg-color: #{$grey-color-dark};
+  --global-bg-color: #17181b;
   --global-code-bg-color: #{$code-bg-color-dark};
-  --global-text-color: #{$grey-color-light};
-  --global-text-color-light: #{$grey-color};
-  --global-theme-color: #{$cyan-color};
-  --global-hover-color: #{$cyan-color};
+  --global-text-color: #dfe1e5;
+  --global-text-color-light: #9aa0a6;
+  --global-theme-color: #8cb0f5;
+  --global-hover-color: #8cb0f5;
   --global-hover-text-color: #{$white-color};
-  --global-footer-bg-color: #{$grey-color-light};
-  --global-footer-text-color: #{$grey-color-dark};
-  --global-footer-link-color: #{$black-color};
+  --global-footer-bg-color: transparent;
+  --global-footer-text-color: #9aa0a6;
+  --global-footer-link-color: #8cb0f5;
+  --global-highlight-color: #8cb0f5;
+  --global-accent-soft: rgba(140, 176, 245, 0.12);
+  --global-mark-color: rgba(140, 176, 245, 0.25);
+  --global-card-shadow: 0 4px 22px rgba(0, 0, 0, 0.35);
+  --global-figure-bg: #f4f4f2;
   --global-distill-app-color: #{$grey-color-light};
   --global-divider-color: #424246;
-  --global-card-bg-color: #{$grey-900};
+  --global-card-bg-color: #202226;
   --global-back-to-top-bg-color: rgba(
     #{color.channel($white-color, "red", $space: rgb)},
     #{color.channel($white-color, "green", $space: rgb)},

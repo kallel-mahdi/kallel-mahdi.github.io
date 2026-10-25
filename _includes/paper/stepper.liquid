@@ -1,0 +1,47 @@
+{% comment %}
+  Step-through method explanation. include.method = { title, intro, steps: [{ title, text, eq, image, caption }] }.
+  All panels are rendered; paper.js shows one at a time (without JS, all are visible).
+{% endcomment %}
+{% assign method = include.method %}
+<section class="paper-section">
+  <h2>{{ method.title | default: 'Method' }}</h2>
+  {% if method.intro %}<div class="paper-text">{{ method.intro | markdownify }}</div>{% endif %}
+
+  <div class="stepper" data-stepper>
+    <div class="stepper-tabs" role="tablist">
+      {% for step in method.steps %}
+        <button
+          class="stepper-tab{% if forloop.first %} is-active{% endif %}"
+          type="button"
+          role="tab"
+          aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+        >
+          <span class="stepper-num">{{ forloop.index }}</span>
+          <span class="stepper-tab-title">{{ step.title }}</span>
+        </button>
+      {% endfor %}
+    </div>
+
+    <div class="stepper-card">
+      {% for step in method.steps %}
+        <div class="stepper-panel{% if forloop.first %} is-active{% endif %}" role="tabpanel">
+          <h3>{{ step.title }}</h3>
+          {{ step.text | markdownify }}
+          {% if step.eq %}<div class="stepper-eq">$$ {{ step.eq }} $$</div>{% endif %}
+          {% if step.image %}
+            <figure class="paper-figure">
+              <img src="{{ step.image | prepend: '/assets/img/' | relative_url }}" alt="{{ step.title }}" loading="lazy">
+              {% if step.caption %}<figcaption>{{ step.caption | markdownify | remove: '<p>' | remove: '</p>' }}</figcaption>{% endif %}
+            </figure>
+          {% endif %}
+        </div>
+      {% endfor %}
+
+      <div class="stepper-foot">
+        <button class="stepper-arrow" type="button" data-step="-1" aria-label="Previous step">←</button>
+        <span class="stepper-count">1 / {{ method.steps.size }}</span>
+        <button class="stepper-arrow" type="button" data-step="1" aria-label="Next step">→</button>
+      </div>
+    </div>
+  </div>
+</section>

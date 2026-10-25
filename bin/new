@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+# Create a new blog post or paper page from _templates/.
+#   bin/new post "Policy iteration"   -> _drafts/policy-iteration.md
+#   bin/new paper ppoplus             -> _papers/ppoplus.md (+ assets/img/papers/ppoplus/)
+# Drafts are previewed locally; move a draft to _posts/YYYY-MM-DD-<slug>.md to publish it.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+kind="${1:-}"
+name="${2:-}"
+if [[ -z "$kind" || -z "$name" ]]; then
+  echo "usage: bin/new post \"Title\" | bin/new paper <slug>" >&2
+  exit 1
+fi
+
+slug="$(echo "$name" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g; s/^-|-$//g')"
+
+case "$kind" in
+  post)
+    target="_drafts/$slug.md"
+    [[ -e "$target" ]] && { echo "$target already exists" >&2; exit 1; }
+    title="${name//\\/\\\\}"
+    title="${title//\"/\\\"}"
+    TITLE="$title" DATE="$(date +%F)" awk '
+      /^title: TITLE$/ { print "title: \"" ENVIRON["TITLE"] "\""; next }
+      /^date: DATE$/ { print "date: " ENVIRON["DATE"]; next }
+      { print }
+    ' _templates/post.md > "$target"
+    ;;
+  paper)
+    target="_papers/$slug.md"
+    [[ -e "$target" ]] && { echo "$target already exists" >&2; exit 1; }
+    mkdir -p _papers "assets/img/papers/$slug"
+    sed "s/SLUG/$slug/g" _templates/paper.md > "$target"
+    ;;
+  *)
+    echo "unknown kind '$kind' (use post or paper)" >&2
+    exit 1
+    ;;
+esac
+
+echo "created $target"
