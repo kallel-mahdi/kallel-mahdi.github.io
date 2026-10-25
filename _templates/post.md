@@ -4,32 +4,29 @@ title: TITLE
 date: DATE
 description: One sentence shown in post lists and link previews.
 tags: []
-# For a series part, use `layout: series-post` and set both keys
-# (series are defined in _data/series.yml):
-# series: rl-by-doing
-# part: 1
+categories: [] # use rl-by-doing for a part of the series
 toc:
   sidebar: left
-giscus_comments: false
 related_posts: false
 ---
 
 Opening paragraph: the difficulty this post starts from.
 
-{% history Optional title %}
-Short account of where the idea came from.
-{% endhistory %}
+> ##### Optional historical note
+>
+> Short account of where the idea came from.
 
 ## First section
 
-{% exercise Optional title %}
-State the target.
+> ##### Exercise 1 · Optional title
+>
+> State the target.
+{: .block-tip }
 
-{% hint %}
+{% details Hint %}
 A nudge, not the argument.
-{% endhint %}
+{% enddetails %}
 
-{% answer %}
+{% details Answer %}
 The worked answer.
-{% endanswer %}
-{% endexercise %}
+{% enddetails %}

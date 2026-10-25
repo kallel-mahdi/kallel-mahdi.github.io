@@ -191,9 +191,8 @@ collections:
     defaults:
       layout: post
     output: true
-  papers:
+  projects:
     output: true
-    permalink: /papers/:name/
 
 # -----------------------------------------------------------------------------
 # Jekyll settings
@@ -217,11 +216,15 @@ include: ["_pages"]
 exclude:
   - AGENTS.md
   - al-folio-upgrade-report.md
+  - AUTHORING.md
+  - _templates/
   - bin/
   - CLAUDE.md
   - Dockerfile
   - docker-compose.yml
   - docker-compose-slim.yml
+  - docker-compose.override.yml
+  - requirements.txt
   - docs/
   - Gemfile
   - Gemfile.lock
@@ -332,7 +335,7 @@ jekyll-archives:
       categories: "/blog/:type/:name/"
 
 display_tags: [] # these tags will be displayed on the front page of your blog
-display_categories: [] # these categories will be displayed on the front page of your blog
+display_categories: [rl-by-doing] # these categories will be displayed on the front page of your blog
 
 # -----------------------------------------------------------------------------
 # Jekyll Scholar
@@ -439,7 +442,7 @@ imagemagick:
     - ".jpeg"
     - ".png"
     - ".tiff"
-    - ".gif"
+    # GIFs are served as-is (keeps animation; large GIFs exceed ImageMagick limits)
   output_formats:
     webp: "-auto-orient -quality 85"
 

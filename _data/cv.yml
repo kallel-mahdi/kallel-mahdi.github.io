@@ -55,18 +55,6 @@ cv:
         url: https://rlj.cs.umass.edu/2026/papers/Paper8.html
         summary: Traced the sensitivity of PPO to inaccurate critic estimates, and trained the critic on off-policy data while keeping the actor update on-policy. Better critics substantially improve PPO in continuous control and narrow the gap to off-policy algorithms, without relying on implementation tricks.
 
-      - title: Augmented Bayesian Policy Search
-        authors:
-          - "**Mahdi Kallel**"
-          - Debabrota Basu
-          - Riad Akrour
-          - Carlo D'Eramo
-        journal: ICLR 2024
-        publisher: ICLR 2024
-        date: 2024
-        url: https://proceedings.iclr.cc/paper_files/paper/2024/hash/7eca17ef54789b0663cab421f2e9dbf5-Abstract-Conference.html
-        summary: Used the performance difference lemma to inject the critic into the Gaussian process prior of Bayesian optimization, bridging Bayesian optimization and policy gradient methods. Policy search with deterministic policies scales to high-dimensional locomotion tasks and outperforms earlier Bayesian optimization methods.
-
       - title: "Use the Online Network If You Can: Towards Fast and Stable Reinforcement Learning"
         authors:
           - Ahmed Hendawy
@@ -79,6 +67,18 @@ cv:
         publisher: ICLR 2026
         date: 2026
         url: https://arxiv.org/abs/2510.02590
+
+      - title: Augmented Bayesian Policy Search
+        authors:
+          - "**Mahdi Kallel**"
+          - Debabrota Basu
+          - Riad Akrour
+          - Carlo D'Eramo
+        journal: ICLR 2024
+        publisher: ICLR 2024
+        date: 2024
+        url: https://proceedings.iclr.cc/paper_files/paper/2024/hash/7eca17ef54789b0663cab421f2e9dbf5-Abstract-Conference.html
+        summary: Used the performance difference lemma to inject the critic into the Gaussian process prior of Bayesian optimization, bridging Bayesian optimization and policy gradient methods. Policy search with deterministic policies scales to high-dimensional locomotion tasks and outperforms earlier Bayesian optimization methods.
 
       - title: Cyclicity-Regularized Coordination Graphs
         authors:

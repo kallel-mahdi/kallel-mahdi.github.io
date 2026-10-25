@@ -1,4 +1,4 @@
-// Card surface shared by featured cards, exercises and paper-page cards.
+// Card surface shared by the paper-page components.
 @mixin card-surface {
   background: var(--global-card-bg-color);
   border: 1px solid var(--global-divider-color);

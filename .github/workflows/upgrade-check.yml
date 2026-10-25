@@ -1,0 +1,72 @@
+name: Upgrade contract checks
+
+on:
+  push:
+    branches:
+      - master
+      - main
+    paths:
+      - "_config.yml"
+      - "_data/**"
+      - "_includes/**"
+      - "_layouts/**"
+      - "_pages/**"
+      - "_plugins/**"
+      - "_posts/**"
+      - "_projects/**"
+      - "_sass/**"
+      - "assets/**"
+      - ".al-folio-overrides.yml"
+      - "Gemfile"
+      - "Gemfile.lock"
+      - ".github/workflows/upgrade-check.yml"
+  pull_request:
+    branches:
+      - master
+      - main
+    paths:
+      - "_config.yml"
+      - "_data/**"
+      - "_includes/**"
+      - "_layouts/**"
+      - "_pages/**"
+      - "_plugins/**"
+      - "_posts/**"
+      - "_projects/**"
+      - "_sass/**"
+      - "assets/**"
+      - ".al-folio-overrides.yml"
+      - "Gemfile"
+      - "Gemfile.lock"
+      - ".github/workflows/upgrade-check.yml"
+  workflow_dispatch:
+
+jobs:
+  upgrade-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby 💎
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3.5"
+          bundler-cache: true
+
+      # Exits non-zero on blocking findings.
+      - name: Run upgrade audit 🧪
+        run: bundle exec al-folio upgrade audit
+
+      # Exits non-zero on stale, unacknowledged, or locally changed overrides.
+      - name: Run overrides audit 🔍
+        if: ${{ !cancelled() }}
+        run: bundle exec al-folio upgrade overrides audit --fail-on-stale
+
+      - name: Upload upgrade report 📄
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: al-folio-upgrade-report
+          path: al-folio-upgrade-report.md
+          if-no-files-found: ignore

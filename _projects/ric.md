@@ -3,6 +3,10 @@ layout: paper
 title: "Do Not Imitate, Reinforce"
 subtitle: Iterative Classification via Belief Refinement
 venue: TMLR 2026
+permalink: /papers/ric/
+img: assets/img/papers/ric/ric-card.png # card image on the projects page
+importance: 1
+category: work
 description: >-
   Reinforced Iterative Classification (RIC) trains a classifier to refine its own class distribution
   step by step with reinforcement learning, and a learned critic decides when to stop.

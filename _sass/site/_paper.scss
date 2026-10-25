@@ -256,6 +256,11 @@
   }
 }
 
+// Cards without a thumbnail collapse to a single row.
+.qa-head:not(:has(.qa-thumb)) {
+  grid-template-areas: "num title chevron";
+}
+
 .qa-card.is-open .qa-head {
   border-color: var(--global-theme-color);
   background: var(--global-accent-soft);

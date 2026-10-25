@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Create a new blog post or paper page from _templates/.
 #   bin/new post "Policy iteration"   -> _drafts/policy-iteration.md
-#   bin/new paper ppoplus             -> _papers/ppoplus.md (+ assets/img/papers/ppoplus/)
+#   bin/new paper ppoplus             -> _projects/ppoplus.md at /papers/ppoplus/ (+ assets/img/papers/ppoplus/)
 # Drafts are previewed locally; move a draft to _posts/YYYY-MM-DD-<slug>.md to publish it.
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -28,9 +28,9 @@ case "$kind" in
     ' _templates/post.md > "$target"
     ;;
   paper)
-    target="_papers/$slug.md"
+    target="_projects/$slug.md"
     [[ -e "$target" ]] && { echo "$target already exists" >&2; exit 1; }
-    mkdir -p _papers "assets/img/papers/$slug"
+    mkdir -p "assets/img/papers/$slug"
     sed "s/SLUG/$slug/g" _templates/paper.md > "$target"
     ;;
   *)

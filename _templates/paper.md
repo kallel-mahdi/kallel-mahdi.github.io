@@ -3,6 +3,10 @@ layout: paper
 title: TITLE
 subtitle: # optional second line under the title
 venue: VENUE YEAR
+permalink: /papers/SLUG/
+img: assets/img/papers/SLUG/card.png # card image on the projects page
+importance: 1
+category: work
 description: One sentence for link previews.
 # Images are paths relative to assets/img/, e.g. papers/SLUG/figure.svg
 

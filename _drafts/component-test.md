@@ -1,60 +1,40 @@
 ---
-layout: series-post
+layout: post
 title: Component test (draft, not published)
 date: 2026-10-25
-description: Visual check of every blog component. Drafts are only built locally.
-series: rl-by-doing
-part: 1
+description: Visual check of the template's blocks used by the series. Drafts are only built locally.
+categories: rl-by-doing
 toc:
   sidebar: left
 related_posts: false
 ---
 
-This draft exists to check the blog components. It is never deployed. Inline math $$V^{\pi}(s)$$ and a highlighted <mark>key phrase</mark>.
+This draft exists to check the blocks the series uses; it is never deployed. Inline math $$V^{\pi}(s)$$.
 
 ## A history note
 
-{% history Bellman, 1957 %}
-Placeholder text for a historical aside. It can hold **markdown**, links, and math such as $$\gamma \in [0, 1)$$.
-{% endhistory %}
+> ##### Bellman, 1957
+>
+> Placeholder text for a historical aside. It can hold **markdown**, links, and math such as $$\gamma \in [0, 1)$$.
 
 ## An exercise
 
-{% exercise Fixed points %}
-Show that the Bellman operator is a contraction:
+> ##### Exercise 1 · Fixed points
+>
+> Show that the Bellman operator is a contraction:
+> $$\| T^{\pi} V - T^{\pi} W \|_\infty \le \gamma \| V - W \|_\infty .$$
+{: .block-tip }
 
-$$
-\| T^{\pi} V - T^{\pi} W \|_\infty \le \gamma \| V - W \|_\infty .
-$$
-
-{% hint %}
+{% details Hint %}
 Write $$T^{\pi}V - T^{\pi}W$$ explicitly; the rewards cancel.
-{% endhint %}
+{% enddetails %}
 
-{% hint A second hint %}
-Bound a convex combination by its largest term.
-{% endhint %}
-
-{% answer %}
+{% details Answer %}
 The rewards cancel, leaving $$\gamma P^{\pi}(V - W)$$, and each row of $$P^{\pi}$$ is a probability vector, so
-
-$$
-\| \gamma P^{\pi}(V - W) \|_\infty \le \gamma \| V - W \|_\infty .
-$$
+$$\| \gamma P^{\pi}(V - W) \|_\infty \le \gamma \| V - W \|_\infty .$$
 
 ```python
 def bellman(V, P, r, gamma):
     return r + gamma * P @ V
 ```
-{% endanswer %}
-{% endexercise %}
-
-## A second exercise without a title
-
-{% exercise %}
-Numbering continues automatically.
-
-{% answer %}
-It does.
-{% endanswer %}
-{% endexercise %}
+{% enddetails %}

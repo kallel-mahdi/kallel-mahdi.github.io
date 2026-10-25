@@ -1,7 +1,4 @@
 // Site-specific styles, loaded from assets/css/main.scss after the theme.
 // New partials go in _sass/site/; theme partial names are never reused here.
 @use "site/tokens";
-@use "site/featured";
-@use "site/series";
-@use "site/teaching";
 @use "site/paper";

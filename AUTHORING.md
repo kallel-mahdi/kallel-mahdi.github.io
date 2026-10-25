@@ -1,101 +1,147 @@
 # Authoring guide
 
-How this site is organized and how to add content. The site runs on
-[al-folio](https://github.com/alshedivat/al-folio) v1.2: the theme's layouts, includes and styles come from
-pinned gems (see `Gemfile`), and files in this repo either add to them or override them. Before building
-something, check the al-folio docs (`docs/CUSTOMIZE.md` upstream); most needs have a built-in feature.
+How this site works and how to add content. It runs on [al-folio](https://github.com/alshedivat/al-folio) v1.2:
+layouts, includes, styles and plugins come from gems pinned in `Gemfile`, and this repo holds content, config, and a
+small amount of custom code (listed below). Before building something, check the al-folio docs
+(`docs/CUSTOMIZE.md` upstream); most needs have a built-in feature.
 
 ## Preview locally
 
 ```bash
-docker compose up        # http://localhost:8080, rebuilds on save; restarts itself when _config.yml changes
+docker compose up        # http://localhost:8080; rebuilds on save, restarts itself when _config.yml changes
 ```
 
-Changes to `_plugins/` need `docker compose restart`. Drafts in `_drafts/` are shown locally only
-(`--drafts` in `bin/entry_point.sh`), never deployed.
+Posts in `_drafts/` are built locally only (`--drafts` in `bin/entry_point.sh`) and never deployed.
+`_drafts/component-test.md` shows the blocks used by the series.
 
-## Where things live
+`docker-compose.override.yml` is git-ignored and local to this machine: it mounts the main repository's `.git` so
+the container works from a git worktree.
+
+## Where content lives
 
 | What | Where |
 | --- | --- |
-| Colors (light and dark), fonts, radii, widths | `_sass/site/_tokens.scss` (CSS variables; use only these in styles) |
-| Featured cards, series, exercise/hint/answer/history, paper pages | `_sass/site/_featured.scss`, `_series.scss`, `_teaching.scss`, `_paper.scss` |
-| How those styles are loaded | `assets/css/main.scss` (the theme's file plus `@use "site"`) and `_sass/_site.scss` |
-| Name, description, fonts URL | `_config.yml` (fonts: `third_party_libraries.google_fonts`) |
+| Name, description, site options | `_config.yml` |
+| Home page text and sections | `_pages/about.md` (front matter turns selected papers, socials, news, latest posts on or off) |
+| Publications | `_bibliography/papers.bib` |
+| News | `_news/YYYY-MM-DD-slug.md` (`inline: true` for a one-line item) |
 | Social links | `_data/socials.yml` |
-| Home page text and sections | `_pages/about.md` (featured cards and series outline are included in its body) |
-| Featured papers on the home page | `_data/featured.yml` |
-| Blog series and their outlines | `_data/series.yml` |
-| Publications list | `_bibliography/papers.bib` |
-| News | `_news/YYYY-MM-DD-slug.md` |
-| CV page and PDF | `_data/cv.yml` (RenderCV format; the `render-cv` workflow builds the PDF) |
+| CV | `_data/cv.yml`, RenderCV format; `_pages/cv.md` has `cv_format: rendercv` |
+| Blog posts | `_posts/YYYY-MM-DD-slug.md` (drafts in `_drafts/`) |
+| Paper pages | `_projects/<slug>.md`, figures in `assets/img/papers/<slug>/` |
+| Series outline | `_pages/series.md` |
 | Templates for new content | `_templates/post.md`, `_templates/paper.md` |
 
-## A new blog post
+**Bibliography fields.** `preview = {file.png}` shows a thumbnail from `assets/img/publication_preview/`;
+`selected = {true}` lists the paper on the home page. Link a paper page with `website = {/papers/<slug>/}`, not
+`html` (the theme prefixes relative `html` values with `/assets/html/`). Other supported fields (`pdf`, `code`,
+`arxiv`, `bibtex_show`, ...) are listed in the upstream docs.
+
+**CV PDF.** Pushing a change to `_data/cv.yml` or `assets/rendercv/*.yaml` runs the `render-cv` workflow, which
+renders the PDF into `assets/rendercv/rendercv_output/` and commits it. To show a download button on the CV page, set
+`cv_pdf: /assets/rendercv/rendercv_output/<file>.pdf` in `_pages/cv.md`.
+
+## Writing a post
 
 ```bash
-bin/new post "Policy iteration"     # creates _drafts/policy-iteration.md
+bin/new post "Policy iteration"     # creates _drafts/policy-iteration.md from _templates/post.md
 ```
 
-Write it, preview it, then publish by moving it to `_posts/YYYY-MM-DD-policy-iteration.md`.
+Write and preview it, then publish by moving it to `_posts/YYYY-MM-DD-policy-iteration.md`. Posts use the theme's
+`post` layout and its native blocks:
 
-**Series.** Use `layout: series-post` and add `series: rl-by-doing` and `part: 1` to the front matter.
-The post gets a series banner at the top and previous/next links at the bottom, and replaces the "soon" entry for that part
-on the series page and the home page. Edit the outline in `_data/series.yml`.
+- **Callouts** (exercises, historical notes): a blockquote whose first line is a `#####` heading, followed by a
+  class line. `block-tip`, `block-warning` and `block-danger` are colored; without a class it is a plain quote.
 
-**Teaching blocks.** Markdown and math work inside all of them.
+  ```markdown
+  > ##### Exercise 1 · Fixed points
+  >
+  > State the target.
+  {: .block-tip }
+  ```
 
-```liquid
-{% history Bellman, 1957 %}
-A short historical note.
-{% endhistory %}
+- **Hints and answers**: `{% details Hint %} ... {% enddetails %}` gives a collapsible block. Markdown, math and
+  code work inside.
+- **Math**: MathJax. `$$...$$` inside a paragraph is inline, on its own paragraph it is display;
+  `\begin{equation}` numbers equations and `\eqref` refers to them. Prefer `$$` over single `$` in posts, since
+  kramdown leaves `$$` content untouched.
+- **Table of contents**: `toc: { sidebar: left }` in the front matter (already in the template).
+- **Tabs**: set `tabs: true` in the front matter, then `{% tabs name %}{% tab name label %}...{% endtab %}{% endtabs %}`.
+- Highlight a key phrase with `<mark>...</mark>`.
 
-{% exercise Optional title %}
-The question.
+**Series.** A part of *Reinforcement Learning by Doing* is a normal post with `categories: rl-by-doing`. The outline
+lives in `_pages/series.md` (`/series/`); edit it there. The category link on `/series/` and `/blog/` appears once the
+first part is published (`_pages/blog.md` hides categories with no posts).
 
-{% hint %} A nudge. {% endhint %}
-{% hint A second hint %} Another nudge. {% endhint %}
-{% answer %} The worked answer. {% endanswer %}
-{% endexercise %}
-```
-
-Exercises are numbered automatically per post. Math: `$inline$` and `$$display$$`.
-Highlight a key phrase with `<mark>...</mark>`. For simple callouts use the theme's built-in blocks
-(`> ##### TIP` followed by `{: .block-tip }`, also `block-warning`, `block-danger`); for plain
-collapsibles, the built-in `{% details Summary %}...{% enddetails %}`.
-
-## A new paper page
+## A paper page
 
 ```bash
-bin/new paper ppoplus     # creates _papers/ppoplus.md and assets/img/papers/ppoplus/
+bin/new paper ppoplus     # creates _projects/ppoplus.md and assets/img/papers/ppoplus/
 ```
 
-Everything on the page comes from the front matter; `_templates/paper.md` documents each field.
-Sections appear only when their key is present: header and links, hook, TL;DR, method stepper,
-question cards (each opens to figures and findings), final remarks, BibTeX (a code block, so the
-theme's copy button applies). Other built-ins work in the page body too: `images.compare`/`slider`,
-`chart.*`, `tabs`, `marimo` (see the al-folio docs).
+Paper pages are entries of the theme's `projects` collection with `layout: paper` and
+`permalink: /papers/<slug>/`. They appear as cards on `/projects/` (`img`, `importance`, `category: work`). Link
+the page from the publications list with `website = {/papers/<slug>/}` in `papers.bib`.
 
-The page is served at `/papers/<slug>/`. To link it:
+Everything on the page comes from front matter; `_templates/paper.md` documents each field and
+`_projects/ric.md` is a full example. Sections render only when their key is present, in this order:
 
-- from the publications list: `website = {/papers/<slug>/}` in `papers.bib` (not `html`, which the theme
-  prefixes with `/assets/html/`);
-- from the home page: set `url: /papers/<slug>/` in `_data/featured.yml`.
+| Key | Section |
+| --- | --- |
+| `venue`, `title`, `subtitle`, `authors` (`me: true` bolds a name, `affil` indexes `affiliations`), `links` | Header |
+| `hook` | One-sentence quote under the header |
+| `tldr` | TL;DR paragraph |
+| page body | Free markdown after the TL;DR; built-ins such as `tabs` or `images.compare` work here |
+| `method.steps[]` (`title`, `text`, `eq`, `image`, `caption`) | Step-through explanation |
+| `questions.items[]` (`title`, `thumb`, `figures[]` with `src`, `caption`, `wide`; `findings[]`) | Numbered cards that open to figures and findings |
+| `remarks.items[]` | Closing bullets (title defaults to "Final remarks") |
+| `bibtex` | Citation block with the theme's copy button |
 
-**Figures.** Convert PDF figures to SVG (or PNG for heavy plots):
+Image paths in front matter are relative to `assets/img/`, e.g. `papers/<slug>/figure.svg`.
+
+**Math in front matter.** Text fields are run through markdown, so `$...$` works, but kramdown strips the backslash
+from `\|`: write `\Vert` for a norm. Display equations in `eq` are LaTeX without `$$`.
+
+**Figures.** Convert PDF figures to SVG, or to PNG for heavy plots:
 
 ```bash
 pdftocairo -svg figure.pdf assets/img/papers/<slug>/figure.svg
 pdftocairo -png -singlefile -scale-to-x 1600 -scale-to-y -1 figure.pdf assets/img/papers/<slug>/figure
 ```
 
-## Deploy
+The build generates resized copies of PNG and JPEG images (`imagemagick` in `_config.yml`); GIFs are served as they
+are, so keep them small.
 
-Pushing to `main` builds the site with GitHub Actions and publishes it to the `gh-pages` branch.
-Classes that only JavaScript adds must appear literally in a `.js` file (PurgeCSS runs on deploy).
+## Custom code
+
+Everything else comes from the gems. The custom pieces are:
+
+- the paper layout: `_layouts/paper.liquid`, `_includes/paper/stepper.liquid`, `_includes/paper/question_cards.liquid`,
+  `assets/js/paper.js`;
+- its styles in `_sass/site/` (`_tokens.scss`, `_mixins.scss`, `_paper.scss`), loaded through `_sass/_site.scss` by
+  one `@use "site"` line at the end of `assets/css/main.scss` (an override of the theme's file);
+- `_includes/cv/render.liquid`, an override of the CV gem's template that renders sections in `cv.yml` order and
+  shows RenderCV's `headline` and `location`.
+
+Rules: prefer a built-in feature over new code; prefer a new file over overriding a theme file. When an override is
+unavoidable, record it with `bin/al-folio upgrade overrides accept <path>`, which writes its checksums to
+`.al-folio-overrides.yml`.
 
 ## Upgrading al-folio
 
-Bump the gem pins in `Gemfile` as the release notes say, then run `bin/al-folio upgrade audit`.
-Local overrides of theme files are tracked in `.al-folio-overrides.yml`; review them with
-`bin/al-folio upgrade overrides audit` after each upgrade.
+Bump the gem pins in `Gemfile` as the release notes say, then run:
+
+```bash
+bin/al-folio upgrade audit             # config and API contract checks
+bin/al-folio upgrade overrides audit   # flags overrides whose upstream file changed
+bin/al-folio upgrade overrides diff <path>
+```
+
+Reconcile any stale override, then accept it again. Upgrade and override audits also run in CI.
+
+## Deploy
+
+Pushing to `main` builds the site with GitHub Actions and publishes it to the `gh-pages` branch. PurgeCSS runs on
+deploy and keeps only classes it finds in the built HTML and JS, so a class that only JavaScript adds must appear
+literally in a `.js` file (as `is-active` and `is-open` do in `assets/js/paper.js`) or be listed in the safelist in
+`purgecss.config.js`.

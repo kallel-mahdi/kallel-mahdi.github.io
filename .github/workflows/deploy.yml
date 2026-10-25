@@ -6,6 +6,17 @@ on:
       - master
       - main
     paths:
+      - "_bibliography/**"
+      - "_data/**"
+      - "_includes/**"
+      - "_layouts/**"
+      - "_news/**"
+      - "_pages/**"
+      - "_plugins/**"
+      - "_posts/**"
+      - "_projects/**"
+      - "_sass/**"
+      - "_templates/**"
       - "assets/**"
       - "**.bib"
       - "**.html"
@@ -33,6 +44,17 @@ on:
       - master
       - main
     paths:
+      - "_bibliography/**"
+      - "_data/**"
+      - "_includes/**"
+      - "_layouts/**"
+      - "_news/**"
+      - "_pages/**"
+      - "_plugins/**"
+      - "_posts/**"
+      - "_projects/**"
+      - "_sass/**"
+      - "_templates/**"
       - "assets/**"
       - "**.bib"
       - "**.html"
