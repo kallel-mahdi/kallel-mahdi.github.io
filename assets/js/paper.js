@@ -1,5 +1,5 @@
 // Interactive components of the paper layout (_layouts/paper.liquid):
-// method stepper, question cards and the BibTeX copy button.
+// method stepper and question cards.
 
 const typeset = (element) => {
   if (window.MathJax && window.MathJax.typesetPromise) window.MathJax.typesetPromise([element]);
@@ -67,15 +67,4 @@ document.querySelectorAll("[data-qa-grid]").forEach((grid) => {
   });
 
   window.addEventListener("resize", place);
-});
-
-// BibTeX copy button.
-document.querySelectorAll(".bibtex-copy").forEach((button) => {
-  button.addEventListener("click", () => {
-    const text = document.getElementById(button.dataset.copyTarget).textContent;
-    navigator.clipboard.writeText(text).then(() => {
-      button.textContent = "Copied";
-      setTimeout(() => (button.textContent = "Copy"), 1500);
-    });
-  });
 });

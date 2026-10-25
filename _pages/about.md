@@ -5,18 +5,21 @@ permalink: /
 subtitle: PhD researcher in reinforcement learning, University of Würzburg
 
 profile:
-  image: # e.g. prof_pic.jpg in assets/img/; leave empty to hide the photo
+  align: right
+  image_circular: false
+  # image: prof_pic.jpg # add a photo to assets/img/ and uncomment
 
-social: true # social icons under the bio, from _data/socials.yml
-featured: true # cards from _data/featured.yml
-
-series:
-  key: rl-by-doing # from _data/series.yml
-  limit: 3 # number of parts listed on the home page
+selected_papers: true # papers marked selected={true} in _bibliography/papers.bib
+social: true # icons from _data/socials.yml
 
 announcements:
   enabled: true # news from _news/
-  scrollable: false
+  scrollable: true
+  limit: 5
+
+latest_posts:
+  enabled: true
+  scrollable: true
   limit: 3
 ---
 

@@ -1,0 +1,7 @@
+// Card surface shared by featured cards, exercises and paper-page cards.
+@mixin card-surface {
+  background: var(--global-card-bg-color);
+  border: 1px solid var(--global-divider-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--global-card-shadow);
+}

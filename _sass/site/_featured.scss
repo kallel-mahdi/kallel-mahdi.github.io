@@ -1,0 +1,77 @@
+@use "mixins" as *;
+
+// Featured paper cards (_includes/featured_papers.liquid), used on the home page.
+
+.featured-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.25rem;
+}
+
+.featured-card {
+  @include card-surface;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  color: var(--global-text-color);
+  transition:
+    transform var(--transition-fast),
+    border-color var(--transition-fast);
+
+  &:hover {
+    color: var(--global-text-color);
+    text-decoration: none;
+    transform: translateY(-2px);
+    border-color: var(--global-theme-color);
+  }
+}
+
+// Figures are white-background plots, so they sit on a light tile in both themes.
+.featured-figure {
+  overflow: hidden; // keeps the aspect ratio fixed regardless of the image
+  background: var(--global-figure-bg);
+  aspect-ratio: 16 / 10;
+  padding: 0.75rem;
+  display: flex;
+  align-items: center;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    mix-blend-mode: multiply; // white figure backgrounds take the tile color
+  }
+}
+
+.featured-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 1rem 1.1rem 1.2rem;
+}
+
+.featured-venue {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--global-theme-color);
+}
+
+.featured-title {
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.featured-takeaway {
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--global-text-color-light);
+}
+
+
+.section-more {
+  text-align: right;
+  font-size: 0.9rem;
+  margin-top: 0.75rem;
+}

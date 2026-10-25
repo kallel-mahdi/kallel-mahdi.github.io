@@ -4,7 +4,8 @@ title: TITLE
 date: DATE
 description: One sentence shown in post lists and link previews.
 tags: []
-# For a series part, set both keys (series are defined in _data/series.yml):
+# For a series part, use `layout: series-post` and set both keys
+# (series are defined in _data/series.yml):
 # series: rl-by-doing
 # part: 1
 toc:

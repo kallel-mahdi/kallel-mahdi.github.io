@@ -10,7 +10,7 @@
 #
 # Exercises are numbered per page. Hints and answers render as collapsed
 # <details>; their summary text can be overridden: {% hint Another hint %}.
-# Styles live in _sass/_components.scss. See AUTHORING.md.
+# Styles live in _sass/site/_teaching.scss. See AUTHORING.md.
 
 module Jekyll
   module Tags

@@ -1,82 +1,182 @@
-- title: General Information
-  type: map
-  contents:
-    - name: Full Name
-      value: Mahdi Kallel
-    - name: Position
-      value: PhD researcher in reinforcement learning, University of Würzburg
-    - name: Languages
-      value: Arabic (native), English (fluent), French (fluent), German (basic)
+# CV data in RenderCV format, shared by the /cv/ page (al_folio_cv) and the PDF workflow (.github/workflows/render-cv.yml).
+# RenderCV rejects unknown keys at the `cv` level, so the headline lives in `headline` and the profile in its own section.
+cv:
+  name: Mahdi Kallel
+  headline: PhD researcher in reinforcement learning
+  location: Würzburg, Germany
+  email: mahdi.kallel@uni-wuerzburg.de
+  website: https://kallel-mahdi.github.io
+  social_networks:
+    - network: GitHub
+      username: kallel-mahdi
+    - network: Google Scholar
+      username: Bt0FV_AAAAAJ
 
-- title: Education
-  type: time_table
-  contents:
-    - title: PhD in Reinforcement Learning
-      institution: University of Würzburg, Germany
-      year: 2023 - 2027
-      description:
-        - Expected April 2027. Supervisor, Prof. Carlo D'Eramo.
-        - Teaching, Introduction to Machine Learning; Introduction to Reinforcement Learning.
-    - title: MSc, Optimization
-      institution: Université Paris-Saclay, France
-      year: 2021 - 2022
-      description:
-        - Convex analysis, compressed sensing, dynamic programming, tropical algebra, game theory, stochastic optimization and approximation.
-    - title: MSc, Mathematics, Vision, Learning (MVA)
-      institution: ENS Paris-Saclay, France
-      year: 2020 - 2021
-      description:
-        - Convex optimization, reinforcement learning, kernel methods, computer vision, advanced deep learning, machine learning for text and graphs.
-    - title: BSc, Data Science
-      institution: Télécom Paris / EURECOM, France
-      year: 2018 - 2020
-      description:
-        - Advanced statistical inference, statistical signal processing, machine learning, database systems, cloud computing and security.
+  sections:
+    Profile:
+      - bullet: PhD researcher in reinforcement learning at the University of Würzburg (graduating April 2027), with a background in applied mathematics and optimization. I began my PhD on policy optimization and exploration, which led me to the networks underneath. My research now focuses on the learning dynamics of neural networks, in particular how reinforcement learning and supervised learning differ in plasticity and generalization.
 
-- title: Experience
-  type: time_table
-  contents:
-    - title: Research Intern
-      institution: INRIA Lille, SCOOL Research Group, France
-      year: 2022
-      description:
-        - Bayesian optimization for exploration with deterministic policies in continuous action spaces.
-    - title: Machine Learning Engineer
-      institution: Mcovision (independent), Paris, France
-      year: 2021
-      description:
-        - Explainable video classifier for rare heart disease, with the full pipeline for data processing, training, monitoring and deployment.
-    - title: Research Intern
-      institution: SustainEcho, Paris, France
-      year: 2021
-      description:
-        - Meta-learning and few-shot personalization in low-data regimes, with adaptation based on prototypical networks.
-    - title: Research Intern
-      institution: EURECOM, Biot, France
-      year: 2020
-      description:
-        - Loss balancing in multi-task networks for mobile-network resource allocation; attention mechanisms for temporal prediction.
+    # The site template shows the venue from `publisher`, the PDF from `journal`.
+    Publications:
+      - title: The Spectral Anatomy of Plasticity Loss
+        authors:
+          - "**Mahdi Kallel**"
+          - Nour Jamoussi
+          - Johannes Tölle
+          - Marios Kountouris
+          - Carlo D'Eramo
+        journal: AXIOM Workshop at NeurIPS 2026
+        publisher: AXIOM Workshop at NeurIPS 2026
+        date: 2026
+        url: https://www.eurecom.fr/en/publication/8988
+        summary: Used random matrix theory to split each weight spectrum into a random bulk and learned edges, and tracked it over a long stream of continual tasks. Directions learned on earlier tasks capture a growing share of new gradients. Making them read-only keeps the network trainable while preserving what it already learned.
 
-- title: Supervision, Talks and Service
-  type: time_table
-  contents:
-    - title: MSc thesis supervision, Johannes Tölle
-      institution: University of Würzburg
-      year: 2026
-      description:
-        - Recipient of the VDE Bayern Award 2026.
-    - title: Invited talk, On Better Priors for Policy Search
-      institution: Improbable AI Lab (Pulkit Agrawal), MIT
-      year: 2024
-    - title: Reviewer
-      institution: NeurIPS, ICLR, ICML, RLC
+      - title: "Do Not Imitate, Reinforce: Iterative Classification via Belief Refinement"
+        authors:
+          - "**Mahdi Kallel**"
+          - Johannes Tölle
+          - Ahmed Hendawy
+          - Carlo D'Eramo
+        journal: Transactions on Machine Learning Research (TMLR), 2026
+        publisher: Transactions on Machine Learning Research (TMLR), 2026
+        date: 2026
+        url: https://arxiv.org/abs/2604.22110
+        summary: Replaced label imitation with reinforcement learning, treating classification as sequential belief refinement where a recurrent agent is rewarded for improving its prediction. The classifiers match supervised accuracy and stay calibrated under human label noise, where cross-entropy becomes overconfident. A value function decides when to stop.
 
-- title: Technical Skills
-  type: map
-  contents:
-    - name: Computing
-      value: Python, JAX, PyTorch, NumPy, Julia, C
-    - name: Methods
-      value: Policy optimization, Bayesian optimization, Gaussian processes, random matrix theory, spectral analysis
-    - name: Tools
-      value: Ray, Weights & Biases, Git
+      - title: "PPO+: Enhancing Proximal Policy Optimization"
+        authors:
+          - "**Mahdi Kallel**"
+          - Jose-Luis Holgado-Alvarez
+          - Samuele Tosatto
+          - Carlo D'Eramo
+        journal: Reinforcement Learning Journal (RLC 2026)
+        publisher: Reinforcement Learning Journal (RLC 2026)
+        date: 2026
+        url: https://rlj.cs.umass.edu/2026/papers/Paper8.html
+        summary: Traced the sensitivity of PPO to inaccurate critic estimates, and trained the critic on off-policy data while keeping the actor update on-policy. Better critics substantially improve PPO in continuous control and narrow the gap to off-policy algorithms, without relying on implementation tricks.
+
+      - title: Augmented Bayesian Policy Search
+        authors:
+          - "**Mahdi Kallel**"
+          - Debabrota Basu
+          - Riad Akrour
+          - Carlo D'Eramo
+        journal: ICLR 2024
+        publisher: ICLR 2024
+        date: 2024
+        url: https://proceedings.iclr.cc/paper_files/paper/2024/hash/7eca17ef54789b0663cab421f2e9dbf5-Abstract-Conference.html
+        summary: Used the performance difference lemma to inject the critic into the Gaussian process prior of Bayesian optimization, bridging Bayesian optimization and policy gradient methods. Policy search with deterministic policies scales to high-dimensional locomotion tasks and outperforms earlier Bayesian optimization methods.
+
+      - title: "Use the Online Network If You Can: Towards Fast and Stable Reinforcement Learning"
+        authors:
+          - Ahmed Hendawy
+          - Henrik Metternich
+          - Théo Vincent
+          - "**Mahdi Kallel**"
+          - Jan Peters
+          - Carlo D'Eramo
+        journal: ICLR 2026
+        publisher: ICLR 2026
+        date: 2026
+        url: https://arxiv.org/abs/2510.02590
+
+      - title: Cyclicity-Regularized Coordination Graphs
+        authors:
+          - Oliver Järnefelt
+          - "**Mahdi Kallel**"
+          - Carlo D'Eramo
+        journal: RLC 2024
+        publisher: RLC 2024
+        date: 2024
+        url: https://rlj.cs.umass.edu/2024/papers/Paper40.html
+
+    Experience:
+      - company: INRIA Lille, SCOOL Research Group
+        position: Research Intern
+        location: France
+        date: 2022
+        highlights:
+          - Worked on Bayesian optimization for exploration with deterministic policies in continuous action spaces.
+
+      - company: Mcovision (independent)
+        position: Machine Learning Engineer
+        location: Paris, France
+        date: 2021
+        highlights:
+          - Built an explainable video classifier for rare heart disease and the full pipeline for data processing, model training, monitoring, and deployment.
+
+      - company: SustainEcho
+        position: Research Intern
+        location: Paris, France
+        date: 2021
+        highlights:
+          - Worked on meta-learning and few-shot personalization in low-data regimes, with model adaptation based on prototypical networks.
+
+      - company: EURECOM
+        position: Research Intern
+        location: Biot, France
+        date: 2020
+        highlights:
+          - Studied loss balancing in multi-task neural networks for mobile-network resource allocation and attention mechanisms for temporal prediction.
+
+    Education:
+      - institution: University of Würzburg
+        degree: PhD
+        area: Reinforcement Learning
+        location: Germany
+        start_date: 2023
+        end_date: 2027
+        highlights:
+          - "Expected April 2027. Supervisor: Prof. Carlo D'Eramo."
+          - "Teaching: Introduction to Machine Learning; Introduction to Reinforcement Learning."
+
+      - institution: Université Paris-Saclay
+        degree: MSc
+        area: Optimization
+        location: France
+        start_date: 2021
+        end_date: 2022
+        highlights:
+          - "Coursework: Convex analysis, compressed sensing, dynamic programming, tropical algebra, game theory, stochastic optimization and approximation."
+
+      - institution: ENS Paris-Saclay
+        degree: MSc
+        area: Mathematics, Vision, Learning (MVA)
+        location: France
+        start_date: 2020
+        end_date: 2021
+        highlights:
+          - "Coursework: Convex optimization, reinforcement learning, kernel methods, computer vision, advanced deep learning, machine learning for text and graphs."
+
+      - institution: Télécom Paris / EURECOM
+        degree: BSc
+        area: Data Science
+        location: France
+        start_date: 2018
+        end_date: 2020
+        highlights:
+          - "Coursework: Advanced statistical inference, statistical signal processing, machine learning, database management systems, cloud computing and security."
+
+    Supervision, Talks and Service:
+      - label: Supervision
+        details: Johannes Tölle, MSc thesis, University of Würzburg (2026). Recipient of the VDE Bayern Award 2026 and co-author of two papers above.
+      - label: Talks
+        details: On Better Priors for Policy Search. Invited talk and lab visit, Improbable AI Lab (Pulkit Agrawal), MIT, August 2024.
+      - label: Reviewer
+        details: NeurIPS, ICLR, ICML, RLC
+
+    Technical Skills:
+      - label: Computing
+        details: Python, JAX, PyTorch, NumPy, Julia, C
+      - label: Methods
+        details: Policy optimization, Bayesian optimization, Gaussian processes, random matrix theory, spectral analysis
+      - label: Tools
+        details: Ray, Weights & Biases, Git
+      - label: Languages
+        details: Arabic (native), English (fluent), French (fluent), German (basic)
+
+# RenderCV 2.8 only loads design/locale overlays from the main file, not from --settings.
+settings:
+  render_command:
+    design: ../assets/rendercv/design.yaml
+    locale: ../assets/rendercv/locale.yaml

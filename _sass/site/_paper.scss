@@ -1,0 +1,324 @@
+@use "mixins" as *;
+
+// Paper layout (_layouts/paper.liquid). Everything is scoped under .paper-page.
+
+.paper-page {
+  max-width: 860px;
+  margin: 0 auto;
+
+  h2 {
+    font-size: 1.45rem;
+    margin-bottom: 1rem;
+  }
+
+  .paper-text {
+    max-width: var(--text-width);
+  }
+}
+
+.paper-section {
+  margin-top: 3.5rem;
+}
+
+/* Header -------------------------------------------------------------------*/
+
+.paper-header {
+  text-align: center;
+  margin: 2.5rem 0 1rem;
+}
+
+.paper-venue {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--global-theme-color);
+}
+
+.paper-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin: 0.5rem 0;
+}
+
+.paper-subtitle {
+  font-size: 1.2rem;
+  color: var(--global-text-color-light);
+}
+
+.paper-authors {
+  font-size: 1.05rem;
+  margin: 1rem 0 0.25rem;
+
+  .is-me {
+    font-weight: 600;
+  }
+}
+
+.paper-affiliations {
+  font-size: 0.9rem;
+  color: var(--global-text-color-light);
+
+  span + span {
+    margin-left: 1rem;
+  }
+}
+
+.paper-links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 1.25rem;
+}
+
+.paper-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  border: 1px solid var(--global-divider-color);
+  color: var(--global-text-color);
+  font-size: 0.92rem;
+  font-weight: 500;
+  transition:
+    border-color var(--transition-fast),
+    color var(--transition-fast);
+
+  &:hover {
+    border-color: var(--global-theme-color);
+    color: var(--global-theme-color);
+    text-decoration: none;
+  }
+}
+
+.paper-hook {
+  max-width: var(--text-width);
+  margin: 2.5rem auto 0;
+  padding: 0;
+  border: none;
+  text-align: center;
+  font-size: 1.3rem;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--global-text-color);
+}
+
+/* Figures ------------------------------------------------------------------*/
+
+.paper-figure {
+  margin: 1rem 0;
+
+  img {
+    width: 100%;
+    background: var(--global-figure-bg);
+    border-radius: var(--radius-sm);
+    padding: 0.5rem;
+  }
+
+  figcaption {
+    font-size: 0.88rem;
+    color: var(--global-text-color-light);
+    margin-top: 0.5rem;
+  }
+}
+
+/* Stepper ------------------------------------------------------------------*/
+
+.stepper-tabs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+// Without JS every panel is shown and the tabs/arrows are hidden.
+.stepper:not(.is-interactive) {
+  .stepper-tabs,
+  .stepper-foot {
+    display: none;
+  }
+}
+
+.stepper-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--global-text-color);
+  background: transparent;
+  border: 1px solid var(--global-divider-color);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: border-color var(--transition-fast);
+
+  &:hover,
+  &.is-active {
+    border-color: var(--global-theme-color);
+  }
+
+  &.is-active {
+    background: var(--global-accent-soft);
+  }
+}
+
+.stepper-num,
+.qa-num {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--global-theme-color);
+}
+
+.stepper-card {
+  @include card-surface;
+  padding: 1.5rem 1.75rem 1rem;
+}
+
+.stepper.is-interactive .stepper-panel {
+  display: none;
+
+  &.is-active {
+    display: block;
+    animation: paper-rise 0.3s ease;
+  }
+}
+
+.stepper-panel h3 {
+  font-size: 1.15rem;
+}
+
+.stepper-eq {
+  overflow-x: auto;
+}
+
+.stepper-foot {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: var(--global-text-color-light);
+}
+
+.stepper-arrow {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: 1px solid var(--global-divider-color);
+  background: transparent;
+  color: var(--global-text-color);
+  cursor: pointer;
+
+  &:hover {
+    border-color: var(--global-theme-color);
+    color: var(--global-theme-color);
+  }
+}
+
+/* Question cards -----------------------------------------------------------*/
+
+.qa-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.qa-head {
+  @include card-surface;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas:
+    "thumb thumb thumb"
+    "num title chevron";
+  align-items: center;
+  gap: 0.6rem 0.75rem;
+  padding: 1rem 1.1rem;
+  text-align: left;
+  color: var(--global-text-color);
+  cursor: pointer;
+  transition: border-color var(--transition-fast);
+
+  &:hover {
+    border-color: var(--global-theme-color);
+  }
+}
+
+.qa-card.is-open .qa-head {
+  border-color: var(--global-theme-color);
+  background: var(--global-accent-soft);
+}
+
+.qa-thumb {
+  grid-area: thumb;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+  background: var(--global-figure-bg);
+  border-radius: var(--radius-sm);
+  padding: 0.4rem;
+}
+
+.qa-num {
+  grid-area: num;
+}
+
+.qa-title {
+  grid-area: title;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.qa-chevron {
+  grid-area: chevron;
+  color: var(--global-text-color-light);
+  transition: transform var(--transition-fast);
+}
+
+.qa-card.is-open .qa-chevron {
+  transform: rotate(180deg);
+}
+
+.qa-panel {
+  @include card-surface;
+  grid-column: 1 / -1;
+  padding: 1.25rem 1.5rem 0.75rem;
+  animation: paper-rise 0.3s ease;
+}
+
+.qa-figures {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+
+  .is-wide {
+    grid-column: 1 / -1;
+  }
+}
+
+.qa-findings li {
+  margin-bottom: 0.4rem;
+}
+
+@keyframes paper-rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

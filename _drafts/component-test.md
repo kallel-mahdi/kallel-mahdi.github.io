@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: series-post
 title: Component test (draft, not published)
 date: 2026-10-25
 description: Visual check of every blog component. Drafts are only built locally.

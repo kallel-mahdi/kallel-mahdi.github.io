@@ -1,8 +1,0 @@
-{% comment %} BibTeX block with a copy button. include.bibtex = the raw entry. {% endcomment %}
-<section class="paper-section">
-  <h2>Citation</h2>
-  <div class="bibtex-box">
-    <button class="bibtex-copy" type="button" data-copy-target="paper-bibtex">Copy</button>
-    <pre><code id="paper-bibtex">{{ include.bibtex | strip | escape }}</code></pre>
-  </div>
-</section>

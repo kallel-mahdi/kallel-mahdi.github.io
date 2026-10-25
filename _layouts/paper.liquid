@@ -5,7 +5,8 @@ layout: default
   Interactive paper page. All content comes from front matter; see
   _templates/paper.md for the schema and AUTHORING.md for usage.
   Sections render only when their front matter key is present, in this order:
-  header, hook, tldr, body content, method, questions, remarks, bibtex.
+  header, hook, tldr, body content, method, questions, remarks, bibtex
+  (a ```bibtex block; the theme adds a copy button to code blocks).
 {% endcomment %}
 <div class="paper-page">
   <header class="paper-header">
@@ -75,6 +76,14 @@ layout: default
   {% endif %}
 
   {% if page.bibtex %}
-    {% include paper/bibtex.liquid bibtex=page.bibtex %}
+    <section class="paper-section">
+      <h2>Citation</h2>
+      {% capture bibtex_block %}```bibtex
+{{ page.bibtex | strip }}
+```{% endcapture %}
+      {{ bibtex_block | markdownify }}
+    </section>
   {% endif %}
 </div>
+
+<script defer src="{{ '/assets/js/paper.js' | relative_url | bust_file_cache }}"></script>

@@ -1,0 +1,10 @@
+---
+layout: post
+---
+{% comment %}
+  A post that belongs to a series (front matter: series, part). Wraps the theme's
+  post layout, adding the series banner above the content and previous/next below.
+{% endcomment %}
+{% include series_nav.liquid position='top' %}
+{{ content }}
+{% include series_nav.liquid position='bottom' %}

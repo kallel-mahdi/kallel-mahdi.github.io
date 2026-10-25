@@ -1,0 +1,77 @@
+@use "mixins" as *;
+
+// Teaching blocks rendered by _plugins/teaching-blocks.rb.
+
+.exercise {
+  @include card-surface;
+  box-shadow: none;
+  border-left: 3px solid var(--global-theme-color);
+  padding: 1.1rem 1.4rem 0.6rem;
+  margin: 2rem 0;
+}
+
+.exercise-label,
+.history-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.exercise-label {
+  color: var(--global-theme-color);
+}
+
+.reveal {
+  margin: 0.5rem 0 0.75rem;
+
+  details {
+    border-radius: var(--radius-sm);
+    background: var(--global-accent-soft);
+  }
+
+  summary {
+    cursor: pointer;
+    list-style: none;
+    padding: 0.45rem 0.9rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--global-theme-color);
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    &::before {
+      content: "▸";
+      display: inline-block;
+      width: 1.1em;
+      transition: transform var(--transition-fast);
+    }
+  }
+
+  details[open] summary::before {
+    transform: rotate(90deg);
+  }
+
+  .reveal-body {
+    padding: 0.1rem 0.9rem 0.6rem;
+  }
+}
+
+.reveal-answer details {
+  background: transparent;
+  border: 1px dashed var(--global-divider-color);
+}
+
+.history {
+  border-left: 3px solid var(--global-divider-color);
+  padding: 0.25rem 0 0.25rem 1.25rem;
+  margin: 2rem 0;
+  color: var(--global-text-color-light);
+
+  .history-label {
+    color: var(--global-text-color-light);
+  }
+}
