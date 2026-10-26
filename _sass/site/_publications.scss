@@ -1,0 +1,14 @@
+// Publication lists (theme's _layouts/bib.liquid): the thumbnail column gets 3/12 of the row instead of 2/12,
+// and the text column takes the remaining 9/12 instead of 8/12, so previews are about 200px wide.
+
+@media (min-width: 576px) {
+  .publications .row > .abbr {
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
+
+  .publications .row > .abbr + .col-sm-8 {
+    flex: 0 0 75%;
+    max-width: 75%;
+  }
+}

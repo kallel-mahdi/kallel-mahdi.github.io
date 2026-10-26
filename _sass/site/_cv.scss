@@ -1,0 +1,45 @@
+// Organization logos on the CV page (_includes/cv/experience.liquid, _includes/cv/education.liquid),
+// centered above the date in the widened date column. The PNGs share one 360x150 transparent canvas with each
+// logo centered and scaled to roughly equal area, so one size fits all; in the dark theme a white tile keeps
+// dark wordmarks readable.
+
+.cv-logo {
+  display: block;
+  width: 132px;
+  max-width: 100%;
+  aspect-ratio: 360 / 150;
+  margin: 0 auto 0.5rem;
+  object-fit: contain;
+}
+
+// The theme's date table is left-aligned inside the column; center it under the logo.
+.date-column:has(> .cv-logo) .table-cv {
+  margin-inline: auto;
+}
+
+// Phones: the date column spans the row, with the logo beside the date and place.
+@media (max-width: 767.98px) {
+  .date-column:has(> .cv-logo) {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex: 0 0 100%;
+    max-width: 100%;
+
+    > .cv-logo {
+      width: 110px;
+      margin: 0;
+    }
+  }
+}
+
+html[data-theme="dark"] .cv-logo {
+  padding: 4px 6px;
+  background: #fff;
+  border-radius: var(--radius-sm);
+}
+
+// The theme's CV entries are list items whose bullet shows next to the date; hide it.
+.cv .list-group-item {
+  list-style: none;
+}

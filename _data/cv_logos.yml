@@ -1,0 +1,10 @@
+# Logos on the CV page: exact `company` / `institution` name in cv.yml -> file in assets/img/cv-logos/.
+# Read by _includes/cv/experience.liquid and _includes/cv/education.liquid; entries without a mapping show no logo.
+"University of Würzburg": wuerzburg.png
+"Université Paris-Saclay": paris-saclay.png
+"ENS Paris-Saclay": ens-paris-saclay.png
+"Télécom Paris / EURECOM": telecom-paris.png
+"INRIA Lille, SCOOL Research Group": inria.png
+"EURECOM": eurecom.png
+"Mcovision (independent)": mcovision.png
+"SustainEcho": sustainecho.png

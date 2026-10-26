@@ -1,0 +1,11 @@
+---
+layout: post
+---
+{% comment %}
+  A post with exercises. Same as the theme's post layout, plus hints.js, which turns each
+  "details Hint" and "details Answer" block after an exercise callout into part of the callout: a "?" button
+  in its corner and a collapsible answer footer.
+{% endcomment %}
+{{ content }}
+
+<script defer src="{{ '/assets/js/hints.js' | relative_url | bust_file_cache }}"></script>

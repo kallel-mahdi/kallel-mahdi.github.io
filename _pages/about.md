@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-subtitle: PhD researcher in reinforcement learning, University of Würzburg
+subtitle: PhD candidate in reinforcement learning, University of Würzburg
 
 profile:
   align: right
@@ -18,7 +18,7 @@ announcements:
   limit: 5
 
 latest_posts:
-  enabled: false # turn on once the first post is published
+  enabled: false # turn on once the first post is in _posts/
   scrollable: true
   limit: 3
 ---

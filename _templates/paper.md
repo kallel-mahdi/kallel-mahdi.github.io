@@ -4,7 +4,7 @@ title: TITLE
 subtitle: # optional second line under the title
 venue: VENUE YEAR
 permalink: /papers/SLUG/
-img: assets/img/papers/SLUG/card.png # card image on the projects page
+img: assets/img/papers/SLUG/card.png # card image on the projects page; 16:10 (e.g. 1200x750) so cards line up
 importance: 1
 category: work
 description: One sentence for link previews.
@@ -19,10 +19,15 @@ links: # icon: any Font Awesome / Academicons class
   - { label: Paper, icon: ai ai-arxiv, url: https://arxiv.org/abs/XXXX.XXXXX }
   - { label: Code, icon: fa-brands fa-github, url: https://github.com/kallel-mahdi/REPO }
 
-hook: The central idea in one plain sentence.
+hook: The question the paper answers, in one line; put its key phrase in **bold**.
+
+hero: # the paper's signature figure or GIF, shown large under the hook
+  src: papers/SLUG/hero.gif
+  caption: What the reader is looking at.
+  width: # optional max width, e.g. 520px for a portrait GIF (default: the text column)
 
 tldr: >-
-  Two or three sentences. Markdown and $math$ work; <mark>highlight</mark> the key phrase.
+  Two or three sentences. Markdown and $math$ work; put the key phrase in **bold**.
 
 method: # optional step-through explanation
   title: How it works

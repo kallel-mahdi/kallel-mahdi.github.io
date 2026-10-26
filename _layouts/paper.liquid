@@ -5,7 +5,7 @@ layout: default
   Interactive paper page. All content comes from front matter; see
   _templates/paper.md for the schema and AUTHORING.md for usage.
   Sections render only when their front matter key is present, in this order:
-  header, hook, tldr, body content, method, questions, remarks, bibtex
+  header, hook, hero, tldr, body content, method, questions, remarks, bibtex
   (a ```bibtex block; the theme adds a copy button to code blocks).
 {% endcomment %}
 <div class="paper-page">
@@ -43,6 +43,13 @@ layout: default
 
   {% if page.hook %}
     <blockquote class="paper-hook">{{ page.hook | markdownify | remove: '<p>' | remove: '</p>' }}</blockquote>
+  {% endif %}
+
+  {% if page.hero %}
+    <figure class="paper-hero"{% if page.hero.width %} style="max-width: {{ page.hero.width }}"{% endif %}>
+      <img src="{{ page.hero.src | prepend: '/assets/img/' | relative_url }}" alt="{{ page.hero.caption | strip_html | default: page.title }}">
+      {% if page.hero.caption %}<figcaption>{{ page.hero.caption | markdownify | remove: '<p>' | remove: '</p>' }}</figcaption>{% endif %}
+    </figure>
   {% endif %}
 
   {% if page.tldr %}

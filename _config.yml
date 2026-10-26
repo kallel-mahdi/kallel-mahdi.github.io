@@ -9,7 +9,7 @@ last_name: Kallel
 contact_note: >
   Email is the best way to reach me.
 description: > # the ">" symbol means to ignore newlines until "footer_text:"
-  Mahdi Kallel, PhD researcher in reinforcement learning at the University of Würzburg. Papers, and the blog series Reinforcement Learning by Doing.
+  Mahdi Kallel, PhD candidate in reinforcement learning at the University of Würzburg. Papers, and the blog series Reinforcement Learning by Doing.
 footer_text: >
   Built with <a href="https://jekyllrb.com/" target="_blank">Jekyll</a> and <a href="https://github.com/alshedivat/al-folio" target="_blank">al-folio</a>. Hosted by <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.
 keywords: reinforcement learning, machine learning, policy optimization, learning dynamics, plasticity # add your own keywords or leave empty

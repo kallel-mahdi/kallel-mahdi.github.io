@@ -1,12 +1,26 @@
 ---
 version: 1
 overrides:
+  _includes/cv/education.liquid:
+    owner: al_folio_cv
+    gem_version: 1.0.2
+    upstream_path: templates/cv/education.liquid
+    upstream_sha256: f618efe3bc4caeab8f8f6efaae8386d658d4eb6995ebeb32855e173da37f8d2a
+    local_sha256: 8bf94560b782781bdd32348da3e2accea981ed5bfe98b85ac96a6613af21260a
+    acknowledged_at: '2026-10-26'
+  _includes/cv/experience.liquid:
+    owner: al_folio_cv
+    gem_version: 1.0.2
+    upstream_path: templates/cv/experience.liquid
+    upstream_sha256: 901c87d2e97fea8a679d811e83893267b10eec6ae65b34aee95d8948c5c56c2a
+    local_sha256: 80a91c6e9c81e72dfd0a90bca4f1c72f0c22ddc272637d21de8c7716fcaa7d48
+    acknowledged_at: '2026-10-26'
   _includes/cv/render.liquid:
     owner: al_folio_cv
     gem_version: 1.0.2
     upstream_path: templates/cv/render.liquid
     upstream_sha256: eaff444ab8d7407008e422ecc4be3c56c586fe2397951d54dbfb6aef7fc2eac0
-    local_sha256: 3257aa42b3193ce7422ccd5577800e94a677973e086e0f8721eef491a6b0cd7f
+    local_sha256: 2c271852587de5a31c0a0ad49905ffa1df034e7a218dff9d8ba69ea3d3cbd472
     acknowledged_at: '2026-10-25'
   assets/css/main.scss:
     owner: al_folio_core

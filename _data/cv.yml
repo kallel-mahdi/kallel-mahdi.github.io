@@ -2,7 +2,7 @@
 # RenderCV rejects unknown keys at the `cv` level, so the headline lives in `headline` and the profile in its own section.
 cv:
   name: Mahdi Kallel
-  headline: PhD researcher in reinforcement learning
+  headline: PhD candidate in reinforcement learning
   location: Würzburg, Germany
   email: mahdi.kallel@uni-wuerzburg.de
   website: https://kallel-mahdi.github.io
@@ -14,7 +14,7 @@ cv:
 
   sections:
     Profile:
-      - bullet: PhD researcher in reinforcement learning at the University of Würzburg (graduating April 2027), with a background in applied mathematics and optimization. I began my PhD on policy optimization and exploration, which led me to the networks underneath. My research now focuses on the learning dynamics of neural networks, in particular how reinforcement learning and supervised learning differ in plasticity and generalization.
+      - bullet: PhD candidate in reinforcement learning at the University of Würzburg (graduating April 2027), with a background in applied mathematics and optimization. I began my PhD on policy optimization and exploration, which led me to the networks underneath. My research now focuses on the learning dynamics of neural networks, in particular how reinforcement learning and supervised learning differ in plasticity and generalization.
 
     # The site template shows the venue from `publisher`, the PDF from `journal`.
     Publications:
@@ -90,7 +90,7 @@ cv:
         date: 2024
         url: https://rlj.cs.umass.edu/2024/papers/Paper40.html
 
-    Experience:
+    Research Experience:
       - company: INRIA Lille, SCOOL Research Group
         position: Research Intern
         location: France
@@ -98,6 +98,14 @@ cv:
         highlights:
           - Worked on Bayesian optimization for exploration with deterministic policies in continuous action spaces.
 
+      - company: EURECOM
+        position: Research Intern
+        location: Biot, France
+        date: 2020
+        highlights:
+          - Studied loss balancing in multi-task neural networks for mobile-network resource allocation and attention mechanisms for temporal prediction.
+
+    Industry Experience:
       - company: Mcovision (independent)
         position: Machine Learning Engineer
         location: Paris, France
@@ -111,13 +119,6 @@ cv:
         date: 2021
         highlights:
           - Worked on meta-learning and few-shot personalization in low-data regimes, with model adaptation based on prototypical networks.
-
-      - company: EURECOM
-        position: Research Intern
-        location: Biot, France
-        date: 2020
-        highlights:
-          - Studied loss balancing in multi-task neural networks for mobile-network resource allocation and attention mechanisms for temporal prediction.
 
     Education:
       - institution: University of Würzburg

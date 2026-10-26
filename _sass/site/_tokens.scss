@@ -9,7 +9,6 @@
   --transition-fast: 0.2s ease;
 
   --global-accent-soft: color-mix(in srgb, var(--global-theme-color) 10%, transparent);
-  --global-mark-color: color-mix(in srgb, var(--global-theme-color) 20%, transparent);
   --global-card-shadow: 0 4px 22px rgba(15, 23, 42, 0.07);
   --global-figure-bg: #ffffff;
 }
@@ -17,11 +16,4 @@
 html[data-theme="dark"] {
   --global-card-shadow: 0 4px 22px rgba(0, 0, 0, 0.35);
   --global-figure-bg: #f4f4f2;
-}
-
-// Highlighter mark for key phrases: <mark>…</mark>.
-mark {
-  background: linear-gradient(transparent 55%, var(--global-mark-color) 55%);
-  color: inherit;
-  padding: 0 0.1em;
 }

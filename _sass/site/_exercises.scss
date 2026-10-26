@@ -1,0 +1,88 @@
+@use "mixins" as *;
+
+// Exercise cards (assets/js/hints.js): a "?" hint button in the callout's bottom-right corner,
+// whose content floats below the button and never shifts the page, and the answer as the card's footer.
+
+blockquote:has(> .hint-pop) {
+  position: relative;
+  padding-right: 3.25rem;
+}
+
+.hint-pop {
+  position: absolute;
+  right: 0.85rem;
+  bottom: 0.85rem;
+
+  > summary {
+    list-style: none;
+    display: grid;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    border: 1.5px solid var(--global-tip-block);
+    color: var(--global-tip-block-title);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color var(--transition-fast);
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+  }
+
+  &[open] > summary,
+  > summary:hover {
+    background: var(--global-tip-block);
+    color: var(--global-bg-color);
+  }
+
+  .hint-body {
+    @include card-surface;
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    z-index: 10;
+    width: max-content;
+    max-width: min(24rem, 80vw);
+    margin: 0;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    animation: hint-in 0.15s ease;
+  }
+}
+
+@keyframes hint-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+.answer-in {
+  margin-top: 0.75rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid color-mix(in srgb, var(--global-tip-block) 35%, transparent);
+  font-size: 1rem;
+
+  > summary {
+    width: max-content;
+    color: var(--global-tip-block-title);
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  > :not(summary) {
+    margin-top: 0.5rem;
+  }
+}
+
+// Wide display equations scroll sideways on narrow screens instead of being cut off.
+mjx-container[display="true"] {
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+}

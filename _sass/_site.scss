@@ -2,3 +2,6 @@
 // New partials go in _sass/site/; theme partial names are never reused here.
 @use "site/tokens";
 @use "site/paper";
+@use "site/exercises";
+@use "site/cv";
+@use "site/publications";

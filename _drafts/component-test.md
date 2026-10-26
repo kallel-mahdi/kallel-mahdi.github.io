@@ -7,6 +7,7 @@ categories: rl-by-doing
 toc:
   sidebar: left
 related_posts: false
+published: false # local component check only; hidden even with --drafts
 ---
 
 This draft exists to check the blocks the series uses; it is never deployed. Inline math $$V^{\pi}(s)$$.

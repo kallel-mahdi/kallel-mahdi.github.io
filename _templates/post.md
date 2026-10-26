@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: exercises
 title: TITLE
 date: DATE
 description: One sentence shown in post lists and link previews.

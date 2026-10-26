@@ -146,6 +146,10 @@
               {% if section_title == 'Experience' or section_title == 'Volunteer' %}
                 {% assign entries = combined_experience %}
                 {% include cv/experience.liquid %}
+              {% elsif section_title contains 'Experience' %}
+                {% comment %} e.g. "Research Experience", "Industry Experience" {% endcomment %}
+                {% assign entries = section_entries | al_cv_sort_by_date %}
+                {% include cv/experience.liquid %}
               {% elsif section_title == 'Education' %}
                 {% assign entries = section_entries | al_cv_sort_by_date %}
                 {% include cv/education.liquid %}

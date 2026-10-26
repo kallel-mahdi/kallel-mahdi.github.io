@@ -1,7 +1,7 @@
 # this file contains the social media links and usernames of the author
 # the socials will be displayed in the order they are defined here
 # for more information, please refer to the documentation of jekyll-socials plugin: https://github.com/george-gca/jekyll-socials
-# cv_pdf: # path to your CV PDF file
+cv_pdf: /cv/ # CV icon in the social row; point it at the RenderCV PDF once the workflow has built it
 email: mahdi.kallel@uni-wuerzburg.de # your email address
 github_username: kallel-mahdi # your GitHub user name
 rss_icon: true # comment this line to hide the RSS icon
