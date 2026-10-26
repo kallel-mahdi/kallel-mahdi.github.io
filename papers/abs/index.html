@@ -1,0 +1,142 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> Augmented Bayesian Policy Search | Mahdi Kallel </title> <meta name="author" content="Mahdi Kallel"> <meta name="description" content="Augmented Bayesian Search (ABS) explores with deterministic policies through local Bayesian optimization, and gives the Gaussian-process model of the return a mean function built from the action-value function."> <meta name="keywords" content="reinforcement learning, machine learning, policy optimization, learning dynamics, plasticity"> <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; media-src 'self' https:; frame-src 'self' https:; connect-src 'self' https:;"> <style>
+  :root {
+    --max-content-width: 930px;
+  }
+</style> <link rel="stylesheet" href="/assets/css/tailwind.css?v=50c64c15cbb9fd1ce6056fdb8bcb4b62"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/css/all.min.css" integrity="sha256-MVopmdyC2tYTiJ8wlktf0uh0v4NgT+vNdyVFepi7Q0c=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.5/css/academicons.min.css" integrity="sha256-SzrCOBJbGVFMahewkgjwnApaV2+av1DwMAA+/QGLyZw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/scholar-icons@1.0.3/css/scholar-icons.css" integrity="sha256-VY3hHVj/hNX3fYG6wtbA6TcKJQl7+FthzGSyIB64klY=" crossorigin="anonymous"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?v=591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22&gt;&lt;text%20y=%22.9em%22%20font-size=%2290%22&gt;%F0%9F%8E%B2&lt;/text&gt;&lt;/svg&gt;"> <link rel="stylesheet" href="/assets/css/main.css?v=3116ba77db9ee1581d05bb3e86fbf7f1"> <link rel="canonical" href="https://kallel-mahdi.github.io/papers/abs/"> <script src="/assets/js/theme.js?v=5286c3e4c334d0ecb8fc0c40ff4fa7ec"></script> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-native.css?v=5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
+    initTheme();
+  </script> </head> <body class="fixed-top-nav sticky-bottom-footer"> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> <span class="font-weight-bold">Mahdi</span> Kallel </a> <button class="navbar-toggler collapsed navbar-toggler-main" type="button" data-nav-toggle="navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse navbar-collapse-main" id="navbarNav"> <ul class="navbar-nav navbar-menu-list flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/">about </a> </li> <li class="nav-item "> <a class="nav-link" href="/blog/">blog </a> </li> <li class="nav-item "> <a class="nav-link" href="/publications/">publications </a> </li> <li class="nav-item "> <a class="nav-link" href="/projects/">projects </a> </li> <li class="nav-item "> <a class="nav-link" href="/cv/">cv </a> </li> <li class="nav-item"> <button id="search-toggle" type="button" title="Search" aria-label="Open search"> <span class="nav-link">ctrl k <i class="fa-solid fa-magnifying-glass"></i></span> </button> </li> <li class="toggle-container"> <button id="light-toggle" type="button" title="Change theme" aria-label="Change color theme"> <i class="fa-half-sun-moon" id="light-toggle-system"></i> <i class="fa-solid fa-moon" id="light-toggle-dark"></i> <i class="fa-solid fa-sun" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="paper-page"> <header class="paper-header"> <div class="paper-venue">ICLR 2024</div> <h1 class="paper-title">Augmented Bayesian Policy Search</h1> <p class="paper-authors"> <a href="/" class="is-me">Mahdi Kallel</a><sup>1</sup>, <span>Debabrota Basu</span><sup>2</sup>, <span>Riad Akrour</span><sup>2</sup>, <span>Carlo D'Eramo</span><sup>1,3,4</sup> </p> <p class="paper-affiliations"> <span><sup>1</sup>Center for Artificial Intelligence and Data Science, University of Würzburg</span> <span><sup>2</sup>Univ. Lille, Inria, CNRS, Centrale Lille, UMR 9189 – CRIStAL</span> <span><sup>3</sup>Department of Computer Science, TU Darmstadt</span> <span><sup>4</sup>Hessian Center for Artificial Intelligence (hessian.AI)</span> </p> <div class="paper-links"> <a class="paper-link" href="https://arxiv.org/abs/2407.04864" rel="external nofollow noopener" target="_blank"> <i class="ai ai-arxiv"></i> Paper </a> <a class="paper-link" href="https://openreview.net/forum?id=OvlcyABNQT" rel="external nofollow noopener" target="_blank"> <i class="fa-solid fa-comments"></i> OpenReview </a> <a class="paper-link" href="https://github.com/kallel-mahdi/abs" rel="external nofollow noopener" target="_blank"> <i class="fa-brands fa-github"></i> Code </a> </div> </header> <blockquote class="paper-hook">What if Bayesian policy search knew it was solving an MDP? </blockquote> <figure class="paper-hero"> <img src="/assets/img/papers/abs/acquisition_loop.gif" alt="One ABS iteration on a synthetic 2-D illustration. Around the current policy θ (star), the gradient posterior (purple cone) starts from the critics' policy gradient (pink) and turns toward the observed returns; each acquisition is the rollout that most raises the probability of ascent, and the policy then steps along the most probable ascent direction."> <figcaption>One ABS iteration on a synthetic 2-D illustration. Around the current policy θ (star), the gradient posterior (purple cone) starts from the critics’ policy gradient (pink) and turns toward the observed returns; each acquisition is the rollout that most raises the probability of ascent, and the policy then steps along the most probable ascent direction. </figcaption> </figure> <section class="paper-section paper-text"> <h2>TL;DR</h2> <p>Deterministic policies are often preferred on physical systems, yet exploration in reinforcement learning is largely performed by stochastic policies. First-order Bayesian optimization explores with deterministic policies through a probabilistic model of the return and its gradient, but treats policy search as a black box. Augmented Bayesian Search (ABS) uses the performance difference lemma to give that model a mean function built from the action-value function. The posterior gradient then <strong>augments Bayesian optimization with the deterministic policy gradient</strong>, and ABS scales to high-dimensional MuJoCo locomotion tasks, where it is the strongest of the Bayesian optimization methods.</p> </section> <section class="paper-section paper-text"> </section> <section class="paper-section"> <h2>How it works</h2> <div class="stepper" data-stepper> <div class="stepper-tabs" role="tablist"> <button class="stepper-tab is-active" type="button" role="tab" aria-selected="true"> <span class="stepper-num">1</span> <span class="stepper-tab-title">The derivative of a GP is a GP</span> </button> <button class="stepper-tab" type="button" role="tab" aria-selected="false"> <span class="stepper-num">2</span> <span class="stepper-tab-title">Performance difference lemma</span> </button> <button class="stepper-tab" type="button" role="tab" aria-selected="false"> <span class="stepper-num">3</span> <span class="stepper-tab-title">Advantage mean function</span> </button> <button class="stepper-tab" type="button" role="tab" aria-selected="false"> <span class="stepper-num">4</span> <span class="stepper-tab-title">Fitness-aware policy gradient</span> </button> </div> <div class="stepper-card"> <div class="stepper-panel is-active" role="tabpanel"> <h3>The derivative of a GP is a GP</h3> <p>Model the policy return as a Gaussian process over the policy parameters. Given a central point $\theta$ and the returns $Y$ observed at points $X$, the gradient at $\theta$ has a Gaussian posterior $\mathcal{N}(\mu_\theta, \Sigma_\theta)$.</p> <div class="stepper-eq">$$ \begin{aligned} \mu_\theta &amp;= \nabla_\theta m(\theta) + \nabla_\theta K(\theta, X)\,K(X, X)^{-1}\big(Y - m(X)\big), \\ \Sigma_\theta &amp;= \nabla_\theta K(\theta, \theta) - \nabla_\theta K(\theta, X)\,K(X, X)^{-1}\,\nabla_\theta K(X, \theta) \end{aligned} $$</div> </div> <div class="stepper-panel" role="tabpanel"> <h3>Performance difference lemma</h3> <p>The return of any policy $\pi_x$ can be written relative to the current policy $\pi_\theta$, through the advantage of $\pi_\theta$ under the states that $\pi_x$ visits.</p> <div class="stepper-eq">$$ J(\pi_x) = J(\pi_\theta) + \mathbb{E}_{s \sim d^{\pi_x}}\big[A^{\pi_\theta}(s, \pi_x(s))\big] $$</div> </div> <div class="stepper-panel" role="tabpanel"> <h3>Advantage mean function</h3> <p>Roll out the central point $\theta$, collect $\widehat{J}(\pi_\theta)$ and $\widehat{d}^{\pi_\theta}$, and train a critic $\widehat{Q}^{\pi_\theta}$. Evaluating the lemma on the states of $\pi_\theta$ gives a good prior for the return of any point $x$.</p> <div class="stepper-eq">$$ \widehat{m}_\phi(x) = \widehat{J}(\pi_\theta) + \mathbb{E}_{s \sim \widehat{d}^{\pi_\theta}}\big[\widehat{A}^{\pi_\theta}_\phi(s, \pi_x(s))\big] $$</div> </div> <div class="stepper-panel" role="tabpanel"> <h3>Fitness-aware policy gradient</h3> <p>With this mean function, the mean of the gradient posterior is the deterministic policy gradient, corrected by a term proportional to how badly the mean function fits the observed returns.</p> <div class="stepper-eq">$$ \begin{aligned} \mu_\theta = {} &amp; \mathbb{E}_{s \sim \widehat{d}^{\pi_\theta}}\big[\nabla_a \widehat{Q}^{\pi_\theta}_\phi(s, a)\,\nabla_\theta \pi_\theta(s)\big] \\ &amp; + \nabla_\theta K(\theta, X)\,K(X, X)^{-1}\big(\widehat{J}(X) - \widehat{m}_\phi(X)\big) \end{aligned} $$</div> </div> <div class="stepper-foot"> <button class="stepper-arrow" type="button" data-step="-1" aria-label="Previous step">←</button> <span class="stepper-count">1 / 4</span> <button class="stepper-arrow" type="button" data-step="1" aria-label="Next step">→</button> </div> </div> </div> </section> <section class="paper-section"> <h2>Results</h2> <div class="qa-grid" data-qa-grid> <div class="qa-card"> <button class="qa-head" type="button" aria-expanded="false"> <img class="qa-thumb" src="/assets/img/papers/abs/acquisition.png" alt="" loading="lazy"> <span class="qa-num">01</span> <span class="qa-title">Behaviour of the acquisition function </span> <span class="qa-chevron" aria-hidden="true">▾</span> </button> <div class="qa-body" hidden> <div class="qa-figures"> <figure class="paper-figure is-wide"> <img src="/assets/img/papers/abs/acquisition.png" alt="Acquisition function of MPD augmented with the advantage mean function, at $t = 0, 1, 2$: first only the central point $\theta$ (star) is observed, then the acquisition points $z$ (white)." loading="lazy"> <figcaption>Acquisition function of MPD augmented with the advantage mean function, at $t = 0, 1, 2$: first only the central point $\theta$ (star) is observed, then the acquisition points $z$ (white). </figcaption> </figure> </div> <ul class="qa-findings"> <li> <strong>The next query lies in the direction of the gradient posterior.</strong> </li> <li>The maximum of the acquisition function follows the posterior mean $\mu_\theta$ (violet), which corrects the mean-function gradient $\nabla_\theta \widehat{m}_\phi$ (pink) when the mean function does not fit the observations. </li> <li>Acquisitions stay in the immediate vicinity of $\theta$, which keeps $\Vert z - \theta \Vert$ small and with it the residual term of the decomposition behind the mean function. </li> </ul> </div> </div> <div class="qa-card"> <button class="qa-head" type="button" aria-expanded="false"> <img class="qa-thumb" src="/assets/img/papers/abs/performance_highdim.png" alt="" loading="lazy"> <span class="qa-num">02</span> <span class="qa-title">Locomotion tasks </span> <span class="qa-chevron" aria-hidden="true">▾</span> </button> <div class="qa-body" hidden> <div class="qa-figures"> <figure class="paper-figure is-wide"> <img src="/assets/img/papers/abs/performance.png" alt="Maximum discounted return on the MuJoCo-v4 tasks, 5 seeds per algorithm; #n_dims is the number of policy parameters." loading="lazy"> <figcaption>Maximum discounted return on the MuJoCo-v4 tasks, 5 seeds per algorithm; #n_dims is the number of policy parameters. </figcaption> </figure> </div> <ul class="qa-findings"> <li> <strong>ABS consistently outperforms MPD, and pulls ahead of ARS on Walker2d and Ant.</strong> </li> <li>On low-dimensional tasks ABS is competitive with MPD, the state of the art of local Bayesian optimization, and with Augmented Random Search (ARS). </li> <li>In high dimensions the curse of dimensionality makes it harder for ARS and MPD to find promising descent directions, while the advantage mean function focuses the search on promising regions of the parameter space. </li> </ul> </div> </div> <div class="qa-card"> <button class="qa-head" type="button" aria-expanded="false"> <img class="qa-thumb" src="/assets/img/papers/abs/r2_hist.png" alt="" loading="lazy"> <span class="qa-num">03</span> <span class="qa-title">Critic validation loss </span> <span class="qa-chevron" aria-hidden="true">▾</span> </button> <div class="qa-body" hidden> <div class="qa-figures"> <figure class="paper-figure is-wide"> <img src="/assets/img/papers/abs/r2.png" alt="Validation and test scores of the critics during one run on HalfCheetah, Walker2d and Ant." loading="lazy"> <figcaption>Validation and test scores of the critics during one run on HalfCheetah, Walker2d and Ant. </figcaption> </figure> <figure class="paper-figure is-wide"> <img src="/assets/img/papers/abs/r2_hist.png" alt="Histograms and correlation of the same scores; dashed lines mark the medians, and scores are clipped to $[-1, 1]$." loading="lazy"> <figcaption>Histograms and correlation of the same scores; dashed lines mark the medians, and scores are clipped to $[-1, 1]$. </figcaption> </figure> </div> <ul class="qa-findings"> <li> <strong>The best critic explains about half of the variance of the observed returns.</strong> </li> <li>The validation score stays positive. The test score on new acquisition points is often positive and sometimes negative, which is enough: the mean function only has to identify one good descent direction at a time. </li> <li>The two scores are positively correlated, and validation acts as an upper bound on test, as in supervised learning. </li> </ul> </div> </div> <div class="qa-card"> <button class="qa-head" type="button" aria-expanded="false"> <img class="qa-thumb" src="/assets/img/papers/abs/ablation.png" alt="" loading="lazy"> <span class="qa-num">04</span> <span class="qa-title">Adaptive aggregation of critics </span> <span class="qa-chevron" aria-hidden="true">▾</span> </button> <div class="qa-body" hidden> <div class="qa-figures"> <figure class="paper-figure is-wide"> <img src="/assets/img/papers/abs/ablation.png" alt="Ablation of the critic ensemble: a single critic, average or softmax weighting by validation score, each with or without resetting the worst critic (+ R)." loading="lazy"> <figcaption>Ablation of the critic ensemble: a single critic, average or softmax weighting by validation score, each with or without resetting the worst critic (+ R). </figcaption> </figure> </div> <ul class="qa-findings"> <li> <strong>Softmax weighting with resets beats every other ensemble.</strong> </li> <li>An ensemble outperforms a single critic, and weighting critics by their validation score outperforms plain averaging, especially early on, when transition data is scarce. </li> <li>Resetting the worst critic helps most together with adaptive weighting, since the validation score detects a freshly reset critic and ignores its predictions. </li> </ul> </div> </div> </div> </section> <section class="paper-section paper-text"> <h2>Final remarks</h2> <ul> <li>The advantage mean function acts like a first-order Taylor expansion of the policy return, bridging Bayesian optimization and reinforcement learning. </li> <li>ABS explores with deterministic policies, learns effectively in an episodic setting, and lets one trade compute for learning speed. </li> <li>This work is limited to linear policies for computational reasons. Scaling Bayesian optimization to deep policies, through random projections or kernels tailored to deterministic policies, is a promising direction. </li> </ul> </section> <section class="paper-section"> <h2>Citation</h2> <div class="language-bibtex highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">@inproceedings</span><span class="p">{</span><span class="nl">kallel2024abs</span><span class="p">,</span>
+  <span class="na">author</span>    <span class="p">=</span> <span class="s">{Mahdi Kallel and Debabrota Basu and Riad Akrour and Carlo D'Eramo}</span><span class="p">,</span>
+  <span class="na">title</span>     <span class="p">=</span> <span class="s">{Augmented Bayesian Policy Search}</span><span class="p">,</span>
+  <span class="na">booktitle</span> <span class="p">=</span> <span class="s">{International Conference on Learning Representations}</span><span class="p">,</span>
+  <span class="na">year</span>      <span class="p">=</span> <span class="s">{2024}</span><span class="p">,</span>
+  <span class="na">url</span>       <span class="p">=</span> <span class="s">{https://openreview.net/forum?id=OvlcyABNQT}</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div> </section> </div> <script defer src="/assets/js/paper.js?v=171246b79ed7422638afa13d204cabaa"></script> </div> <footer class="sticky-bottom mt-5" role="contentinfo"> <div class="container"> © Copyright 2026 Mahdi Kallel. Built with <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> and <a href="https://github.com/alshedivat/al-folio" target="_blank" rel="external nofollow noopener">al-folio</a>. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. </div> </footer> <script>
+  window.alFolio = {
+    compatBootstrap: false
+  };
+</script> <script src="/assets/js/nav-toggle.js?v=141bd79a73ebc0f0b6ea58e440ae79fc"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js?v=e49affc7bd2646f6acdad1dbe02c2359" type="text/javascript"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/al_math/js/mathjax-setup.js"></script> <script src="/assets/js/tooltips-setup.js?v=fe487e99db6c43751e6e7bdb2d6a0611"></script> <script src="/assets/js/no_defer.js?v=53b1b1a645525975c963ce8bf8bfefcf"></script> <script defer src="/assets/js/common.js?v=87baac90f765f2f3362dcf6aaf312a8a"></script> <script defer src="/assets/js/copy_code.js?v=c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?v=896d254890d9b47f0281f63bfccf0dee"></script> <script async src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script> <script async src="https://badge.dimensions.ai/badge.js"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/al_img_tools/js/zoom.js"></script> <script defer src="/assets/js/progress-bar.js?v=499464c5c63ced6cf7ad62509f1e2610" type="text/javascript"></script> <script src="https://cdn.jsdelivr.net/npm/vanilla-back-to-top@7.2.1/dist/vanilla-back-to-top.min.js" integrity="sha256-uMJJ3EoTyfRBoTbR+lrfu1uRQ87RZG8AR3cVNuQVeFg=" crossorigin="anonymous"></script> <script>
+    addBackToTop();
+  </script> <script type="module" src="/assets/al_search/js/search/ninja-keys.min.js"></script> <ninja-keys hidebreadcrumbs noautoloadmdicons placeholder="Type to start searching"></ninja-keys> <script src="/assets/al_search/js/search-setup.js"></script> <script>
+// get the ninja-keys element
+const ninja = document.querySelector('ninja-keys');
+
+// add the home and posts menu items
+ninja.data = [{
+    id: "nav-about",
+    title: "about",
+    section: "Navigation",
+    handler: () => {
+      window.location.href = "/";
+    },
+  },{id: "nav-blog",
+          title: "blog",
+          description: "",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/blog/";
+          },
+        },{id: "nav-publications",
+          title: "publications",
+          description: "in reverse chronological order.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/publications/";
+          },
+        },{id: "nav-projects",
+          title: "projects",
+          description: "Interactive pages for my papers.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/projects/";
+          },
+        },{id: "nav-cv",
+          title: "cv",
+          description: "",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/cv/";
+          },
+        },{id: "news-ppo-appeared-at-rlc-2026-in-montréal",
+          title: 'PPO+ appeared at RLC 2026 in Montréal.',
+          description: "",
+          section: "News",},{id: "news-do-not-imitate-reinforce-ric-was-presented-as-a-poster-at-ewrl-2026-in-lille",
+          title: 'Do Not Imitate, Reinforce (RIC) was presented as a poster at EWRL 2026...',
+          description: "",
+          section: "News",},{id: "news-the-spectral-anatomy-of-plasticity-loss-will-appear-at-the-axiom-workshop-at-neurips-2026-in-paris-december-13",
+          title: 'The Spectral Anatomy of Plasticity Loss will appear at the AXIOM workshop at...',
+          description: "",
+          section: "News",},{id: "projects-augmented-bayesian-policy-search",
+          title: 'Augmented Bayesian Policy Search',
+          description: "Augmented Bayesian Search (ABS) explores with deterministic policies through local Bayesian optimization, and gives the Gaussian-process model of the return a mean function built from the action-value function.",
+          section: "Projects",handler: () => {
+              window.location.href = "/papers/abs/";
+            },},{id: "projects-do-not-imitate-reinforce",
+          title: 'Do Not Imitate, Reinforce',
+          description: "Reinforced Iterative Classification (RIC) trains a classifier to refine its own class distribution step by step with reinforcement learning, and a learned critic decides when to stop.",
+          section: "Projects",handler: () => {
+              window.location.href = "/papers/ric/";
+            },},{
+        id: 'social-cv',
+        title: 'CV',
+        section: 'Socials',
+        handler: () => {
+          window.open("/cv/", "_blank");
+        },
+      },{
+        id: 'social-email',
+        title: 'email',
+        section: 'Socials',
+        handler: () => {
+          window.open("mailto:%6D%61%68%64%69.%6B%61%6C%6C%65%6C@%75%6E%69-%77%75%65%72%7A%62%75%72%67.%64%65", "_blank");
+        },
+      },{
+        id: 'social-github',
+        title: 'GitHub',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://github.com/kallel-mahdi", "_blank");
+        },
+      },{
+        id: 'social-rss',
+        title: 'RSS Feed',
+        section: 'Socials',
+        handler: () => {
+          window.open("/feed.xml", "_blank");
+        },
+      },{
+        id: 'social-scholar',
+        title: 'Google Scholar',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://scholar.google.com/citations?user=Bt0FV_AAAAAJ", "_blank");
+        },
+      },{
+      id: 'light-theme',
+      title: 'Change theme to light',
+      description: 'Change the theme of the site to Light',
+      section: 'Theme',
+      handler: () => {
+        setThemeSetting("light");
+      },
+    },
+    {
+      id: 'dark-theme',
+      title: 'Change theme to dark',
+      description: 'Change the theme of the site to Dark',
+      section: 'Theme',
+      handler: () => {
+        setThemeSetting("dark");
+      },
+    },
+    {
+      id: 'system-theme',
+      title: 'Use system default theme',
+      description: 'Change the theme of the site to System Default',
+      section: 'Theme',
+      handler: () => {
+        setThemeSetting("system");
+      },
+    },];
+
+</script> <script src="/assets/al_search/js/shortcut-key.js"></script> </body> </html>
