@@ -23,4 +23,8 @@ latest_posts:
   limit: 3
 ---
 
-I work on reinforcement learning with Carlo D'Eramo at the University of Würzburg, with a background in applied mathematics and optimization. I began my PhD on policy optimization and exploration, which led me to the networks underneath. My research now focuses on the learning dynamics of neural networks, in particular how reinforcement learning and supervised learning differ in plasticity and generalization.
+I am a PhD candidate at the University of Würzburg, advised by Carlo D'Eramo. Before that, I studied applied mathematics and machine learning at ENS Paris-Saclay (MVA) and interned at INRIA Lille.
+
+I study the dynamics of learning and memory in neural networks, and how reinforcement learning shapes them differently from supervised learning. Using random matrix theory, I look at where networks store what they know, and why training on a stream of tasks wears that knowledge down.
+
+Always happy to talk, about research or anything else.
