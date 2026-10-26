@@ -7,7 +7,7 @@ subtitle: PhD candidate in reinforcement learning, University of Würzburg
 profile:
   align: right
   image_circular: false
-  image: prof_pic.jpg # placeholder from the template; replace assets/img/prof_pic.jpg with your photo
+  image: prof_pic.jpg
 
 selected_papers: true # papers marked selected={true} in _bibliography/papers.bib
 social: true # icons from _data/socials.yml
