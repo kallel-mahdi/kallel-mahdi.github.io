@@ -8,8 +8,9 @@ img: assets/img/papers/ric/ric-card.png # card image on the projects page
 importance: 1
 category: work
 description: >-
-  Reinforced Iterative Classification (RIC) trains a classifier to refine its own class distribution
-  step by step with reinforcement learning, and a learned critic decides when to stop.
+  Reinforced Iterative Classification (RIC) trains a classifier with reinforcement learning instead of
+  cross-entropy. It refines its prediction step by step and achieves a better balance of accuracy and
+  calibration than supervised training.
 
 authors:
   - { name: Mahdi Kallel, url: /, me: true, affil: [1] }
@@ -27,12 +28,12 @@ links:
   - { label: Code, icon: fa-brands fa-github, url: "https://github.com/kallel-mahdi/ric" }
 
 hook: >-
-  What if classification used the full strength of reinforcement learning?
+  A classifier rewarded for improving its prediction, not for copying the label.
 
 hero:
   src: papers/ric/ric-refinement.gif
   caption: >-
-    Reward every step toward a better prediction. An actor refines its prediction; a critic decides when
+    An actor refines its prediction; a critic decides when
     to stop (green: continue, red: stop and return the current belief).
 
 tldr: >-
@@ -108,8 +109,8 @@ questions:
       findings:
         - "**At every noise level, RIC ends training with lower ECE than SL.**"
         - >-
-          Cross-entropy ties confidence to fitting, so SL is near certain within tens of epochs. RIC builds
-          confidence at its own pace: **accuracy rises ahead of confidence**, and calibration emerges
+          Cross-entropy ties confidence to fitting, so SL is near certain within tens of epochs. In RIC,
+          **accuracy rises ahead of confidence**, and calibration emerges
           as confidence catches up.
         - >-
           With noisy labels the target itself is less certain, so RIC's confidence settles lower and

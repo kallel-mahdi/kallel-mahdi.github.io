@@ -14,7 +14,7 @@ cv:
 
   sections:
     Profile:
-      - bullet: PhD candidate in reinforcement learning at the University of Würzburg (graduating April 2027), with a background in applied mathematics and optimization. I began my PhD on policy optimization and exploration, which led me to the networks underneath. My research now focuses on the learning dynamics of neural networks, in particular how reinforcement learning and supervised learning differ in plasticity and generalization.
+      - bullet: "Graduating from the University of Würzburg in April 2027, advised by Carlo D'Eramo. I started out designing algorithms for exploration and policy optimization, and now study the learning dynamics of neural networks, in particular memory and plasticity in continual learning, and how reinforcement learning changes them compared with supervised learning."
 
     # The site template shows the venue from `publisher`, the PDF from `journal`.
     Publications:
@@ -29,7 +29,7 @@ cv:
         publisher: AXIOM Workshop at NeurIPS 2026
         date: 2026
         url: https://www.eurecom.fr/en/publication/8988
-        summary: Used random matrix theory to split each weight spectrum into a random bulk and learned edges, and tracked it over a long stream of continual tasks. Directions learned on earlier tasks capture a growing share of new gradients. Making them read-only keeps the network trainable while preserving what it already learned.
+        summary: "Uses random matrix theory to explain loss of plasticity. Over a stream of tasks, the directions that hold earlier knowledge absorb a growing share of each new gradient. Making them read-only keeps the network trainable without losing what it learned."
 
       - title: "Do Not Imitate, Reinforce: Iterative Classification via Belief Refinement"
         authors:
@@ -41,7 +41,7 @@ cv:
         publisher: Transactions on Machine Learning Research (TMLR), 2026
         date: 2026
         url: https://arxiv.org/abs/2604.22110
-        summary: Replaced label imitation with reinforcement learning, treating classification as sequential belief refinement where a recurrent agent is rewarded for improving its prediction. The classifiers match supervised accuracy and stay calibrated under human label noise, where cross-entropy becomes overconfident. A value function decides when to stop.
+        summary: "Trains classifiers with reinforcement learning instead of imitating labels with cross-entropy: a recurrent agent refines its prediction step by step and is rewarded for each improvement. It achieves a better balance of accuracy and calibration than supervised training, and stays calibrated under human label noise, where cross-entropy grows overconfident."
 
       - title: "PPO+: Enhancing Proximal Policy Optimization"
         authors:
@@ -53,7 +53,7 @@ cv:
         publisher: Reinforcement Learning Journal (RLC 2026)
         date: 2026
         url: https://rlj.cs.umass.edu/2026/papers/Paper8.html
-        summary: Traced the sensitivity of PPO to inaccurate critic estimates, and trained the critic on off-policy data while keeping the actor update on-policy. Better critics substantially improve PPO in continuous control and narrow the gap to off-policy algorithms, without relying on implementation tricks.
+        summary: "Shows that PPO is held back by its critic. Training the critic on off-policy data, while keeping the policy update on-policy, substantially improves PPO and narrows the gap to off-policy algorithms, without implementation tricks."
 
       - title: "Use the Online Network If You Can: Towards Fast and Stable Reinforcement Learning"
         authors:
@@ -78,7 +78,7 @@ cv:
         publisher: ICLR 2024
         date: 2024
         url: https://proceedings.iclr.cc/paper_files/paper/2024/hash/7eca17ef54789b0663cab421f2e9dbf5-Abstract-Conference.html
-        summary: Used the performance difference lemma to inject the critic into the Gaussian process prior of Bayesian optimization, bridging Bayesian optimization and policy gradient methods. Policy search with deterministic policies scales to high-dimensional locomotion tasks and outperforms earlier Bayesian optimization methods.
+        summary: "Makes Bayesian policy search aware that it is solving an MDP: the performance difference lemma turns a learned critic into the prior over returns. The method outperforms earlier Bayesian optimization approaches, with the largest gains on high-dimensional policies."
 
       - title: Cyclicity-Regularized Coordination Graphs
         authors:
@@ -96,14 +96,14 @@ cv:
         location: France
         date: 2022
         highlights:
-          - Worked on Bayesian optimization for exploration with deterministic policies in continuous action spaces.
+          - Started the work on Bayesian policy search with deterministic policies that became Augmented Bayesian Policy Search (ICLR 2024).
 
       - company: EURECOM
         position: Research Intern
         location: Biot, France
         date: 2020
         highlights:
-          - Studied loss balancing in multi-task neural networks for mobile-network resource allocation and attention mechanisms for temporal prediction.
+          - Compared centralized and decentralized approaches to mobile traffic prediction and load balancing.
 
     Industry Experience:
       - company: Mcovision (independent)
@@ -111,14 +111,14 @@ cv:
         location: Paris, France
         date: 2021
         highlights:
-          - Built an explainable video classifier for rare heart disease and the full pipeline for data processing, model training, monitoring, and deployment.
+          - Built a classifier of echocardiography videos for cardiac amyloidosis and other rare heart diseases with Hôpital Cochin, from data cleaning to training.
 
       - company: SustainEcho
         position: Research Intern
         location: Paris, France
         date: 2021
         highlights:
-          - Worked on meta-learning and few-shot personalization in low-data regimes, with model adaptation based on prototypical networks.
+          - Explored few-shot and hierarchical learning methods for classification with little data.
 
     Education:
       - institution: University of Würzburg
@@ -160,7 +160,7 @@ cv:
 
     Supervision, Talks and Service:
       - label: Supervision
-        details: Johannes Tölle, MSc thesis, University of Würzburg (2026). Recipient of the VDE Bayern Award 2026 and co-author of two papers above.
+        details: Johannes Tölle, MSc thesis, University of Würzburg (2026). The thesis received the VDE Bayern Award 2026, and Johannes co-authored two of the papers above.
       - label: Talks
         details: On Better Priors for Policy Search. Invited talk and lab visit, Improbable AI Lab (Pulkit Agrawal), MIT, August 2024.
       - label: Reviewer

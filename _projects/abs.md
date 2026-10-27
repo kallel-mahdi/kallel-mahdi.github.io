@@ -7,8 +7,8 @@ img: assets/img/papers/abs/card.png # card image on the projects page
 importance: 2
 category: work
 description: >-
-  Augmented Bayesian Search (ABS) explores with deterministic policies through local Bayesian optimization, and
-  gives the Gaussian-process model of the return a mean function built from the action-value function.
+  Bayesian policy search usually treats reinforcement learning as a black box. Augmented Bayesian Search (ABS)
+  gives it a prior built from a learned critic, and outperforms earlier Bayesian optimization methods as policies grow.
 
 authors:
   - { name: Mahdi Kallel, url: /, me: true, affil: [1] }
@@ -43,8 +43,8 @@ tldr: >-
   through a probabilistic model of the return and its gradient, but treats policy search as a black box. Augmented
   Bayesian Search (ABS) uses the performance difference lemma to give that model a mean function built from the
   action-value function. The posterior gradient then **augments Bayesian optimization with the deterministic policy
-  gradient**, and ABS scales to high-dimensional MuJoCo locomotion tasks, where it is the strongest of the Bayesian
-  optimization methods.
+  gradient**, and ABS outperforms earlier Bayesian optimization methods, with the widest margin on
+  high-dimensional policies.
 
 method:
   title: How it works
@@ -117,8 +117,7 @@ questions:
           On low-dimensional tasks ABS is competitive with MPD, the state of the art of local Bayesian optimization,
           and with Augmented Random Search (ARS).
         - >-
-          In high dimensions the curse of dimensionality makes it harder for ARS and MPD to find promising descent
-          directions, while the advantage mean function focuses the search on promising regions of the parameter
+          In high dimensions, ARS and MPD struggle to find good ascent directions, while the advantage mean function focuses the search on promising regions of the parameter
           space.
 
     - title: Critic validation loss
@@ -169,8 +168,8 @@ remarks:
       ABS explores with deterministic policies, learns effectively in an episodic setting, and lets one trade compute
       for learning speed.
     - >-
-      This work is limited to linear policies for computational reasons. Scaling Bayesian optimization to deep
-      policies, through random projections or kernels tailored to deterministic policies, is a promising direction.
+      This work is limited to linear policies for computational reasons. Scaling it to deep policies, for
+      example through random projections or kernels tailored to deterministic policies, is left to future work.
 
 bibtex: |
   @inproceedings{kallel2024abs,

@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-subtitle: PhD candidate in reinforcement learning, University of Würzburg
+subtitle: University of Würzburg
 
 profile:
   align: right
@@ -23,8 +23,8 @@ latest_posts:
   limit: 3
 ---
 
-I work with Carlo D'Eramo. Before my PhD, I studied applied mathematics and machine learning at ENS Paris-Saclay (MVA) and interned at INRIA Lille.
+I am a PhD candidate advised by Carlo D'Eramo. I started out designing algorithms for exploration and policy optimization.
 
-I study the dynamics of learning and memory in neural networks, and how reinforcement learning shapes them differently from supervised learning. Using random matrix theory, I look at where networks store what they know, and why training on a stream of tasks wears that knowledge down.
+I now study the learning dynamics of neural networks, in particular memory and plasticity in continual learning, and how reinforcement learning changes them compared with supervised learning. My main tool is random matrix theory.
 
-Always happy to talk, about research or anything else.
+Previously, I studied applied mathematics at ENS Paris-Saclay (MVA). Always happy to talk about research, or anything else.
