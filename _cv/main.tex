@@ -1,0 +1,114 @@
+% Mahdi Kallel — research CV (moderncv classic).
+% Content mirrors _data/cv.yml, which drives the /cv/ page; edit both together.
+% Build: latexmk -pdf -outdir=/tmp/cv main.tex, then copy main.pdf to assets/pdf/Mahdi_Kallel_CV.pdf
+\documentclass[12pt,a4paper,sans]{moderncv}
+\usepackage{lmodern}
+\moderncvcolor{blue}
+\moderncvstyle[nosymbols]{classic}
+\moderncvicons{awesome}
+\usepackage[scale=0.84]{geometry}
+\setlength{\hintscolumnwidth}{2.7cm}
+\setlength{\footskip}{45pt}
+\usepackage[english]{babel}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{needspace}
+\pagenumbering{arabic}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, urlcolor=color1}
+\colorlet{sectioncolor}{color1}
+\colorlet{bodyrulecolor}{color1}
+\colorlet{firstnamecolor}{color0}
+\colorlet{lastnamecolor}{color0}
+\colorlet{titlecolor}{color2}
+\renewcommand*{\namefont}{\fontsize{22}{25}\mdseries\upshape}
+\renewcommand*{\titlefont}{\normalsize\bfseries\upshape}
+\renewcommand*{\sectionfont}{\large\mdseries\upshape}
+
+% One publication: year, authors, linked title, venue, then the summary as two bullets (what, -> result).
+\newcommand{\pub}[6]{\needspace{5\baselineskip}\cvitem{#1}{\raggedright #2. \href{#3}{\textbf{#4}}. \emph{#5}.#6}}
+\newcommand{\summary}[2]{%
+{\small\begin{itemize}[leftmargin=1.3em,itemsep=0pt,topsep=2pt]
+\item #1
+\item[\textcolor{color1}{$\boldsymbol{\rightarrow}$}] #2
+\end{itemize}}}
+\newcommand{\highlight}[1]{%
+\begin{itemize}[leftmargin=1.3em,itemsep=2pt,topsep=2pt]
+\item #1
+\end{itemize}}
+
+\name{Mahdi}{Kallel}
+\title{PhD candidate in reinforcement learning}
+\address{W\"urzburg, Germany}{}{}
+\email{mahdi.kallel@uni-wuerzburg.de}
+\homepage{kallel-mahdi.github.io}
+\social[github]{kallel-mahdi}
+\extrainfo{\googlescholarsocialsymbol\href{https://scholar.google.com/citations?user=Bt0FV_AAAAAJ}{Google Scholar}}
+\begin{document}
+\makecvtitle
+
+\section{Profile}
+\cvitem{}{Graduating from the University of W\"urzburg in April 2027, advised by Carlo D'Eramo. I started out designing algorithms for exploration and policy optimization, and now study the learning dynamics of neural networks, in particular memory and plasticity in continual learning, and how reinforcement learning changes them compared with supervised learning.}
+
+\section{Publications}
+\pub{2026}{\textbf{Mahdi Kallel}, Nour Jamoussi, Johannes T\"olle, Marios Kountouris, Carlo D'Eramo}
+  {https://openreview.net/forum?id=Kgz0zlJVS6}{The Spectral Anatomy of Plasticity Loss}{AXIOM Workshop at NeurIPS 2026}
+  {\summary{Uses random matrix theory to explain loss of plasticity.}
+  {Over a stream of tasks, the directions that hold earlier knowledge absorb a growing share of each new gradient. Making them read-only keeps the network trainable without losing what it learned.}}
+
+\pub{2026}{\textbf{Mahdi Kallel}, Johannes T\"olle, Ahmed Hendawy, Carlo D'Eramo}
+  {https://arxiv.org/abs/2604.22110}{Do Not Imitate, Reinforce: Iterative Classification via Belief Refinement}{Transactions on Machine Learning Research (TMLR), 2026}
+  {\summary{Trains classifiers with reinforcement learning instead of imitating labels with cross-entropy: a recurrent agent refines its prediction step by step and is rewarded for each improvement.}
+  {It achieves a better balance of accuracy and calibration than supervised training, and stays calibrated under human label noise, where cross-entropy grows overconfident.}}
+
+\pub{2026}{\textbf{Mahdi Kallel}, Jose-Luis Holgado-Alvarez, Samuele Tosatto, Carlo D'Eramo}
+  {https://rlj.cs.umass.edu/2026/papers/Paper8.html}{PPO+: Enhancing Proximal Policy Optimization}{Reinforcement Learning Journal (RLC 2026)}
+  {\summary{Shows that PPO is held back by its critic.}
+  {Training the critic on off-policy data, while keeping the policy update on-policy, substantially improves PPO and narrows the gap to off-policy algorithms, without implementation tricks.}}
+
+\pub{2026}{Ahmed Hendawy, Henrik Metternich, Th\'eo Vincent, \textbf{Mahdi Kallel}, Jan Peters, Carlo D'Eramo}
+  {https://arxiv.org/abs/2510.02590}{Use the Online Network If You Can: Towards Fast and Stable Reinforcement Learning}{ICLR 2026}{}
+
+\pub{2024}{\textbf{Mahdi Kallel}, Debabrota Basu, Riad Akrour, Carlo D'Eramo}
+  {https://proceedings.iclr.cc/paper_files/paper/2024/hash/7eca17ef54789b0663cab421f2e9dbf5-Abstract-Conference.html}{Augmented Bayesian Policy Search}{ICLR 2024}
+  {\summary{Makes Bayesian policy search aware that it is solving an MDP: the performance difference lemma turns a learned critic into the prior over returns.}
+  {The method outperforms earlier Bayesian optimization approaches, with the largest gains on high-dimensional policies.}}
+
+\pub{2024}{Oliver J\"arnefelt, \textbf{Mahdi Kallel}, Carlo D'Eramo}
+  {https://rlj.cs.umass.edu/2024/papers/RLJ_RLC_2024_40.pdf}{Cyclicity-Regularized Coordination Graphs}{RLC 2024}{}
+
+\needspace{8\baselineskip}
+\section{Research Experience}
+\cventry{2022}{Research Intern}{INRIA Lille, SCOOL Research Group}{France}{}{%
+\highlight{Started the work on Bayesian policy search with deterministic policies that became Augmented Bayesian Policy Search (ICLR 2024).}}
+\cventry{2020}{Research Intern}{EURECOM}{Biot, France}{}{%
+\highlight{Compared centralized and decentralized approaches to mobile traffic prediction and load balancing.}}
+
+\needspace{8\baselineskip}
+\section{Industry Experience}
+\cventry{2021}{Machine Learning Engineer}{Mcovision (independent)}{Paris, France}{}{%
+\highlight{Built a classifier of echocardiography videos for cardiac amyloidosis and other rare heart diseases with H\^opital Cochin, from data cleaning to training.}}
+\cventry{2021}{Research Intern}{SustainEcho}{Paris, France}{}{%
+\highlight{Explored few-shot and hierarchical learning methods for classification with little data.}}
+
+\needspace{8\baselineskip}
+\section{Education}
+\cventry{2023--2027}{PhD, Reinforcement Learning}{University of W\"urzburg}{Germany}{}{Expected April 2027. Supervisor: Prof.~Carlo D'Eramo.\newline Teaching: Introduction to Machine Learning; Introduction to Reinforcement Learning.}
+\cventry{2021--2022}{MSc, Optimization}{Universit\'e Paris-Saclay}{France}{}{%
+Coursework: Convex analysis, dynamic programming, stochastic optimization and approximation.}
+\cventry{2020--2021}{MSc, Mathematics, Vision, Learning (MVA)}{ENS Paris-Saclay}{France}{}{%
+Coursework: Reinforcement learning, convex optimization, kernel methods, advanced deep learning.}
+\cventry{2018--2020}{BSc, Data Science}{T\'el\'ecom Paris / EURECOM}{France}{}{}
+
+\needspace{6\baselineskip}
+\section{Supervision, Talks and Service}
+\cvitem{Supervision}{Johannes T\"olle, MSc thesis, University of W\"urzburg (2026). The thesis received the VDE Bayern Award 2026, and Johannes co-authored two of the papers above.}
+\cvitem{Talks}{\emph{On Better Priors for Policy Search}. Invited talk and lab visit, Improbable AI Lab (Pulkit Agrawal), MIT, August 2024.}
+\cvitem{Reviewer}{NeurIPS (top reviewer, 2026), ICLR, ICML, RLC}
+
+\needspace{4\baselineskip}
+\section{Technical Skills}
+\cvitem{Programming}{Python, JAX, PyTorch, NumPy, Julia, C}
+\cvitem{Languages}{Arabic (native), English (fluent), French (fluent), German (basic)}
+\end{document}
