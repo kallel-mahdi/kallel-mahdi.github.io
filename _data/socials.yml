@@ -1,10 +1,10 @@
 # this file contains the social media links and usernames of the author
 # the socials will be displayed in the order they are defined here
 # for more information, please refer to the documentation of jekyll-socials plugin: https://github.com/george-gca/jekyll-socials
-cv_pdf: /cv/ # CV icon in the social row; point it at the RenderCV PDF once the workflow has built it
+cv_pdf: /assets/rendercv/rendercv_output/Mahdi_Kallel_CV.pdf # CV icon in the social row, built by the render-cv workflow
 email: mahdi.kallel@uni-wuerzburg.de # your email address
 github_username: kallel-mahdi # your GitHub user name
-rss_icon: true # comment this line to hide the RSS icon
+# rss_icon: true # uncomment once the first post is out
 scholar_userid: Bt0FV_AAAAAJ # your Google Scholar ID
 # wechat_qr: # filename of your wechat qr-code saved as an image (e.g., wechat-qr.png if saved to assets/img/wechat-qr.png)
 # whatsapp_number: # your WhatsApp number (full phone number in international format. Omit any zeroes, brackets, or dashes when adding the phone number in international format.)

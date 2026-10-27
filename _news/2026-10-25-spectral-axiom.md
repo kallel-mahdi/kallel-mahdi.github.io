@@ -5,4 +5,4 @@ inline: true
 related_posts: false
 ---
 
-The Spectral Anatomy of Plasticity Loss will appear at the AXIOM workshop at NeurIPS 2026 in Paris (December 13).
+[The Spectral Anatomy of Plasticity Loss](https://openreview.net/forum?id=Kgz0zlJVS6) will appear at the AXIOM workshop at NeurIPS 2026 in Paris (December 13).

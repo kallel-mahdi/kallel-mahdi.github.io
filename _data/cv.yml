@@ -138,7 +138,7 @@ cv:
         start_date: 2021
         end_date: 2022
         highlights:
-          - "Coursework: Convex analysis, compressed sensing, dynamic programming, tropical algebra, game theory, stochastic optimization and approximation."
+          - "Coursework: Convex analysis, dynamic programming, stochastic optimization and approximation."
 
       - institution: ENS Paris-Saclay
         degree: MSc
@@ -147,7 +147,7 @@ cv:
         start_date: 2020
         end_date: 2021
         highlights:
-          - "Coursework: Convex optimization, reinforcement learning, kernel methods, computer vision, advanced deep learning, machine learning for text and graphs."
+          - "Coursework: Reinforcement learning, convex optimization, kernel methods, advanced deep learning."
 
       - institution: Télécom Paris / EURECOM
         degree: BSc
@@ -155,8 +155,6 @@ cv:
         location: France
         start_date: 2018
         end_date: 2020
-        highlights:
-          - "Coursework: Advanced statistical inference, statistical signal processing, machine learning, database management systems, cloud computing and security."
 
     Supervision, Talks and Service:
       - label: Supervision
@@ -164,15 +162,11 @@ cv:
       - label: Talks
         details: On Better Priors for Policy Search. Invited talk and lab visit, Improbable AI Lab (Pulkit Agrawal), MIT, August 2024.
       - label: Reviewer
-        details: NeurIPS, ICLR, ICML, RLC
+        details: NeurIPS (top reviewer, 2026), ICLR, ICML, RLC
 
     Technical Skills:
-      - label: Computing
+      - label: Programming
         details: Python, JAX, PyTorch, NumPy, Julia, C
-      - label: Methods
-        details: Policy optimization, Bayesian optimization, Gaussian processes, random matrix theory, spectral analysis
-      - label: Tools
-        details: Ray, Weights & Biases, Git
       - label: Languages
         details: Arabic (native), English (fluent), French (fluent), German (basic)
 
