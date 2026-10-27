@@ -159,15 +159,13 @@ questions:
 remarks:
   items:
     - >-
-      RIC-SPO exposes an accuracy-calibration trade-off at deployment: deterministic mean-policy rollouts are
-      generally more accurate, while stochastic rollouts are generally better calibrated and may lose accuracy.
+      At deployment, RIC-SPO offers a choice: deterministic rollouts for accuracy, stochastic rollouts for
+      calibration.
     - >-
-      RIC-SPO needs about ten times more training epochs than supervised learning. Better reinforcement learning algorithms could improve both efficiency and
-      final performance while preserving the training dynamics observed here.
+      Better reinforcement learning algorithms can improve RIC further while preserving the training dynamics
+      observed here.
     - >-
-      The Dirichlet distribution becomes unstable near the simplex boundary as the number of classes grows,
-      which limits the current validation to relatively small label spaces. Temperature scaling and label
-      smoothing are orthogonal to RIC; combining them with it is left to future work.
+      Temperature scaling and label smoothing are orthogonal to RIC and can be combined with it.
 
 bibtex: |
   @article{kallel2026ric,

@@ -167,9 +167,6 @@ remarks:
     - >-
       ABS explores with deterministic policies, learns effectively in an episodic setting, and lets one trade compute
       for learning speed.
-    - >-
-      This work is limited to linear policies for computational reasons. Scaling it to deep policies, for
-      example through random projections or kernels tailored to deterministic policies, is left to future work.
 
 bibtex: |
   @inproceedings{kallel2024abs,
