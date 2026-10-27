@@ -7,7 +7,7 @@ img: assets/img/papers/abs/card.png # card image on the projects page
 importance: 2
 category: work
 description: >-
-  Bayesian policy search usually treats reinforcement learning as a black box. Augmented Bayesian Search (ABS)
+  Bayesian policy search usually treats the return of a policy as a black box. Augmented Bayesian Search (ABS)
   gives it a prior built from a learned critic, and outperforms earlier Bayesian optimization methods as policies grow.
 
 authors:
@@ -112,9 +112,9 @@ questions:
             Maximum discounted return on the MuJoCo-v4 tasks, 5 seeds per algorithm; #n_dims is the number of
             policy parameters.
       findings:
-        - "**ABS consistently outperforms MPD, and pulls ahead of ARS on Walker2d and Ant.**"
+        - "**ABS outperforms MPD, and pulls ahead of ARS on Walker2d and Ant.**"
         - >-
-          On low-dimensional tasks ABS is competitive with MPD, the state of the art of local Bayesian optimization,
+          On low-dimensional tasks ABS is competitive with MPD, the state of the art in local Bayesian optimization,
           and with Augmented Random Search (ARS).
         - >-
           In high dimensions, ARS and MPD struggle to find good ascent directions, while the advantage mean function focuses the search on promising regions of the parameter
@@ -136,7 +136,7 @@ questions:
         - "**The best critic explains about half of the variance of the observed returns.**"
         - >-
           The validation score stays positive. The test score on new acquisition points is often positive and
-          sometimes negative, which is enough: the mean function only has to identify one good descent direction at
+          sometimes negative, which is enough: the mean function only has to identify one good ascent direction at
           a time.
         - >-
           The two scores are positively correlated, and validation acts as an upper bound on test, as in supervised
