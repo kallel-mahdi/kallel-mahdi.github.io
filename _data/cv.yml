@@ -28,7 +28,7 @@ cv:
         journal: AXIOM Workshop at NeurIPS 2026
         publisher: AXIOM Workshop at NeurIPS 2026
         date: 2026
-        url: https://www.eurecom.fr/en/publication/8988
+        url: https://openreview.net/forum?id=Kgz0zlJVS6
         summary: "Uses random matrix theory to explain loss of plasticity. Over a stream of tasks, the directions that hold earlier knowledge absorb a growing share of each new gradient. Making them read-only keeps the network trainable without losing what it learned."
 
       - title: "Do Not Imitate, Reinforce: Iterative Classification via Belief Refinement"
