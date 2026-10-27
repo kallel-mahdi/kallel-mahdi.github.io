@@ -61,7 +61,7 @@ ninja.data = [{
           description: "",
           section: "News",},{id: "projects-augmented-bayesian-policy-search",
           title: 'Augmented Bayesian Policy Search',
-          description: "Bayesian policy search usually treats the return of a policy as a black box. Augmented Bayesian Search (ABS) gives it a prior built from a learned critic, and outperforms earlier Bayesian optimization methods as policies grow.",
+          description: "Bayesian policy search usually treats the return of a policy as a black box. Augmented Bayesian Search (ABS) gives it a prior built from a learned critic through the performance difference lemma, which also gives a criterion to validate that critic. ABS outperforms earlier Bayesian optimization methods as policies grow.",
           section: "Projects",handler: () => {
               window.location.href = "/papers/abs/";
             },},{id: "projects-do-not-imitate-reinforce",
