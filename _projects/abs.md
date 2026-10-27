@@ -35,9 +35,8 @@ hero:
   caption: >-
     One ABS iteration on Pendulum, whose policy has two parameters, rerun from the paper's code. The map shows how
     informative a rollout at each point would be about the ascent direction at the policy θ (star). ABS runs the
-    most informative rollout; with each return, the posterior mean of the gradient (purple) and its uncertainty
-    (cone) move away from the critic's policy gradient (violet), and θ then steps along the most probable ascent
-    direction.
+    most informative rollout; with each return, the posterior mean of the gradient (purple) moves away from the
+    critic's policy gradient (violet), and θ then steps along the most probable ascent direction.
 
 tldr: >-
   Deterministic policies are often preferred on physical systems, yet exploration in reinforcement learning is
