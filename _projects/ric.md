@@ -79,7 +79,7 @@ method:
 questions:
   title: Results
   items:
-    - title: Different generalization dynamics
+    - title: Generalizes better at the same training accuracy
       thumb: papers/ric/dynamics.png
       figures:
         - src: papers/ric/dynamics.png
@@ -97,7 +97,7 @@ questions:
           Policy-gradient updates are noisier, so RIC-SPO fits the training set more gradually, yet at matched
           training accuracy it generalizes better on CIFAR-10, Galaxy10 and ImageWoof.
 
-    - title: More robust to label noise
+    - title: Stays calibrated under label noise
       thumb: papers/ric/noise.svg
       figures:
         - src: papers/ric/noise.svg
@@ -116,7 +116,7 @@ questions:
           With noisy labels the target itself is less certain, so RIC's confidence settles lower and
           mislabeled examples keep moderate probabilities.
 
-    - title: Calibrated at test time
+    - title: More accurate and better calibrated at test time
       thumb: papers/ric/ece_woof.svg
       figures:
         - src: papers/ric/ece_woof.svg
@@ -139,7 +139,7 @@ questions:
         - >-
           ACT and PonderNet refine recurrently too, yet their calibration tracks SL's.
 
-    - title: Compute goes where it still pays
+    - title: More refinement where it helps
       thumb: papers/ric/adaptive_compute.svg
       figures:
         - src: papers/ric/adaptive_compute.svg

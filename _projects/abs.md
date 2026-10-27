@@ -59,20 +59,20 @@ method:
         \mu_\theta &= \nabla_\theta m(\theta) + \nabla_\theta K(\theta, X)\,K(X, X)^{-1}\big(Y - m(X)\big), \\
         \Sigma_\theta &= \nabla_\theta K(\theta, \theta) - \nabla_\theta K(\theta, X)\,K(X, X)^{-1}\,\nabla_\theta K(X, \theta)
         \end{aligned}
-    - title: Performance difference lemma
+    - title: Compare any policy to the current one
       text: >-
         The return of any policy $\pi_x$ can be written relative to the current policy $\pi_\theta$, through the
         advantage of $\pi_\theta$ under the states that $\pi_x$ visits.
       eq: >-
         J(\pi_x) = J(\pi_\theta) + \mathbb{E}_{s \sim d^{\pi_x}}\big[A^{\pi_\theta}(s, \pi_x(s))\big]
-    - title: Advantage mean function
+    - title: The critic becomes the prior
       text: >-
         Roll out the central point $\theta$, collect $\widehat{J}(\pi_\theta)$ and $\widehat{d}^{\pi_\theta}$, and
         train a critic $\widehat{Q}^{\pi_\theta}$. Evaluating the lemma on the states of $\pi_\theta$ gives a good
         prior for the return of any point $x$.
       eq: >-
         \widehat{m}_\phi(x) = \widehat{J}(\pi_\theta) + \mathbb{E}_{s \sim \widehat{d}^{\pi_\theta}}\big[\widehat{A}^{\pi_\theta}_\phi(s, \pi_x(s))\big]
-    - title: Fitness-aware policy gradient
+    - title: A policy gradient corrected by the data
       text: >-
         With this mean function, the mean of the gradient posterior is the deterministic policy gradient, corrected
         by a term proportional to how badly the mean function fits the observed returns.
@@ -85,7 +85,7 @@ method:
 questions:
   title: Results
   items:
-    - title: Behaviour of the acquisition function
+    - title: Queries follow the gradient posterior
       thumb: papers/abs/acquisition.png
       figures:
         - src: papers/abs/acquisition.png
@@ -103,7 +103,7 @@ questions:
           Acquisitions stay in the immediate vicinity of $\theta$, which keeps $\Vert z - \theta \Vert$ small and with it
           the residual term of the decomposition behind the mean function.
 
-    - title: Locomotion tasks
+    - title: Outperforms Bayesian optimization, most in high dimensions
       thumb: papers/abs/performance_highdim.png
       figures:
         - src: papers/abs/performance.png
@@ -120,7 +120,7 @@ questions:
           In high dimensions, ARS and MPD struggle to find good ascent directions, while the advantage mean function focuses the search on promising regions of the parameter
           space.
 
-    - title: Critic validation loss
+    - title: An imperfect critic is enough
       thumb: papers/abs/r2_hist.png
       figures:
         - src: papers/abs/r2.png
@@ -142,7 +142,7 @@ questions:
           The two scores are positively correlated, and validation acts as an upper bound on test, as in supervised
           learning.
 
-    - title: Adaptive aggregation of critics
+    - title: Weighting and resetting critics works best
       thumb: papers/abs/ablation.png
       figures:
         - src: papers/abs/ablation.png
