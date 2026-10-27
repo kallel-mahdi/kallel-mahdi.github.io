@@ -29,7 +29,7 @@ cv:
         publisher: AXIOM Workshop at NeurIPS 2026
         date: 2026
         url: https://openreview.net/forum?id=Kgz0zlJVS6
-        summary: "Uses random matrix theory to explain loss of plasticity. Over a stream of tasks, the directions that hold earlier knowledge absorb a growing share of each new gradient. Making them read-only keeps the network trainable without losing what it learned."
+        summary: "Uses random matrix theory to explain loss of plasticity, and shows that protecting the directions that hold old knowledge keeps networks trainable."
 
       - title: "Do Not Imitate, Reinforce: Iterative Classification via Belief Refinement"
         authors:
@@ -41,7 +41,7 @@ cv:
         publisher: Transactions on Machine Learning Research (TMLR), 2026
         date: 2026
         url: https://arxiv.org/abs/2604.22110
-        summary: "Trains classifiers with reinforcement learning instead of imitating labels with cross-entropy: a recurrent agent refines its prediction step by step and is rewarded for each improvement. It achieves a better balance of accuracy and calibration than supervised training, and stays calibrated under human label noise, where cross-entropy grows overconfident."
+        summary: "Trains classifiers by reinforcement learning, rewarding every step that improves the prediction. Achieves a better balance of accuracy and calibration than cross-entropy and stays robust to label noise."
 
       - title: "PPO+: Enhancing Proximal Policy Optimization"
         authors:
@@ -53,7 +53,7 @@ cv:
         publisher: Reinforcement Learning Journal (RLC 2026)
         date: 2026
         url: https://rlj.cs.umass.edu/2026/papers/Paper8.html
-        summary: "Shows that PPO is held back by its critic. Training the critic on off-policy data, while keeping the policy update on-policy, substantially improves PPO and narrows the gap to off-policy algorithms, without implementation tricks."
+        summary: "Shows that PPO is held back by its critic, and fixes it with an off-policy critic."
 
       - title: "Use the Online Network If You Can: Towards Fast and Stable Reinforcement Learning"
         authors:
@@ -78,7 +78,7 @@ cv:
         publisher: ICLR 2024
         date: 2024
         url: https://proceedings.iclr.cc/paper_files/paper/2024/hash/7eca17ef54789b0663cab421f2e9dbf5-Abstract-Conference.html
-        summary: "Makes Bayesian policy search aware that it is solving an MDP: the performance difference lemma turns a learned critic into the prior over returns. The method outperforms earlier Bayesian optimization approaches, with the largest gains on high-dimensional policies."
+        summary: "Turns a learned critic into the prior of Bayesian policy search, outperforming earlier Bayesian optimization methods in high dimensions."
 
       - title: Cyclicity-Regularized Coordination Graphs
         authors:
