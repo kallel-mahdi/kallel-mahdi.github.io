@@ -12,3 +12,30 @@
     max-width: 75%;
   }
 }
+
+// The whole entry opens the paper: the title link stretches over the row, and the badge, authors, buttons and
+// expanded abstract/bibtex sit above it so they keep their own clicks.
+.publications .bibliography li > .row {
+  position: relative;
+
+  > [class*="col"] {
+    position: static;
+  }
+
+  .title a::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  .badge,
+  .author a,
+  .author .more-authors,
+  .links a,
+  .abstract,
+  .bibtex {
+    position: relative;
+    z-index: 2;
+  }
+}
