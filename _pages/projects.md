@@ -2,7 +2,6 @@
 layout: page
 title: projects
 permalink: /projects/
-description: Interactive pages for my papers.
 nav: true
 nav_order: 3
 display_categories: [work]

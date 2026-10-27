@@ -32,10 +32,11 @@ hook: >-
 hero:
   src: papers/abs/acquisition_paper.gif
   caption: >-
-    The paper's acquisition sequence on Pendulum, whose policy has two parameters. The map shows how informative a
-    rollout at each point would be about the ascent direction at the policy θ (star). ABS runs the most informative
-    rollout, and with each observed return the posterior mean of the gradient (purple) moves away from the critic's
-    policy gradient (violet).
+    One ABS iteration on Pendulum, whose policy has two parameters, rerun from the paper's code. The map shows how
+    informative a rollout at each point would be about the ascent direction at the policy θ (star). ABS runs the
+    most informative rollout; with each return, the posterior mean of the gradient (purple) and its uncertainty
+    (cone) move away from the critic's policy gradient (violet), and θ then steps along the most probable ascent
+    direction.
 
 tldr: >-
   Deterministic policies are often preferred on physical systems, yet exploration in reinforcement learning is
@@ -43,7 +44,7 @@ tldr: >-
   through a probabilistic model of the return and its gradient, but treats policy search as a black box. Augmented
   Bayesian Search (ABS) uses the performance difference lemma to give that model a mean function built from the
   action-value function. The posterior gradient then **augments Bayesian optimization with the deterministic policy
-  gradient**, and ABS outperforms earlier Bayesian optimization methods, with the widest margin on
+  gradient**, and the same lemma gives **a criterion to validate critics** on any rollout. ABS outperforms earlier Bayesian optimization methods, with the widest margin on
   high-dimensional policies.
 
 method:
@@ -69,18 +70,17 @@ method:
       text: >-
         Roll out the central point $\theta$, collect $\widehat{J}(\pi_\theta)$ and $\widehat{d}^{\pi_\theta}$, and
         train a critic $\widehat{Q}^{\pi_\theta}$. Evaluating the lemma on the states of $\pi_\theta$ gives a good
-        prior for the return of any point $x$.
+        prior for the return of any point $x$. The mean of the gradient posterior is then the deterministic policy
+        gradient, corrected where this prior misses the observed returns.
       eq: >-
         \widehat{m}_\phi(x) = \widehat{J}(\pi_\theta) + \mathbb{E}_{s \sim \widehat{d}^{\pi_\theta}}\big[\widehat{A}^{\pi_\theta}_\phi(s, \pi_x(s))\big]
-    - title: A policy gradient corrected by the data
+    - title: The lemma also validates the critic
       text: >-
-        With this mean function, the mean of the gradient posterior is the deterministic policy gradient, corrected
-        by a term proportional to how badly the mean function fits the observed returns.
+        Rolling out any point $x$ gives its return $\widehat{J}(\pi_x)$ and its states $\widehat{d}^{\pi_x}$. The
+        lemma then predicts that return from the critic, so its error measures the critic on trajectories other
+        than those of $\pi_\theta$. ABS weights an ensemble of critics by this criterion.
       eq: >-
-        \begin{aligned}
-        \mu_\theta = {} & \mathbb{E}_{s \sim \widehat{d}^{\pi_\theta}}\big[\nabla_a \widehat{Q}^{\pi_\theta}_\phi(s, a)\,\nabla_\theta \pi_\theta(s)\big] \\
-        & + \nabla_\theta K(\theta, X)\,K(X, X)^{-1}\big(\widehat{J}(X) - \widehat{m}_\phi(X)\big)
-        \end{aligned}
+        \Big(\widehat{J}(\pi_\theta) + \mathbb{E}_{s \sim \widehat{d}^{\pi_x}}\big[\widehat{A}^{\pi_\theta}_\phi(s, \pi_x(s))\big] - \widehat{J}(\pi_x)\Big)^2
 
 questions:
   title: Results
