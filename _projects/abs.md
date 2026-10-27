@@ -30,12 +30,12 @@ hook: >-
   What if Bayesian policy search knew it was solving an MDP?
 
 hero:
-  src: papers/abs/acquisition_loop.gif
+  src: papers/abs/acquisition_paper.gif
   caption: >-
-    One ABS iteration on a synthetic 2-D illustration. Around the current policy θ (star), the gradient posterior
-    (purple cone) starts from the critics' policy gradient (pink) and turns toward the observed returns; each
-    acquisition is the rollout that most raises the probability of ascent, and the policy then steps along the most
-    probable ascent direction.
+    The paper's acquisition sequence on Pendulum, whose policy has two parameters. The map shows how informative a
+    rollout at each point would be about the ascent direction at the policy θ (star). ABS runs the most informative
+    rollout, and with each observed return the posterior mean of the gradient (purple) moves away from the critic's
+    policy gradient (violet).
 
 tldr: >-
   Deterministic policies are often preferred on physical systems, yet exploration in reinforcement learning is
