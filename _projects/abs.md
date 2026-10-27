@@ -8,7 +8,8 @@ importance: 2
 category: work
 description: >-
   Bayesian policy search usually treats the return of a policy as a black box. Augmented Bayesian Search (ABS)
-  gives it a prior built from a learned critic, and outperforms earlier Bayesian optimization methods as policies grow.
+  gives it a prior built from a learned critic through the performance difference lemma, which also gives a criterion to
+  validate that critic. ABS outperforms earlier Bayesian optimization methods as policies grow.
 
 authors:
   - { name: Mahdi Kallel, url: /, me: true, affil: [1] }
@@ -74,13 +75,16 @@ method:
         gradient, corrected where this prior misses the observed returns.
       eq: >-
         \widehat{m}_\phi(x) = \widehat{J}(\pi_\theta) + \mathbb{E}_{s \sim \widehat{d}^{\pi_\theta}}\big[\widehat{A}^{\pi_\theta}_\phi(s, \pi_x(s))\big]
-    - title: The lemma also validates the critic
+    - title: The lemma gives a criterion to validate critics
       text: >-
-        Rolling out any point $x$ gives its return $\widehat{J}(\pi_x)$ and its states $\widehat{d}^{\pi_x}$. The
-        lemma then predicts that return from the critic, so its error measures the critic on trajectories other
-        than those of $\pi_\theta$. ABS weights an ensemble of critics by this criterion.
+        Rolling out any point $x$ gives its return $\widehat{J}(\pi_x)$ and its states $\widehat{d}^{\pi_x}$. On
+        those states the lemma predicts the return from the critic, so the prediction error measures the critic on
+        trajectories other than those of $\pi_\theta$. ABS weights an ensemble of critics by this criterion.
       eq: >-
-        \Big(\widehat{J}(\pi_\theta) + \mathbb{E}_{s \sim \widehat{d}^{\pi_x}}\big[\widehat{A}^{\pi_\theta}_\phi(s, \pi_x(s))\big] - \widehat{J}(\pi_x)\Big)^2
+        \begin{aligned}
+        \widetilde{m}_\phi(x) &= \widehat{J}(\pi_\theta) + \mathbb{E}_{s \sim \widehat{d}^{\pi_x}}\big[\widehat{A}^{\pi_\theta}_\phi(s, \pi_x(s))\big], \\
+        \text{error}_\phi(x) &= \big(\widetilde{m}_\phi(x) - \widehat{J}(\pi_x)\big)^2
+        \end{aligned}
 
 questions:
   title: Results
