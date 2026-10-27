@@ -7,9 +7,10 @@ img: assets/img/papers/abs/card.png # card image on the projects page
 importance: 2
 category: work
 description: >-
-  Bayesian policy search usually treats the return of a policy as a black box. Augmented Bayesian Search (ABS)
-  gives it a prior built from a learned critic through the performance difference lemma, which also gives a criterion to
-  validate that critic. ABS outperforms earlier Bayesian optimization methods as policies grow.
+  Bayesian policy search explores with deterministic policies but treats the return of a policy as a black box.
+  Augmented Bayesian Search (ABS) gives it a prior built from a learned critic through the performance difference
+  lemma, so the search follows the deterministic policy gradient corrected by the observed returns. ABS outperforms
+  previous Bayesian optimization methods, most clearly in high dimensions.
 
 authors:
   - { name: Mahdi Kallel, url: /, me: true, affil: [1] }
@@ -34,51 +35,79 @@ hero:
   src: papers/abs/acquisition_paper.gif
   caption: >-
     One ABS iteration on Pendulum, whose policy has two parameters, rerun from the paper's code. The map shows how
-    informative a rollout at each point would be about the ascent direction at the policy θ (star). ABS runs the
-    most informative rollout; with each return, the posterior mean of the gradient (purple) moves away from the
-    critic's policy gradient (violet), and θ then steps along the most probable ascent direction.
+    informative a rollout at each point would be about the ascent direction at the policy θ (star). ABS runs the most
+    informative rollout, and with each return the posterior mean of the gradient (dark purple) corrects the critic's
+    policy gradient (pink). θ then steps along the most probable ascent direction.
 
 tldr: >-
-  Deterministic policies are often preferred on physical systems, yet exploration in reinforcement learning is
-  largely performed by stochastic policies. First-order Bayesian optimization explores with deterministic policies
-  through a probabilistic model of the return and its gradient, but treats policy search as a black box. Augmented
-  Bayesian Search (ABS) uses the performance difference lemma to give that model a mean function built from the
-  action-value function. The posterior gradient then **augments Bayesian optimization with the deterministic policy
-  gradient**, and the same lemma gives **a criterion to validate critics** on any rollout. ABS outperforms earlier Bayesian optimization methods, with the widest margin on
-  high-dimensional policies.
+  Augmented Bayesian Search (ABS) gives Bayesian policy search a prior that knows it is solving an MDP. Through the
+  performance difference lemma, a critic of the current policy predicts the returns of nearby policies, and the
+  gradient the search follows becomes **the deterministic policy gradient, corrected by the observed returns**. ABS
+  explores with deterministic policies only and outperforms previous Bayesian optimization methods, most clearly in
+  high dimensions.
 
 method:
   title: How it works
+  intro: >-
+    Reinforcement learning usually explores with stochastic policies, yet deterministic policies are preferable on
+    physical systems because they avoid erratic, potentially damaging behavior and are easier to implement and
+    interpret. Bayesian optimization explores with deterministic policies by modeling the return as a function of the
+    policy parameters. ABS builds on MPD (Maximum Probability of Descent), a local variant. Around a central policy
+    $\theta$, MPD rolls out the acquisition points $z$ that are most informative about the gradient at $\theta$,
+    steps $\theta$ along the most probable ascent direction, and repeats. Like most Bayesian optimization, it treats
+    the return as a black box and discards the trajectories behind each return. The steps below show how ABS turns
+    those trajectories into a prior and what that prior does to the gradient.
   steps:
-    - title: The derivative of a GP is a GP
+    - title: The gradient of a GP is a GP
       text: >-
-        Model the policy return as a Gaussian process over the policy parameters. Given a central point $\theta$ and
-        the returns $Y$ observed at points $X$, the gradient at $\theta$ has a Gaussian posterior
-        $\mathcal{N}(\mu_\theta, \Sigma_\theta)$.
+        MPD models the return as a Gaussian process over policy parameters, with prior mean $m$ and kernel $K$. The
+        derivative of a Gaussian process is again a Gaussian process, so after observing returns $Y$ at points $X$,
+        the gradient at $\theta$ has a Gaussian posterior $\mathcal{N}(\mu_\theta, \Sigma_\theta)$. Its mean starts
+        from the gradient of the prior, $\nabla_\theta m(\theta)$, and corrects it where the prior misses the
+        observations. The usual prior is constant, so that first term vanishes and the data must do all the work. A
+        prior that already knows the slope of the return would give a good gradient from few rollouts.
       eq: >-
         \begin{aligned}
         \mu_\theta &= \nabla_\theta m(\theta) + \nabla_\theta K(\theta, X)\,K(X, X)^{-1}\big(Y - m(X)\big), \\
         \Sigma_\theta &= \nabla_\theta K(\theta, \theta) - \nabla_\theta K(\theta, X)\,K(X, X)^{-1}\,\nabla_\theta K(X, \theta)
         \end{aligned}
-    - title: Compare any policy to the current one
+    - title: Performance difference lemma
       text: >-
-        The return of any policy $\pi_x$ can be written relative to the current policy $\pi_\theta$, through the
-        advantage of $\pi_\theta$ under the states that $\pi_x$ visits.
+        The performance difference lemma provides such a prior. It writes the return of any policy $\pi_x$ as the
+        return of the current policy $\pi_\theta$ plus the advantage of $\pi_\theta$, averaged over the states that
+        $\pi_x$ visits. Everything on the right concerns $\pi_\theta$, whose trajectories we have, except the state
+        distribution $d^{\pi_x}$ of a policy we have not run.
       eq: >-
         J(\pi_x) = J(\pi_\theta) + \mathbb{E}_{s \sim d^{\pi_x}}\big[A^{\pi_\theta}(s, \pi_x(s))\big]
-    - title: The critic becomes the prior
+    - title: Advantage mean function
       text: >-
-        Roll out the central point $\theta$, collect $\widehat{J}(\pi_\theta)$ and $\widehat{d}^{\pi_\theta}$, and
-        train a critic $\widehat{Q}^{\pi_\theta}$. Evaluating the lemma on the states of $\pi_\theta$ gives a good
-        prior for the return of any point $x$. The mean of the gradient posterior is then the deterministic policy
-        gradient, corrected where this prior misses the observed returns.
+        ABS rolls out the central point $\theta$, collects its return $\widehat{J}(\pi_\theta)$ and states
+        $\widehat{d}^{\pi_\theta}$, and trains a critic $\widehat{Q}^{\pi_\theta}_\phi$ on its transitions, which
+        gives the advantage $\widehat{A}^{\pi_\theta}_\phi$. Replacing the unknown $d^{\pi_x}$ by
+        $\widehat{d}^{\pi_\theta}$ leaves a residual, which the paper bounds in Lipschitz MDPs by how far the actions
+        of the two policies differ. Near $\theta$ the residual is small, so the remaining term is a good prior for the
+        return of any point $x$. It acts like a first-order expansion of the return around $\theta$, and the Gaussian
+        process only has to model what it misses.
       eq: >-
         \widehat{m}_\phi(x) = \widehat{J}(\pi_\theta) + \mathbb{E}_{s \sim \widehat{d}^{\pi_\theta}}\big[\widehat{A}^{\pi_\theta}_\phi(s, \pi_x(s))\big]
-    - title: The lemma gives a criterion to validate critics
+    - title: Fitness-aware policy gradient
       text: >-
-        Rolling out any point $x$ gives its return $\widehat{J}(\pi_x)$ and its states $\widehat{d}^{\pi_x}$. On
-        those states the lemma predicts the return from the critic, so the prediction error measures the critic on
-        trajectories other than those of $\pi_\theta$. ABS weights an ensemble of critics by this criterion.
+        The gradient of this prior at $\theta$ is the deterministic policy gradient of the critic. The posterior mean
+        is therefore that policy gradient plus a correction that grows with how far the prior misses the observed
+        returns. Where the critic predicts the returns well, ABS follows the policy gradient, and where it does not,
+        the observed returns take over. One estimate thus connects Bayesian optimization and policy gradient methods.
+      eq: >-
+        \begin{aligned}
+        \mu_\theta = {}& \underbrace{\mathbb{E}_{s \sim \widehat{d}^{\pi_\theta}}\big[\nabla_a \widehat{Q}^{\pi_\theta}_\phi(s, a)\big|_{a=\pi_\theta(s)}\nabla_\theta \pi_\theta(s)\big]}_{\text{deterministic policy gradient}} \\
+        &+ \underbrace{\nabla_\theta K(\theta, X)\,K(X, X)^{-1}\big(\widehat{J}(X) - \widehat{m}_\phi(X)\big)}_{\text{correction from the observed returns}}
+        \end{aligned}
+    - title: A criterion to validate critics
+      text: >-
+        The same lemma also measures how good a critic is. Rolling out any point $x$ gives its return
+        $\widehat{J}(\pi_x)$ and its own states $\widehat{d}^{\pi_x}$. On those states the lemma holds exactly, so a
+        good critic should reproduce the observed return, and the prediction error tests the critic on trajectories it
+        was not trained on. Every acquisition thus becomes validation data, and ABS uses this score to weight an
+        ensemble of critics.
       eq: >-
         \begin{aligned}
         \widetilde{m}_\phi(x) &= \widehat{J}(\pi_\theta) + \mathbb{E}_{s \sim \widehat{d}^{\pi_x}}\big[\widehat{A}^{\pi_\theta}_\phi(s, \pi_x(s))\big], \\
@@ -87,80 +116,67 @@ method:
 
 questions:
   title: Results
+  intro: >-
+    We compare ABS with MPD and with Augmented Random Search (ARS) on MuJoCo locomotion tasks of increasing
+    dimension.
   items:
-    - title: Queries follow the gradient posterior
+    - title: Where does ABS look next?
       thumb: papers/abs/acquisition.png
       figures:
         - src: papers/abs/acquisition.png
           wide: true
           caption: >-
-            Acquisition function of MPD augmented with the advantage mean function, at $t = 0, 1, 2$: first only the
-            central point $\theta$ (star) is observed, then the acquisition points $z$ (white).
+            Acquisition function around the central point $\theta$ (star) over three queries, with acquisitions in
+            white.
       findings:
         - "**The next query lies in the direction of the gradient posterior.**"
         - >-
-          The maximum of the acquisition function follows the posterior mean $\mu_\theta$ (violet), which corrects
-          the mean-function gradient $\nabla_\theta \widehat{m}_\phi$ (pink) when the mean function does not fit the
-          observations.
-        - >-
-          Acquisitions stay in the immediate vicinity of $\theta$, which keeps $\Vert z - \theta \Vert$ small and with it
-          the residual term of the decomposition behind the mean function.
+          The posterior mean $\mu_\theta$ (violet) corrects the critic's gradient (pink) where the prior misses the
+          observations. Queries stay close to $\theta$, where the prior is reliable.
 
-    - title: Outperforms Bayesian optimization, most in high dimensions
-      thumb: papers/abs/performance_highdim.png
-      figures:
-        - src: papers/abs/performance.png
-          wide: true
-          caption: >-
-            Maximum discounted return on the MuJoCo-v4 tasks, 5 seeds per algorithm; #n_dims is the number of
-            policy parameters.
-      findings:
-        - "**ABS outperforms MPD, and pulls ahead of ARS on Walker2d and Ant.**"
-        - >-
-          On low-dimensional tasks ABS is competitive with MPD, the state of the art in local Bayesian optimization,
-          and with Augmented Random Search (ARS).
-        - >-
-          In high dimensions, ARS and MPD struggle to find good ascent directions, while the advantage mean function focuses the search on promising regions of the parameter
-          space.
-
-    - title: An imperfect critic is enough
+    - title: Is the advantage mean function a good prior?
       thumb: papers/abs/r2_hist.png
       figures:
         - src: papers/abs/r2.png
           wide: true
           caption: >-
-            Validation and test scores of the critics during one run on HalfCheetah, Walker2d and Ant.
+            Validation and test scores ($R^2$) of the critics during training.
         - src: papers/abs/r2_hist.png
           wide: true
           caption: >-
-            Histograms and correlation of the same scores; dashed lines mark the medians, and scores are clipped to
-            $[-1, 1]$.
+            Histograms and correlation of the same scores.
       findings:
-        - "**The best critic explains about half of the variance of the observed returns.**"
+        - "**The critic-based prior explains a substantial share of the observed returns.**"
         - >-
-          The validation score stays positive. The test score on new acquisition points is often positive and
-          sometimes negative, which is enough: the mean function only has to identify one good ascent direction at
-          a time.
-        - >-
-          The two scores are positively correlated, and validation acts as an upper bound on test, as in supervised
-          learning.
+          Validation tracks test as in supervised learning, and the prior only needs to find one good ascent
+          direction at a time.
 
-    - title: Weighting and resetting critics works best
+    - title: Does it make Bayesian optimization more efficient?
+      thumb: papers/abs/performance_highdim.png
+      figures:
+        - src: papers/abs/performance.png
+          wide: true
+          caption: >-
+            Maximum return on MuJoCo tasks, where #n_dims is the number of policy parameters.
+      findings:
+        - "**ABS consistently outperforms MPD, and its advantage grows in high dimensions.**"
+        - >-
+          Where MPD and ARS struggle to find good ascent directions, the advantage mean function focuses the search
+          on promising regions of the parameter space.
+
+    - title: Does the validation criterion help pick critics?
       thumb: papers/abs/ablation.png
       figures:
         - src: papers/abs/ablation.png
           wide: true
           caption: >-
-            Ablation of the critic ensemble: a single critic, average or softmax weighting by validation score, each
+            Ablation of the critic ensemble with a single critic, an average, or a validation-weighted ensemble, each
             with or without resetting the worst critic (+ R).
       findings:
-        - "**Softmax weighting with resets beats every other ensemble.**"
+        - "**Validation weighting with resets beats every other variant.**"
         - >-
-          An ensemble outperforms a single critic, and weighting critics by their validation score outperforms
-          plain averaging, especially early on, when transition data is scarce.
-        - >-
-          Resetting the worst critic helps most together with adaptive weighting, since the validation score
-          detects a freshly reset critic and ignores its predictions.
+          ABS weights its critics by their validation score and resets the worst one. The score recognizes a freshly
+          reset critic and ignores it until it has learned, which makes resetting safe.
 
 remarks:
   items:

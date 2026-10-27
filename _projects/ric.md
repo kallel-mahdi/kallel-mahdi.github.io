@@ -28,144 +28,158 @@ links:
   - { label: Code, icon: fa-brands fa-github, url: "https://github.com/kallel-mahdi/ric" }
 
 hook: >-
-  A classifier rewarded for improving its prediction, not for copying the label.
+  Today classifiers imitate their labels in a single pass and learn to be certain. What if classification used the
+  full strength of reinforcement learning?
 
 hero:
   src: papers/ric/ric-refinement.gif
   caption: >-
-    An actor refines its prediction; a critic decides when
-    to stop (green: continue, red: stop and return the current belief).
+    An actor refines its prediction step by step, and a critic estimates the improvement still left and decides when
+    to stop. Green means continue, red means stop and return the current prediction.
 
 tldr: >-
-  Reinforced Iterative Classification (RIC) casts classification as a Markov decision process in which
-  a recurrent actor iteratively refines a predictive distribution and is rewarded for the increase in log
-  probability assigned to the label; a critic estimates the value of continued refinement and supplies a
-  stopping rule at inference. In the deterministic limit RIC targets the same prediction as cross-entropy,
-  but it reaches that target along a different path: **accuracy rises ahead of confidence**.
-  Across ten image classification benchmarks, including medical images, RIC-SPO (RIC trained with Simple
-  Policy Optimization) achieves a better balance between accuracy and calibration than single-pass and
-  adaptive supervised baselines.
+  Reinforced Iterative Classification (RIC) rewards a classifier for improving its prediction instead of training it
+  to imitate its labels. A recurrent actor refines its prediction step by step and earns a reward for every step
+  toward the label, and a critic decides when to stop. Learning from returns gives **fundamentally different learning
+  and generalization dynamics** from supervised training, and a better balance of accuracy and calibration across ten
+  image benchmarks.
 
 method:
   title: How it works
+  intro: >-
+    Early learning systems learned by trial and error, improving a little at a time. As Andrew Barto put it at RLC
+    2024, *"in the beginning, machine learning was reinforcement learning."* RIC brings this view back to
+    classification. Each labeled example becomes a short episode. The prediction starts uniform over the $K$ classes,
+    and at every step a recurrent network reads the input and the current prediction, a policy head proposes the next
+    class distribution, and a value head estimates whether refining further is worth it. The four steps below show
+    what this agent is trained for and why it learns differently from cross-entropy.
   steps:
-    - title: Start from a uniform belief
+    - title: Reward every improvement
       text: >-
-        Each labeled example is its own small episode. The state holds the input, the current prediction,
-        and a latent state, and the prediction starts from the uniform prior over the $K$ classes.
-      eq: s_0 = (x, a_0, \tau_0), \qquad a_0 = [1/K, \dots, 1/K], \qquad \tau_0 = \mathbf{0}
-    - title: Refine the class distribution
+        Cross-entropy tells the model what to output. RIC only tells it how much its last step helped. The reward is
+        the change in log probability that the prediction assigns to the true label $y$, positive for a step toward
+        $y$ and negative for a step away from it. Because the actor samples its predictions, it has to find out by
+        itself which refinements pay off.
+      eq: r_t = \log a_{t,y} - \log a_{t-1,y}
+    - title: Discounting trains every depth
       text: >-
-        A recurrent backbone updates the latent state from the input and the previous prediction. A
-        Dirichlet policy head then samples the next class distribution on the simplex, and a value head
-        predicts how much refinement remains useful.
-      eq: \tau_{t+1} = f_\theta(x, \tau_t, a_t), \qquad a_{t+1} \sim \mathrm{Dir}(c\mu)
-    - title: Discounting trains every refinement depth
-      text: >-
-        Reward the gain in label log-probability. The rewards telescope, so the discounted return scores the
-        prediction at a random, geometrically distributed depth $N$: every step has to be a good answer,
-        which makes RIC an anytime classifier.
+        Over an episode the rewards telescope, and only the first and the current prediction remain. With a discount
+        $\gamma$, the expected return becomes the log probability of the label at a random depth $N$ drawn from a
+        geometric distribution. Every depth carries weight, so every intermediate prediction is trained to be a good
+        answer. RIC can therefore stop at any step and still return a useful prediction, and the critic of step 4
+        decides when.
       eq: >-
-        r_t = \log a_{t,y} - \log a_{t-1,y}, \qquad
         \mathbb{E}\Big[\textstyle\sum_{t\ge1}\gamma^{t-1} r_t\Big] = \mathbb{E}_{N\sim\mathrm{Geom}(1-\gamma)}\big[\log a_{N,y}\big] + \log K
-    - title: The critic measures the improvement left
+    - title: Same target, different learning
       text: >-
-        Measure the error $L_t = \mathrm{KL}(q\,\Vert\,a_t)$ to the true conditional $q$. Label ambiguity
-        cancels, so the value tracks only reducible error: refinement continues while $V(s_t) > 0$ and stops
-        once $V(s_t) \le 0$.
+        For labels drawn from the true conditional $q(\cdot \mid x)$, the expected cross-entropy of a stochastic
+        prediction with mean $\mu$ splits into three parts. No model can remove the label ambiguity, while the error
+        of the mean prediction and the cost of random actions can be removed. Maximizing the return drives these two
+        to zero at every depth, so a deterministic RIC policy predicts $q(\cdot \mid x)$, the same target as
+        cross-entropy.
+
+
+        The two objectives differ in how they reach it. Cross-entropy differentiates the loss of each prediction and
+        pushes it toward the label as long as any gap remains, so confidence grows with fitting. RIC learns through
+        the policy gradient, which moves a prediction only while its sampled refinements earn distinguishable
+        returns. This difference in learning is the source of the different dynamics in the results.
+      eq: >-
+        \mathbb{E}_{y\sim q,\,a\sim\pi}\big[-\log a_y\big] = \underbrace{H(q)}_{\text{label ambiguity}} + \underbrace{\mathrm{KL}(q\,\Vert\,\mu)}_{\text{mean prediction error}} + \underbrace{\mathbb{E}\big[D_F(a_y \,\Vert\, \mu_y)\big]}_{\text{cost of stochastic actions}}
+    - title: The critic decides when to stop
+      text: >-
+        Write $L_t = \mathrm{KL}(q\,\Vert\,a_t)$ for the error of the current prediction. The value of a state
+        compares this error with the expected error after further refinement. The label ambiguity is the same now and
+        later and cancels, so the critic measures only the error that refinement can still remove. Refinement
+        continues while $V(s_t) > 0$ and stops once $V(s_t) \le 0$. An ambiguous input can stop early with an
+        uncertain prediction, and a confident but wrong one keeps refining. The stopping rule comes from the critic
+        RIC already trains, with no ponder penalty or separate halting network.
       eq: >-
         V^\pi(s_t) = L_t - \mathbb{E}_{N\sim\mathrm{Geom}(1-\gamma),\,\pi}\!\left[L_{t+N} \mid s_t\right]
 
 questions:
   title: Results
+  intro: >-
+    We train RIC with Simple Policy Optimization (RIC-SPO) and compare it with supervised learning (SL) and with
+    recurrent and evidential baselines on ten image classification benchmarks, including noisy human labels and
+    medical images.
   items:
-    - title: Generalizes better at the same training accuracy
+    - title: How does RIC learn differently?
       thumb: papers/ric/dynamics.png
       figures:
         - src: papers/ric/dynamics.png
           wide: true
           caption: >-
-            CIFAR-10 training dynamics over 1000 epochs, five seeds: (a) normalized return, (b) train and
-            validation accuracy, (c) validation accuracy against training accuracy.
+            Training dynamics with (a) the return normalized by $\log K$, (b) train and validation accuracy, and
+            (c) validation accuracy against training accuracy.
         - src: papers/ric/generalization.png
           wide: true
           caption: >-
-            Validation accuracy against training accuracy on (a) CIFAR-10, (b) Galaxy10, and (c) ImageWoof.
+            Validation accuracy against training accuracy on three datasets.
       findings:
         - "**SL's validation return declines while RIC's holds.**"
         - >-
-          Policy-gradient updates are noisier, so RIC-SPO fits the training set more gradually, yet at matched
-          training accuracy it generalizes better on CIFAR-10, Galaxy10 and ImageWoof.
+          RIC fits the training set more gradually and generalizes better at the same training accuracy. It keeps
+          improving where supervised training starts to overfit.
 
-    - title: Stays calibrated under label noise
+    - title: What happens under label noise?
       thumb: papers/ric/noise.svg
       figures:
         - src: papers/ric/noise.svg
           wide: true
           caption: >-
-            Validation ECE and confidence over training (deterministic evaluation) on (a) CIFAR-10,
-            (b) CIFAR-10N with aggregated human labels (9.03% noise), and (c) CIFAR-10N with worst-case
-            labels (40.21% noise).
+            Expected calibration error (ECE), the gap between confidence and accuracy, and confidence over training,
+            from clean labels (a) to increasingly noisy human labels (b, c).
       findings:
-        - "**At every noise level, RIC ends training with lower ECE than SL.**"
+        - "**At every noise level, RIC ends training better calibrated than SL.**"
         - >-
-          Cross-entropy ties confidence to fitting, so SL is near certain within tens of epochs. In RIC,
-          **accuracy rises ahead of confidence**, and calibration emerges
-          as confidence catches up.
-        - >-
-          With noisy labels the target itself is less certain, so RIC's confidence settles lower and
-          mislabeled examples keep moderate probabilities.
+          Cross-entropy ties confidence to fitting, so SL becomes near certain early. RIC builds confidence at its
+          own pace and keeps moderate probabilities on mislabeled examples.
 
-    - title: More accurate and better calibrated at test time
+    - title: How calibrated is RIC at test time?
       thumb: papers/ric/ece_woof.svg
       figures:
         - src: papers/ric/ece_woof.svg
           wide: true
           caption: >-
-            Confidence distributions and reliability diagrams on ImageWoof (test), aggregated over five
-            models selected by validation loss. RIC-SPO is evaluated deterministically.
+            Confidence distributions and reliability diagrams on a test set.
         - src: papers/ric/rank_pareto_tradeoff.svg
           caption: >-
-            Mean accuracy and ECE ranks across ten datasets with validation-loss checkpoint selection.
-            Lower is better.
+            Mean accuracy and ECE ranks across ten datasets. Lower is better.
       findings:
-        - "**SL is overconfident in every bin. RIC is mildly underconfident in most.**"
+        - "**SL is overconfident. RIC stays close to calibrated.**"
         - >-
-          On ImageWoof, RIC-SPO raises accuracy from 82.1% to 85.3% and more than halves ECE, from 0.085 to 0.038.
+          Across ten datasets, the deterministic readout of RIC favors accuracy and the stochastic readout favors
+          calibration, and together they form the Pareto front.
         - >-
-          Across ten datasets, the deterministic and stochastic readouts form the Pareto front. On medical
-          imaging, stochastic RIC is best or tied on ECE for 5 of 5 MedMNIST subsets, deterministic RIC on
-          accuracy for 4 of 5.
-        - >-
-          ACT and PonderNet refine recurrently too, yet their calibration tracks SL's.
+          Recurrent baselines trained with cross-entropy are calibrated like SL, so the gain comes from learning
+          from returns.
 
-    - title: More refinement where it helps
+    - title: Does the critic spend compute where it pays?
       thumb: papers/ric/adaptive_compute.svg
       figures:
         - src: papers/ric/adaptive_compute.svg
           wide: true
           caption: >-
-            Adaptive computation on ImageWoof (test): (a) discounted return by difficulty, with halting steps
-            marked; (b) confidence and ECE across inference steps; (c) stopping steps for correctly and
-            incorrectly classified inputs.
+            (a) Return by input difficulty, with halting steps marked, (b) confidence and ECE across inference steps,
+            and (c) stopping steps for correct and incorrect predictions.
       findings:
-        - "**Easy images saturate fast. Hard ones stop before reward turns negative.**"
+        - "**Easy inputs saturate fast. Hard ones stop before reward turns negative.**"
         - >-
-          Inputs that end up correctly classified receive more refinement steps than those that end up wrong.
-        - >-
-          Against vine estimates of the true future return, the critic makes the right stop-or-continue call
-          on 69 to 87% of states, erring toward stopping early.
+          The critic makes the right stop-or-continue call on most states, without any extra halting machinery.
 
 remarks:
+  title: Takeaways
   items:
     - >-
-      At deployment, RIC-SPO offers a choice: deterministic rollouts for accuracy, stochastic rollouts for
-      calibration.
+      RIC offers an alternative way to train classifiers, by reinforcement instead of imitation.
     - >-
-      Better reinforcement learning algorithms can improve RIC further while preserving the training dynamics
-      observed here.
+      Freed from imitation, the model builds confidence at its own pace, and calibration emerges in training.
     - >-
-      Temperature scaling and label smoothing are orthogonal to RIC and can be combined with it.
+      The training dynamics favor models that are more robust to label noise.
+    - >-
+      At deployment, deterministic rollouts favor accuracy and stochastic rollouts favor calibration.
+    - >-
+      Better reinforcement learning algorithms could improve both speed and performance.
 
 bibtex: |
   @article{kallel2026ric,
