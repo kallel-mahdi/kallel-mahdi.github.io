@@ -61,12 +61,12 @@ ninja.data = [{
           description: "",
           section: "News",},{id: "projects-augmented-bayesian-policy-search",
           title: 'Augmented Bayesian Policy Search',
-          description: "Augmented Bayesian Search (ABS) explores with deterministic policies through local Bayesian optimization, and gives the Gaussian-process model of the return a mean function built from the action-value function.",
+          description: "Bayesian policy search usually treats reinforcement learning as a black box. Augmented Bayesian Search (ABS) gives it a prior built from a learned critic, and outperforms earlier Bayesian optimization methods as policies grow.",
           section: "Projects",handler: () => {
               window.location.href = "/papers/abs/";
             },},{id: "projects-do-not-imitate-reinforce",
           title: 'Do Not Imitate, Reinforce',
-          description: "Reinforced Iterative Classification (RIC) trains a classifier to refine its own class distribution step by step with reinforcement learning, and a learned critic decides when to stop.",
+          description: "Reinforced Iterative Classification (RIC) trains a classifier with reinforcement learning instead of cross-entropy. It refines its prediction step by step and achieves a better balance of accuracy and calibration than supervised training.",
           section: "Projects",handler: () => {
               window.location.href = "/papers/ric/";
             },},{
