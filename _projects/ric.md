@@ -116,10 +116,9 @@ questions:
           caption: >-
             Validation accuracy against training accuracy on three datasets.
       findings:
-        - "**SL's validation return declines while RIC's holds.**"
         - >-
-          RIC fits the training set more gradually and generalizes better at the same training accuracy. It keeps
-          improving where supervised training starts to overfit.
+          The main difficulty shifts from overfitting to underfitting. RIC fits more gradually, while validation
+          performance remains strong as training continues.
 
     - title: What happens under label noise?
       thumb: papers/ric/noise.svg
@@ -130,10 +129,9 @@ questions:
             Expected calibration error (ECE), the gap between confidence and accuracy, and confidence over training,
             from clean labels (a) to increasingly noisy human labels (b, c).
       findings:
-        - "**At every noise level, RIC ends training better calibrated than SL.**"
         - >-
-          Cross-entropy ties confidence to fitting, so SL becomes near certain early. RIC builds confidence at its
-          own pace and keeps moderate probabilities on mislabeled examples.
+          RIC builds confidence at its own pace and stays better calibrated under noisy labels during prolonged
+          training.
 
     - title: How calibrated is RIC at test time?
       thumb: papers/ric/ece_woof.svg
@@ -146,13 +144,9 @@ questions:
           caption: >-
             Mean accuracy and ECE ranks across ten datasets. Lower is better.
       findings:
-        - "**SL is overconfident. RIC stays close to calibrated.**"
         - >-
-          Across ten datasets, the deterministic readout of RIC favors accuracy and the stochastic readout favors
-          calibration, and together they form the Pareto front.
-        - >-
-          Recurrent baselines trained with cross-entropy are calibrated like SL, so the gain comes from learning
-          from returns.
+          RIC achieves a better balance between accuracy and calibration. Deterministic predictions favor accuracy,
+          while stochastic predictions favor calibration.
 
     - title: Does the critic spend compute where it pays?
       thumb: papers/ric/adaptive_compute.svg
@@ -163,9 +157,9 @@ questions:
             (a) Return by input difficulty, with halting steps marked, (b) confidence and ECE across inference steps,
             and (c) stopping steps for correct and incorrect predictions.
       findings:
-        - "**Easy inputs saturate fast. Hard ones stop before reward turns negative.**"
         - >-
-          The critic makes the right stop-or-continue call on most states, without any extra halting machinery.
+          The critic spends computation where further refinement is useful and stops when little improvement
+          remains.
 
 remarks:
   title: Takeaways

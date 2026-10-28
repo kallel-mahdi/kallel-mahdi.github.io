@@ -40,23 +40,17 @@ hero:
     policy gradient (pink). θ then steps along the most probable ascent direction.
 
 tldr: >-
-  Augmented Bayesian Search (ABS) gives Bayesian policy search a prior that knows it is solving an MDP. Through the
-  performance difference lemma, a critic of the current policy predicts the returns of nearby policies, and the
-  gradient the search follows becomes **the deterministic policy gradient, corrected by the observed returns**. ABS
-  explores with deterministic policies only and outperforms previous Bayesian optimization methods, most clearly in
-  high dimensions.
+  ABS builds a better Gaussian process prior for policy search from a learned critic. The prior guides search with
+  the deterministic policy gradient, corrected by observed returns. ABS scales Bayesian optimization to
+  high-dimensional control problems while keeping exploration deterministic.
 
 method:
   title: How it works
   intro: >-
-    Reinforcement learning usually explores with stochastic policies, yet deterministic policies are preferable on
-    physical systems because they avoid erratic, potentially damaging behavior and are easier to implement and
-    interpret. Bayesian optimization explores with deterministic policies by modeling the return as a function of the
-    policy parameters. ABS builds on MPD (Maximum Probability of Descent), a local variant. Around a central policy
-    $\theta$, MPD rolls out the acquisition points $z$ that are most informative about the gradient at $\theta$,
-    steps $\theta$ along the most probable ascent direction, and repeats. Like most Bayesian optimization, it treats
-    the return as a black box and discards the trajectories behind each return. The steps below show how ABS turns
-    those trajectories into a prior and what that prior does to the gradient.
+    Deterministic policies are useful on physical systems because they avoid erratic actions and are easier to
+    implement and interpret. Bayesian optimization explores directly over policy parameters, but usually uses only
+    the return from each rollout. ABS also uses the trajectory. A learned critic turns this experience into a prior
+    over nearby policies, giving the search useful information before it collects more returns.
   steps:
     - title: The gradient of a GP is a GP
       text: >-
@@ -92,10 +86,8 @@ method:
         \widehat{m}_\phi(x) = \widehat{J}(\pi_\theta) + \mathbb{E}_{s \sim \widehat{d}^{\pi_\theta}}\big[\widehat{A}^{\pi_\theta}_\phi(s, \pi_x(s))\big]
     - title: Fitness-aware policy gradient
       text: >-
-        The gradient of this prior at $\theta$ is the deterministic policy gradient of the critic. The posterior mean
-        is therefore that policy gradient plus a correction that grows with how far the prior misses the observed
-        returns. Where the critic predicts the returns well, ABS follows the policy gradient, and where it does not,
-        the observed returns take over. One estimate thus connects Bayesian optimization and policy gradient methods.
+        ABS starts from the critic's deterministic policy gradient and corrects it with observed returns. The same
+        estimate combines information from trajectories with the outcomes of policy evaluations.
       eq: >-
         \begin{aligned}
         \mu_\theta = {}& \underbrace{\mathbb{E}_{s \sim \widehat{d}^{\pi_\theta}}\big[\nabla_a \widehat{Q}^{\pi_\theta}_\phi(s, a)\big|_{a=\pi_\theta(s)}\nabla_\theta \pi_\theta(s)\big]}_{\text{deterministic policy gradient}} \\
@@ -129,10 +121,9 @@ questions:
             Acquisition function around the central point $\theta$ (star) over three queries, with acquisitions in
             white.
       findings:
-        - "**The next query lies in the direction of the gradient posterior.**"
         - >-
-          The posterior mean $\mu_\theta$ (violet) corrects the critic's gradient (pink) where the prior misses the
-          observations. Queries stay close to $\theta$, where the prior is reliable.
+          ABS targets rollouts that are most informative about the local ascent direction. Each observed return
+          refines the gradient estimate used for the next policy update.
 
     - title: Is the advantage mean function a good prior?
       thumb: papers/abs/r2_hist.png
@@ -146,10 +137,9 @@ questions:
           caption: >-
             Histograms and correlation of the same scores.
       findings:
-        - "**The critic-based prior explains a substantial share of the observed returns.**"
         - >-
-          Validation tracks test as in supervised learning, and the prior only needs to find one good ascent
-          direction at a time.
+          The learned prior captures useful structure in policy returns. Its predictions guide the local search,
+          while validation against observed returns helps ABS choose which critics to trust.
 
     - title: Does it make Bayesian optimization more efficient?
       thumb: papers/abs/performance_highdim.png
@@ -159,10 +149,9 @@ questions:
           caption: >-
             Maximum return on MuJoCo tasks, where #n_dims is the number of policy parameters.
       findings:
-        - "**ABS consistently outperforms MPD, and its advantage grows in high dimensions.**"
         - >-
-          Where MPD and ARS struggle to find good ascent directions, the advantage mean function focuses the search
-          on promising regions of the parameter space.
+          ABS consistently outperforms MPD. Its advantage becomes clearest in high-dimensional policy spaces, where
+          the learned prior gives the search a useful direction.
 
     - title: Does the validation criterion help pick critics?
       thumb: papers/abs/ablation.png
@@ -173,10 +162,9 @@ questions:
             Ablation of the critic ensemble with a single critic, an average, or a validation-weighted ensemble, each
             with or without resetting the worst critic (+ R).
       findings:
-        - "**Validation weighting with resets beats every other variant.**"
         - >-
-          ABS weights its critics by their validation score and resets the worst one. The score recognizes a freshly
-          reset critic and ignores it until it has learned, which makes resetting safe.
+          Validation weighting and critic resets work best together. Poorly performing critics receive less weight
+          while they relearn, so resetting them does not overwhelm the ensemble.
 
 remarks:
   items:
