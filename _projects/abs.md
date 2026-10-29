@@ -7,10 +7,9 @@ img: assets/img/papers/abs/card.png # card image on the projects page
 importance: 2
 category: work
 description: >-
-  Bayesian policy search explores with deterministic policies but treats the return of a policy as a black box.
-  Augmented Bayesian Search (ABS) gives it a prior built from a learned critic through the performance difference
-  lemma, so the search follows the deterministic policy gradient corrected by the observed returns. ABS outperforms
-  previous Bayesian optimization methods, most clearly in high dimensions.
+  ABS builds a better Gaussian process prior for policy search from a learned critic. Observed returns correct the
+  critic's policy gradient, allowing Bayesian optimization to scale to high-dimensional control problems while
+  keeping exploration deterministic.
 
 authors:
   - { name: Mahdi Kallel, url: /, me: true, affil: [1] }
@@ -34,7 +33,7 @@ hook: >-
 hero:
   src: papers/abs/acquisition_paper.gif
   caption: >-
-    One ABS iteration on Pendulum, whose policy has two parameters, rerun from the paper's code. The map shows how
+    One ABS iteration on Pendulum with a two-parameter policy. The map shows how
     informative a rollout at each point would be about the ascent direction at the policy θ (star). ABS runs the most
     informative rollout, and with each return the posterior mean of the gradient (dark purple) corrects the critic's
     policy gradient (pink). θ then steps along the most probable ascent direction.
@@ -54,33 +53,34 @@ method:
   steps:
     - title: The gradient of a GP is a GP
       text: >-
-        MPD models the return as a Gaussian process over policy parameters, with prior mean $m$ and kernel $K$. The
-        derivative of a Gaussian process is again a Gaussian process, so after observing returns $Y$ at points $X$,
-        the gradient at $\theta$ has a Gaussian posterior $\mathcal{N}(\mu_\theta, \Sigma_\theta)$. Its mean starts
-        from the gradient of the prior, $\nabla_\theta m(\theta)$, and corrects it where the prior misses the
+        ABS builds on Maximum Probability of Descent (MPD), a local Bayesian optimization method. MPD models the
+        policy return as a Gaussian process with prior mean $$m$$ and kernel $$K$$. The
+        derivative of a Gaussian process is again a Gaussian process, so after observing returns $$Y$$ at points $$X$$,
+        the gradient at $$\theta$$ has a Gaussian posterior $$\mathcal{N}(\mu_\theta, \Sigma_\theta)$$. Its mean starts
+        from the gradient of the prior, $$\nabla_\theta m(\theta)$$, and corrects it where the prior misses the
         observations. The usual prior is constant, so that first term vanishes and the data must do all the work. A
         prior that already knows the slope of the return would give a good gradient from few rollouts.
       eq: >-
         \begin{aligned}
         \mu_\theta &= \nabla_\theta m(\theta) + \nabla_\theta K(\theta, X)\,K(X, X)^{-1}\big(Y - m(X)\big), \\
-        \Sigma_\theta &= \nabla_\theta K(\theta, \theta) - \nabla_\theta K(\theta, X)\,K(X, X)^{-1}\,\nabla_\theta K(X, \theta)
+        \Sigma_\theta &= \left.\nabla_\theta\nabla_{\theta'}^\top K(\theta, \theta')\right|_{\theta'=\theta} - \nabla_\theta K(\theta, X)\,K(X, X)^{-1}\,\nabla_\theta K(X, \theta)
         \end{aligned}
     - title: Performance difference lemma
       text: >-
-        The performance difference lemma provides such a prior. It writes the return of any policy $\pi_x$ as the
-        return of the current policy $\pi_\theta$ plus the advantage of $\pi_\theta$, averaged over the states that
-        $\pi_x$ visits. Everything on the right concerns $\pi_\theta$, whose trajectories we have, except the state
-        distribution $d^{\pi_x}$ of a policy we have not run.
+        The performance difference lemma provides such a prior. It writes the return of any policy $$\pi_x$$ as the
+        return of the current policy $$\pi_\theta$$ plus the expected discounted sum of its advantages along trajectories
+        of $$\pi_x$$. Everything on the right concerns $$\pi_\theta$$, whose trajectories we have, except the
+        unnormalized discounted state visitation measure $$d^{\pi_x}$$ of a policy we have not run.
       eq: >-
         J(\pi_x) = J(\pi_\theta) + \mathbb{E}_{s \sim d^{\pi_x}}\big[A^{\pi_\theta}(s, \pi_x(s))\big]
     - title: Advantage mean function
       text: >-
-        ABS rolls out the central point $\theta$, collects its return $\widehat{J}(\pi_\theta)$ and states
-        $\widehat{d}^{\pi_\theta}$, and trains a critic $\widehat{Q}^{\pi_\theta}_\phi$ on its transitions, which
-        gives the advantage $\widehat{A}^{\pi_\theta}_\phi$. Replacing the unknown $d^{\pi_x}$ by
-        $\widehat{d}^{\pi_\theta}$ leaves a residual, which the paper bounds in Lipschitz MDPs by how far the actions
-        of the two policies differ. Near $\theta$ the residual is small, so the remaining term is a good prior for the
-        return of any point $x$. It acts like a first-order expansion of the return around $\theta$, and the Gaussian
+        ABS rolls out the central point $$\theta$$, collects its return $$\widehat{J}(\pi_\theta)$$ and states
+        $$\widehat{d}^{\pi_\theta}$$, and trains a critic $$\widehat{Q}^{\pi_\theta}_\phi$$ on its transitions, which
+        gives the advantage $$\widehat{A}^{\pi_\theta}_\phi$$. Replacing the unknown $$d^{\pi_x}$$ by
+        $$\widehat{d}^{\pi_\theta}$$ leaves a residual, which the paper bounds in Lipschitz MDPs by how far the actions
+        of the two policies differ. Near $$\theta$$ the residual is small, so the remaining term is a good prior for the
+        return of any point $$x$$. It acts like a first-order expansion of the return around $$\theta$$, and the Gaussian
         process only has to model what it misses.
       eq: >-
         \widehat{m}_\phi(x) = \widehat{J}(\pi_\theta) + \mathbb{E}_{s \sim \widehat{d}^{\pi_\theta}}\big[\widehat{A}^{\pi_\theta}_\phi(s, \pi_x(s))\big]
@@ -95,8 +95,8 @@ method:
         \end{aligned}
     - title: A criterion to validate critics
       text: >-
-        The same lemma also measures how good a critic is. Rolling out any point $x$ gives its return
-        $\widehat{J}(\pi_x)$ and its own states $\widehat{d}^{\pi_x}$. On those states the lemma holds exactly, so a
+        The same lemma also measures how good a critic is. Rolling out any point $$x$$ gives its return
+        $$\widehat{J}(\pi_x)$$ and its own states $$\widehat{d}^{\pi_x}$$. On those states the lemma holds exactly, so a
         good critic should reproduce the observed return, and the prediction error tests the critic on trajectories it
         was not trained on. Every acquisition thus becomes validation data, and ABS uses this score to weight an
         ensemble of critics.
@@ -118,7 +118,7 @@ questions:
         - src: papers/abs/acquisition.png
           wide: true
           caption: >-
-            Acquisition function around the central point $\theta$ (star) over three queries, with acquisitions in
+            Acquisition function around the central point $$\theta$$ (star) over three queries, with acquisitions in
             white.
       findings:
         - >-
@@ -131,7 +131,7 @@ questions:
         - src: papers/abs/r2.png
           wide: true
           caption: >-
-            Validation and test scores ($R^2$) of the critics during training.
+            Validation and test scores ($$R^2$$) of the critics during training.
         - src: papers/abs/r2_hist.png
           wide: true
           caption: >-

@@ -23,8 +23,8 @@ latest_posts:
   limit: 3
 ---
 
-I am a PhD candidate advised by Carlo D'Eramo. I started out designing algorithms for exploration and policy optimization.
+I am a PhD candidate advised by Prof. Carlo D'Eramo. I started out designing algorithms for exploration and policy optimization.
 
-I now study the learning dynamics of neural networks, in particular memory and plasticity in continual learning, and how reinforcement learning changes them compared with supervised learning. My main tool is random matrix theory.
+I now study the learning dynamics of neural networks, in particular memory and plasticity in continual learning, and how reinforcement learning shapes these dynamics compared with supervised learning. My main tool is random matrix theory.
 
 Previously, I studied applied mathematics at ENS Paris-Saclay (MVA). Always happy to talk about research, or anything else.

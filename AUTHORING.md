@@ -101,8 +101,8 @@ Everything on the page comes from front matter; `_templates/paper.md` documents 
 
 Image paths in front matter are relative to `assets/img/`, e.g. `papers/<slug>/figure.svg`.
 
-**Math in front matter.** Text fields are run through markdown, so `$...$` works, but kramdown strips the backslash
-from `\|`: write `\Vert` for a norm. Display equations in `eq` are LaTeX without `$$`.
+**Math in front matter.** Text fields are run through markdown. Use `$$...$$` for inline math so kramdown preserves
+LaTeX commands and subscripts. Display equations in `eq` are LaTeX without `$$`.
 
 **Figures.** Convert PDF figures to SVG, or to PNG for heavy plots:
 

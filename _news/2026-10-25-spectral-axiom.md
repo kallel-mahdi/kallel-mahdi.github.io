@@ -1,5 +1,6 @@
 ---
 layout: post
+title: The Spectral Anatomy of Plasticity Loss at AXIOM 2026
 date: 2026-10-25
 inline: true
 related_posts: false

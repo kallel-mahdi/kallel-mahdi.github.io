@@ -14,7 +14,7 @@ cv:
 
   sections:
     Profile:
-      - bullet: "Graduating from the University of Würzburg in April 2027, advised by Carlo D'Eramo. I started out designing algorithms for exploration and policy optimization, and now study the learning dynamics of neural networks, in particular memory and plasticity in continual learning, and how reinforcement learning changes them compared with supervised learning."
+      - bullet: "Graduating from the University of Würzburg in April 2027, advised by Prof. Carlo D'Eramo. I started out designing algorithms for exploration and policy optimization, and now study the learning dynamics of neural networks, in particular memory and plasticity in continual learning, and how reinforcement learning shapes these dynamics compared with supervised learning."
 
     # The site template shows the venue from `publisher`, the PDF from `journal`.
     Publications:
@@ -98,7 +98,7 @@ cv:
         location: France
         date: 2022
         highlights:
-          - Started the work on Bayesian policy search with deterministic policies that became Augmented Bayesian Policy Search (ICLR 2024).
+          - Started research on Bayesian policy search with deterministic policies, leading to Augmented Bayesian Policy Search (ICLR 2024).
 
       - company: EURECOM
         position: Research Intern
