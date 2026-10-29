@@ -54,7 +54,7 @@ ninja.data = [{
           description: "",
           section: "News",},{id: "projects-augmented-bayesian-policy-search",
           title: 'Augmented Bayesian Policy Search',
-          description: "Bayesian policy search explores with deterministic policies but treats the return of a policy as a black box. Augmented Bayesian Search (ABS) gives it a prior built from a learned critic through the performance difference lemma, so the search follows the deterministic policy gradient corrected by the observed returns. ABS outperforms previous Bayesian optimization methods, most clearly in high dimensions.",
+          description: "ABS builds a better Gaussian process prior for policy search from a learned critic. Observed returns correct the critic&#39;s policy gradient, allowing Bayesian optimization to scale to high-dimensional control problems while keeping exploration deterministic.",
           section: "Projects",handler: () => {
               window.location.href = "/papers/abs/";
             },},{id: "projects-do-not-imitate-reinforce",
