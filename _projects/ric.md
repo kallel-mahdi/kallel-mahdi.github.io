@@ -34,9 +34,9 @@ hook: >-
 hero:
   src: papers/ric/ric-refinement.gif
   caption: >-
-    An actor refines its prediction step by step, and each step earns a reward equal to the gain in log probability of
-    the label, shown as the green slice of the gauge. A critic estimates the improvement still left and decides when to
-    stop. Green means continue, red means stop and return the current prediction.
+    An actor refines its prediction step by step, and each step earns the gain in log probability of the label, shown
+    as the green slice of the gauge. A critic estimates the improvement still left: green continues, red stops and
+    returns the current prediction.
 
 tldr: >-
   Reinforced Iterative Classification (RIC) rewards a classifier for improving its prediction instead of training it
@@ -48,42 +48,33 @@ tldr: >-
 method:
   title: How it works
   intro: >-
-    Early learning systems learned by trial and error, improving a little at a time. As Andrew Barto put it at RLC
-    2024, *"in the beginning, machine learning was reinforcement learning."* RIC brings this view back to
-    classification. Each labeled example becomes a short episode. The prediction starts uniform over the $$K$$ classes,
-    and at every step a recurrent network reads the input and the current prediction, a policy head proposes the next
-    class distribution, and a value head estimates whether refining further is worth it. The four steps below show
-    what this agent is trained for and why it learns differently from cross-entropy.
+    As Andrew Barto put it at RLC 2024, *"in the beginning, machine learning was reinforcement learning."* RIC brings
+    this view back to classification by turning each labeled example into a short episode. The prediction starts
+    uniform over the $$K$$ classes. At every step a recurrent network reads the input and the current prediction, a
+    policy head proposes the next one, and a value head judges whether refining further is worth it.
   steps:
     - title: Reward every improvement
       text: >-
-        Cross-entropy forces the model to imitate the label. RIC rewards it for improving its prediction. The reward is
-        the change in log probability that the prediction assigns to the true label $$y$$, positive for a step toward
-        $$y$$ and negative for a step away from it. Because the actor samples its predictions, it has to find out by
-        itself which refinements pay off.
+        Cross-entropy asks the model to imitate the label. RIC instead rewards it for improving its prediction: the
+        reward is the change in log probability of the true label $$y$$, positive for a step toward $$y$$ and negative
+        for a step away. Since the actor samples its predictions, it has to discover by itself which refinements pay
+        off.
       eq: r_t = \log a_{t,y} - \log a_{t-1,y}
     - title: Discounting trains every depth
       text: >-
-        Over an episode the rewards telescope, and only the first and the current prediction remain. With a discount
+        Over an episode the rewards telescope, leaving only the first and the current prediction. With a discount
         $$\gamma$$, the expected return becomes the log probability of the label at a random depth $$N$$ drawn from a
         geometric distribution. Every depth carries weight, so every intermediate prediction is trained to be a good
-        answer. RIC can therefore stop at any step and still return a useful prediction, and the critic of step 4
-        decides when.
+        answer and RIC can stop at any step.
       eq: >-
         \mathbb{E}\Big[\textstyle\sum_{t\ge1}\gamma^{t-1} r_t\Big] = \mathbb{E}_{N\sim\mathrm{Geom}(1-\gamma)}\big[\log a_{N,y}\big] + \log K
     - title: Same target, different learning
       text: >-
-        For labels drawn from the true conditional $$q(\cdot \mid x)$$, the expected cross-entropy of a stochastic
-        prediction with mean $$\mu$$ splits into three parts. No model can remove the label ambiguity, while the error
-        of the mean prediction and the cost of random actions can be removed. Maximizing the return drives these two
-        to zero at every depth, so a deterministic RIC policy predicts $$q(\cdot \mid x)$$, the same target as
-        cross-entropy.
-
-
-        The two objectives differ in how they reach it. Cross-entropy differentiates the loss of each prediction and
-        pushes it toward the label as long as any gap remains, so confidence grows with fitting. RIC learns through
-        the policy gradient, which moves a prediction only while its sampled refinements earn distinguishable
-        returns. This difference in learning is the source of the different dynamics in the results.
+        For labels drawn from $$q(\cdot \mid x)$$, the expected loss splits into label ambiguity, the error of the
+        mean prediction, and the cost of random actions. Maximizing the return removes the last two, so a
+        deterministic RIC policy predicts $$q(\cdot \mid x)$$, as cross-entropy does. What differs is the path:
+        cross-entropy pushes toward the label while any gap remains, whereas the policy gradient moves a prediction
+        only while sampled refinements earn distinguishable returns.
       eq: >-
         \begin{gathered}
         \mathbb{E}_{y\sim q,\,a\sim\pi}\big[-\log a_y\big] = \underbrace{H(q)}_{\text{label ambiguity}} + \underbrace{\mathrm{KL}(q\,\Vert\,\mu)}_{\text{mean prediction error}} + \underbrace{\mathbb{E}\big[D_F(a_y \,\Vert\, \mu_y)\big]}_{\text{cost of stochastic actions}}
@@ -92,12 +83,10 @@ method:
         \end{gathered}
     - title: The critic decides when to stop
       text: >-
-        Write $$L_t = \mathrm{KL}(q\,\Vert\,a_t)$$ for the error of the current prediction. The value of a state
-        compares this error with the expected error after further refinement. The label ambiguity is the same now and
-        later and cancels, so the critic measures only the error that refinement can still remove. Refinement
-        continues while $$V(s_t) > 0$$ and stops once $$V(s_t) \le 0$$. An ambiguous input can stop early with an
-        uncertain prediction, and a confident mistake keeps refining while further steps can improve it. The stopping
-        rule comes from the critic RIC already trains, with no ponder penalty or separate halting network.
+        Write $$L_t = \mathrm{KL}(q\,\Vert\,a_t)$$ for the error of the current prediction. The value compares it with
+        the expected error after further refinement, and since the label ambiguity cancels, it measures only what
+        refinement can still fix. RIC refines while $$V(s_t) > 0$$, so ambiguous inputs stop early and confident
+        mistakes keep refining, without a ponder penalty or separate halting network.
       eq: >-
         V^\pi(s_t) = L_t - \mathbb{E}_{N\sim\mathrm{Geom}(1-\gamma),\,\pi}\!\left[L_{t+N} \mid s_t\right]
 
