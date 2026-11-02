@@ -14,7 +14,7 @@ cv:
 
   sections:
     Profile:
-      - bullet: "Graduating from the University of Würzburg in April 2027, advised by Prof. Carlo D'Eramo. I started out designing algorithms for exploration and policy optimization, and now study the learning dynamics of neural networks, in particular memory and plasticity in continual learning, and how reinforcement learning shapes these dynamics compared with supervised learning."
+      - bullet: "PhD candidate in reinforcement learning at the University of Würzburg, advised by Prof. Carlo D'Eramo, graduating April 2027. I study how neural networks learn, especially in reinforcement learning, and how to turn that understanding into better training methods. Recently, I have been working on memory and plasticity in continual learning and on how learning dynamics differ between reinforcement and supervised learning. Earlier in my PhD, I worked on policy search and policy optimization."
 
     # The site template shows the venue from `publisher`, the PDF from `journal`.
     Publications:
