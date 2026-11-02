@@ -23,7 +23,7 @@ latest_posts:
   limit: 3
 ---
 
-I am a final-year PhD candidate at the University of Würzburg, advised by Prof. Carlo D'Eramo. I began my PhD working on [policy search]({{ '/papers/abs/' | relative_url }}) and [policy optimization](https://rlj.cs.umass.edu/2026/papers/Paper8.html), and this work led me to ask how the networks inside these algorithms actually learn. I now study the learning dynamics of neural networks, in particular [memory and plasticity](https://openreview.net/forum?id=Kgz0zlJVS6) in continual learning and [how these dynamics differ between reinforcement and supervised learning]({{ '/papers/ric/' | relative_url }}), with the aim of designing better training methods.
+I am a final-year PhD candidate at the University of Würzburg, advised by Prof. Carlo D'Eramo. I began my PhD developing [policy search]({{ '/papers/abs/' | relative_url }}) and [policy optimization](https://rlj.cs.umass.edu/2026/papers/Paper8.html) algorithms, and this work led me to ask how the networks inside these algorithms actually learn. My research now focuses on the learning dynamics of neural networks and on using them to design better training methods. In particular, I work on [memory and plasticity](https://openreview.net/forum?id=Kgz0zlJVS6) in continual learning and on [how these dynamics differ between reinforcement and supervised learning]({{ '/papers/ric/' | relative_url }}).
 
 Before my PhD, I interned in the Scool team at Inria Lille and studied at ENS Paris-Saclay (MVA) and Télécom Paris.
 
